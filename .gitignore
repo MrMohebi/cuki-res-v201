@@ -5,6 +5,12 @@
 /.pnp
 .pnp.js
 
+#idea folder
+/.idea
+
+#caches
+.eslintcache
+
 # testing
 /coverage
 
