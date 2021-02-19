@@ -73,3 +73,12 @@ export const setShowOrdersDates = (fromToDates) =>{
     });
 }
 
+
+export const setFoodInfoTemp = (foodInfo) =>{
+    store.dispatch({
+        type: actionTypes.SET_FOOD_INFO_TEMP,
+        payload:{
+            foodInfo
+        }
+    });
+}

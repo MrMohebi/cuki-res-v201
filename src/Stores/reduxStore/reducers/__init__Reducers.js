@@ -19,6 +19,7 @@ export const __init__RestaurantInfo ={
 
 
 export const __init__TempStates ={
+    foodInfoTemp:{},
     ordersShowDates : {},
 }
 

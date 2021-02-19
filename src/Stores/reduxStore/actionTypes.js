@@ -8,4 +8,4 @@ export const SET_RESTAURANT_INFO = "setRestaurantInfo"
 export const SET_TABLES = "setTables"
 
 export const SET_SHOW_ORDERS_DATES = "setShowOrdersDate"
-
+export const SET_FOOD_INFO_TEMP = "setFoodInfoTemp"

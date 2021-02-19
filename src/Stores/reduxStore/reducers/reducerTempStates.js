@@ -10,6 +10,10 @@ export default function reducerTempStates (state=__init__TempStates, action){
             return produce(state, stateDraft=>{
                 stateDraft.ordersShowDates = action.payload.fromToDates;
             })
+        case actionTypes.SET_FOOD_INFO_TEMP:
+            return produce(state, stateDraft=>{
+                stateDraft.foodInfoTemp = action.payload.foodInfo;
+            })
         default:
             return state;
     }
