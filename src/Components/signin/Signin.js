@@ -4,20 +4,10 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons'
 import 'animate.css/animate.css'
-import * as actions from '../../reduxStore/actions'
+import * as actions from '../../Stores/reduxStore/actions'
 import * as requests from '../../ApiRequests/requests'
-import * as cache from '../../reduxStore/cachedData/cachedData'
 
 class Signin extends React.Component {
-
-    componentDidMount() {
-        if(cache.getCacheUserPass() !== undefined && JSON.parse(cache.getCacheUserPass()).length === 2){
-            let [username, password] = JSON.parse(cache.getCacheUserPass())
-            requests.signin(username, password, this.checkUserPass)
-        }
-
-    }
-
 
 
 
@@ -33,6 +23,7 @@ class Signin extends React.Component {
             })
             setTimeout(()=>this.setState({inputClass : "input-group mb-3 ml-5"}), 3000)
         }else if(response.statusCode === 200){
+            this.props.setToken(response.data.token)
             this.props.history.push('/dashboard')
             $('.components > li').removeClass('active')
             $('.dashboard').toggleClass('active')
@@ -83,7 +74,7 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = () => {
     return {
-        setUserInfo: actions.setUserInfo
+        setToken: actions.setToken
     }
 }
 
