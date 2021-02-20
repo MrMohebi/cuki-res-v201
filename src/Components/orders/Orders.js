@@ -16,13 +16,12 @@ import {
     faUtensils
 } from "@fortawesome/free-solid-svg-icons";
 import './css/stylesheet.css';
-import * as actions from "../../reduxStore/actions";
+import * as actions from "../../Stores/reduxStore/actions";
 import * as requests from '../../ApiRequests/requests';
 import * as func from './js/function';
 import {Link} from "react-router-dom";
 
 const ReactSwal = withReactContent(Swal)
-
 
 class Orders extends React.Component {
 
@@ -56,7 +55,6 @@ class Orders extends React.Component {
     };
 
     componentDidMount() {
-        console.log(this.state.datePikerDate)
         if (!(this.props.ordersShowDates.from && true)) {
             this.props.setShowOrdersDates({
                 from: func.todayDateJalali(),
@@ -69,7 +67,6 @@ class Orders extends React.Component {
             let endDate = (func.date2timestamp(func.JalaliDate.jalaliToGregorian(selectedDate.to.year, selectedDate.to.month, selectedDate.to.day).join("-")) / 1000) + 86400;
             this.getOrders(startDate, endDate)
         }
-
         this.refreshOrderList()
 
     }
@@ -140,7 +137,6 @@ class Orders extends React.Component {
             this.refreshOrderList()
             document.documentElement.scrollTop = this.state.scroll
 
-        } else {
         }
     }
 
@@ -172,7 +168,6 @@ class Orders extends React.Component {
                         <div style={{marginBottom: '10px'}}>
                             <DatePicker value={this.state.datePikerDate} onChange={this.onChangeCalender} locale='fa'
                                         shouldHighlightWeekends/>
-
                         </div>
 
                     ) : (
@@ -182,17 +177,20 @@ class Orders extends React.Component {
                                 to: func.todayDateJalali()
                             }}
                                         onChange={this.onChangeCalender} locale='fa' shouldHighlightWeekends
-
                             />
                         </div>
 
                     )}
                     {this.isThereFood ? null : this.uiComponentNothinFound()}
-                    {/*{this.state.uiRender}*/}
-
                     {this.state.orders.length > 1 ? this.createRows() : <div/>}
                     {window.location.pathname === '/dashboard' ?
-                        <Link style={{color: 'blue', width: '100%', display: 'block', textAlign: 'center'}}
+                        <Link style={{
+                            color: 'blue',
+                            width: '100%',
+                            display: 'block',
+                            textAlign: 'right',
+                            marginTop: '20px'
+                        }}
                               to={'/orders'}><span style={{width: '100$', textAlign: 'center', marginTop: '20px'}}>
 نمایش لیست کامل ...
                     </span></Link>
@@ -260,9 +258,9 @@ class Orders extends React.Component {
                                 <div className="btn-group">
                                     <button type="button"
                                             className={'btn ' + btnClasses}
-                                            onClick = {()=>{
-                                        eachOrder.order_status === 'done'? this.handelChangeOrderStatus(eachOrder.tracking_id,'inLine'):this.handelChangeOrderStatus(eachOrder.tracking_id,'done')
-                                    }}>
+                                            onClick={() => {
+                                                eachOrder.order_status === 'done' ? this.handelChangeOrderStatus(eachOrder.tracking_id, 'inLine') : this.handelChangeOrderStatus(eachOrder.tracking_id, 'done')
+                                            }}>
                                         {this.state.orderStatusPersian[orderStatus.toString()]}
 
                                     </button>
@@ -312,11 +310,9 @@ class Orders extends React.Component {
 
                                     :
                                     <div></div>
-
                                 }
 
                             </td>
-
 
                             <td></td>
                             <td className="d-none d-sm-table-cell">
