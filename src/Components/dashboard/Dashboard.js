@@ -1,19 +1,19 @@
 import React from "react";
 import Orders from "../orders/Orders";
 import Foods from "../foods/Foods";
-import * as actions from '../../reduxStore/actions'
+import * as actions from '../../Stores/reduxStore/actions'
 import * as requests from '../../ApiRequests/requests'
-import {store} from '../../reduxStore/store'
+import {store} from '../../Stores/reduxStore/store'
+import {connect} from "react-redux";
+
 
 
 class Dashboard extends React.Component{
     componentDidMount() {
-        if(store.getState().reducerRestaurantUser.token.length < 20){
-            // this.props.history.push("/")
-        }else{
-            // requests.getRestaurantInfo();
-            requests.getTables()
+        if(this.props.token.length < 20){
+            this.props.history.push("/")
         }
+
     }
 
     render() {
@@ -27,4 +27,17 @@ class Dashboard extends React.Component{
     }
 }
 
-export default Dashboard;
+
+const mapStateToProps = (store) => {
+    return {
+        foodInfoTemp: store.reducerTempStates.foodInfoTemp,
+        token:store.reducerRestaurantUser.token
+    }
+}
+
+const mapDispatchToProps = () => {
+    return {
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
