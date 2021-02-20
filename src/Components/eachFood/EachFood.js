@@ -5,7 +5,6 @@ import * as requests from '../../ApiRequests/requests'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck,faChevronCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
-import produce from "immer";
 import './css/style.css'
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
@@ -13,13 +12,20 @@ import Swal from "sweetalert2";
 const ReactSwal = withReactContent(Swal)
 
 
+
 class EachFood extends React.Component {
     state = {
         selectedFile: null,
+        categories:[]
     }
 
     componentDidMount() {
-        console.log(this.props.match.params.foodId)
+        requests.getCategoryList((e) => {
+            if (e)
+            this.setState({
+                categories:e.data
+            })
+        })
     }
 
     getFoods = ()=>{
@@ -69,20 +75,19 @@ class EachFood extends React.Component {
         }
     }
 
-    onFileChange = event => {
-        this.setState({
-            selectedFile: event.target.files[0]
-        });
+    onFileChange = (event,foodId) => {
+        this.state.selectedFile = event.target.files[0]
+        this.onFileUpload(null,foodId)
     };
 
     onFileUpload = (args, foodId) => {
         const formData = new FormData();
         formData.append(
-            "foodThumbnail",
+            "foodThumb",
             this.state.selectedFile,
             this.state.selectedFile.name
         );
-        requests.uploadFoodThumbnail(formData,foodId, this.checkFoodThumbnailChanged)
+        requests.uploadFoodThumbnail(foodId,formData, this.checkFoodThumbnailChanged)
     };
     checkFoodThumbnailChanged = (res) =>{
         if(res.statusCode === 200){
@@ -91,13 +96,10 @@ class EachFood extends React.Component {
                 icon: "success",
             })
         }
-        console.log(res);
     }
 
-
-
     render() {
-        let food =
+        let food = this.props.foodInfoTemp[0]
 
             return (
                 <React.Fragment>
@@ -107,7 +109,7 @@ class EachFood extends React.Component {
                     <span className='backText' onClick={()=>{this.props.history.push("/foods")}}>بازگشت</span>
                     <h1 className='text-center'>{food.name}</h1>
 
-                    <span className='foodPlaceHolderLabels'>اسم</span>
+                    <p className='foodPlaceHolderLabels'>اسم</p>
 
                     <div className="input-group input-group-sm inputGroups ">
                         <div className="input-group-prepend">
@@ -117,7 +119,7 @@ class EachFood extends React.Component {
                         </div>
                         <input id={`inpName_${food.foods_id}`} type="text" placeholder={food.name} defaultValue={food.name}  className=" rtl form-control" aria-label="" aria-describedby="basic-addon1"/>
                     </div>
-                    <span className='foodPlaceHolderLabels'>جزئیات</span>
+                    <p className='foodPlaceHolderLabels'>جزئیات</p>
 
                     <div className="input-group input-group-sm inputGroups">
 
@@ -126,9 +128,9 @@ class EachFood extends React.Component {
                                 <FontAwesomeIcon icon={faCheck}/>
                             </button>
                         </div>
-                        <input id={`inpDetails_${food.foods_id}`} type="text" placeholder={food.details} defaultValue={food.details}  className=" rtl form-control" aria-label="" aria-describedby="basic-addon1"/>
+                        <input id={`inpDetails_${food.foods_id}`} type="text" placeholder={' مثال : پنیر+گوجه+خیارشور'} defaultValue={JSON.parse(food.details).join('+')}  className=" rtl form-control" aria-label="" aria-describedby="basic-addon1"/>
                     </div>
-                    <span className='foodPlaceHolderLabels'>زمان تحویل</span>
+                    <p className='foodPlaceHolderLabels'>زمان تحویل</p>
 
                     <div className="input-group input-group-sm inputGroups" >
 
@@ -139,42 +141,38 @@ class EachFood extends React.Component {
                         </div>
                         <input id={`inpDeliveryTime_${food.foods_id}`} type="text" placeholder={food.delivery_time} defaultValue={food.delivery_time}  className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
                     </div>
-                    <span style={{width:'100%',textAlign:'center',marginTop:'10px'}}>دسته بندی</span>
+                    <p style={{width:'100%',textAlign:'center',marginTop:'10px'}}>دسته بندی</p>
                     <div className="input-group input-group-sm ">
                         <FormControl style={{direction:'rtl',minWidth: "120px",margin:'auto',textAlign:'center'}}>
-                            <Select labelId="demo-simple-select-helper-label" name={'selectorGroup_'+food.foods_id} defaultValue={food.group} onChange={this.handelChangeGroup}>
+                            <Select style={{fontFamily:'IRANSansMobile_Med'}} labelId="demo-simple-select-helper-label" name={'selectorGroup_'+food.foods_id} defaultValue={food.group} onChange={this.handelChangeGroup}>
                                 <MenuItem value="">
-                                    <em>انتخاب نشده</em>
+                                    <em >انتخاب نشده</em>
                                 </MenuItem>
-                                <MenuItem value='appetizer'>پیش غذا</MenuItem>
-                                <MenuItem value='burger'>برگر</MenuItem>
-                                <MenuItem value='pizza'>پیتزا</MenuItem>
-                                <MenuItem value='panini'>پنینی</MenuItem>
-                                <MenuItem value='main'>غذای اصلی</MenuItem>
-                                <MenuItem value='irani'>ایرانی</MenuItem>
-                                <MenuItem value='dessert'>دسر</MenuItem>
-                                <MenuItem value='pasta'>پاستا</MenuItem>
-                                <MenuItem value='drink'>نوشیدنی</MenuItem>
-                                <MenuItem value='mohito'>موهیتو</MenuItem>
-                                <MenuItem value='hotDrink'>نوشیدنی های گرم</MenuItem>
-                                <MenuItem value='cake'>کیک</MenuItem>
-                                <MenuItem value='brewed'>دم کرده</MenuItem>
-                                <MenuItem value='shake'>شیک</MenuItem>
+                                {
+                                    this.state.categories.map(eachCategory=>{
+                                        return(
+                                            <MenuItem style={{fontFamily:'IRANSansMobile_Light'}} value={eachCategory.english_name}>{eachCategory.persian_name}</MenuItem>
+
+                                        )
+                                    })
+                                }
                             </Select>
                         </FormControl>
                     </div>
 
 
-                    <span className='foodPlaceHolderLabels'>نمایه غذا</span>
-                    <div className="input-group input-group-sm inputGroups" >
-                        <input type="file" onChange={this.onFileChange} />
-                        <button onClick={(args)=>{this.onFileUpload(args, food.foods_id)}}>
-                            Upload!
-                        </button>
+                    <p className='foodPlaceHolderLabels mt-5'>نمایه غذا</p>
+                    <div style={{background:`url(${food.thumbnail})`,backgroundSize:'cover',backgroundPosition:'center'}} className='eachFoodImage'></div>
+                    <div className="input-group input-group-sm inputGroups d-flex flex-column text-center" >
+                        <input id='uploadI' className='inputFile' type="file" accept='.png,.jpg,.jpeg' onChange={(e) => {
+                            this.onFileChange(e,food.foods_id)
+                        } } />
+                        <label className='uploadLable' for='uploadI'>عکس را انتخاب کنید</label>
+                        {/*<button onClick={(args)=>{this.onFileUpload(args, food.foods_id)}}>*/}
+                        {/*    آپلود عکس*/}
+                        {/*</button>*/}
                         {this.state.selectedFile? this.state.selectedFile.name : null}
                     </div>
-
-
 
                 </div>
                 </React.Fragment>
@@ -186,7 +184,7 @@ class EachFood extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
-        foodsList :store.reducerRestaurantInfo.foods
+        foodInfoTemp:store.reducerTempStates.foodInfoTemp
     }
 }
 
