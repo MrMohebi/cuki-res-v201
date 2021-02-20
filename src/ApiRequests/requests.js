@@ -15,25 +15,11 @@ export const signin = (username, password,callbackFunction)=>{
 }
 
 
-
-
-
 export const getOrders = (startDate, endDate, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token
-    let englishName = store.getState().reducerRestaurantUser.englishName
-    $.post(BASE_URL+'getOrdersList.fetch.php',{token:"eO2yKmpZphMLClEoTOzMsewhKTinFK6sImtHtVmwylA", startDate, endDate}).then(res =>{
+    $.post(BASE_URL+'getOrdersList.fetch.php',{token:token, startDate, endDate}).then(res =>{
         if(res.statusCode === 200){
             actions.setOrdersList(res.data)
-        }
-        callbackFunction(res)
-    })
-}
-
-export const getRestaurantInfo = (callbackFunction)=>{
-    let englishName = store.getState().reducerRestaurantUser.englishName
-    $.post(BASE_URL+'getAllRestaurantData.fetch.php',{english_name: englishName}).then(res =>{
-        if(res.statusCode === 200){
-            actions.setRestaurantInfo(res.data.restaurantInfo)
         }
         callbackFunction(res)
     })
@@ -59,12 +45,16 @@ export const changeFoodStatus = (foodId, foodStatus, callbackFunction)=>{
     })
 }
 
-
-
 export const changeFoodPrice = (foodId, foodPrice, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, englishName, foodId, priceChange:'true',price:foodPrice}).then(res =>{
+    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,price:foodPrice}).then(res =>{
+        callbackFunction(res)
+    })
+}
+
+export const changeFoodDiscount = (foodId, foodDiscount, callbackFunction)=>{
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,discount :foodDiscount}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -72,8 +62,7 @@ export const changeFoodPrice = (foodId, foodPrice, callbackFunction)=>{
 
 export const changeFoodName = (foodId, foodName, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, englishName, foodId, persianNameChange:'true',persianName:foodName}).then(res =>{
+    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,persianName:foodName}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -82,8 +71,15 @@ export const changeFoodName = (foodId, foodName, callbackFunction)=>{
 
 export const changeFoodDetails = (foodId, foodDetails, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, englishName, foodId, detailsChange:'true',details:foodDetails}).then(res =>{
+    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,details:foodDetails}).then(res =>{
+        callbackFunction(res)
+    })
+}
+
+
+export const getCategoryList = (callbackFunction)=>{
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL+'getCategoriesList.fetch.php',{token: token}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -91,8 +87,7 @@ export const changeFoodDetails = (foodId, foodDetails, callbackFunction)=>{
 
 export const changeFoodDeliveryTime = (foodId, foodDeliveryTime, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, englishName, foodId, deliveryTimeChange:'true',deliveryTime:foodDeliveryTime}).then(res =>{
+    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,deliveryTime:foodDeliveryTime}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -100,8 +95,7 @@ export const changeFoodDeliveryTime = (foodId, foodDeliveryTime, callbackFunctio
 
 export const changeFoodGroup = (foodId, newGroup, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, englishName, foodId, groupChange:'true',group:newGroup}).then(res =>{
+    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,group:newGroup}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -110,14 +104,14 @@ export const changeFoodGroup = (foodId, newGroup, callbackFunction)=>{
 export const changeOrderStatus = (trackingId, newOrderStatus, deleteReason, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
     let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeOrderStatus.modify.php',{token:"eO2yKmpZphMLClEoTOzMsewhKTinFK6sImtHtVmwylA",trackingId, newOrderStatus, deleteReason: deleteReason}).then(res =>{
+    $.post(BASE_URL+'changeOrderStatus.modify.php',{token:token,trackingId, newOrderStatus, deleteReason: deleteReason}).then(res =>{
         callbackFunction(res)
     })
 }
 
 export const getFoods = (callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'getFoodsList.fetch.php',{token:"eO2yKmpZphMLClEoTOzMsewhKTinFK6sImtHtVmwylA"}).then(res =>{
+    $.post(BASE_URL+'getFoodsList.fetch.php',{token:token}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -189,15 +183,12 @@ export const editTable = (tableId, tableName = null, tableCapacity=null, tableSt
     })
 }
 
-export const uploadFoodThumbnail = (formData, foodId, callbackFunction)=>{
+export const uploadFoodThumbnail = (foodId, formData, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-
     formData.append("token", token);
-    formData.append("englishName", englishName);
     formData.append("foodId", foodId);
     $.ajax({
-        url: BASE_URL_upload+'api/uploadfoodthumbnail.modify.php',
+        url: BASE_URL+'changeFoodInfo.modify.php',
         type: "POST",
         data: formData,
         contentType: false,
