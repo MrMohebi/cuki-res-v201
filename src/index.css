@@ -10,6 +10,9 @@
 *{
   font-family:IRANSansMobile_Med ;
 }
+.IranSansLight{
+  font-family: IRANSansMobile_Light !important;
+}
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -27,9 +30,6 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield !important;
-}
-*{
-  scroll-behavior: smooth;
 }
 
 

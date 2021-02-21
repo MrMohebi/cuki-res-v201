@@ -9,6 +9,8 @@ import Dashboard from "./Components/dashboard/Dashboard";
 import Foods from "./Components/foods/Foods";
 import EachFood from "./Components/eachFood/EachFood";
 import Orders from "./Components/orders/Orders";
+import NavBar from "./Components/navBar/navBar";
+import RestaurantInfo from "./Components/restaurantInfo/RestaurantInfo";
 
 $("body").css({backgroundColor: '#b7b1c2'})
 
@@ -17,10 +19,12 @@ function App() {
     <div>
       <Router>
           <Route exact path='/' component={Signin}/>
+          <Route exact path={['/dashboard','/foods','/orders','/resinfo']} component={NavBar}/>
           <Route exact path='/dashboard' component={Dashboard}/>
           <Route exact path='/foods' component={Foods}/>
           <Route path='/foodInfo' component={EachFood}/>
           <Route path='/orders' component={Orders}/>
+          <Route path='/resinfo' component={RestaurantInfo}/>
       </Router>
 
     </div>

@@ -1,0 +1,89 @@
+.navBarMainContainer {
+    transition: margin-top 0.2s;
+    height: 50px;
+    background-color: #fff;
+    position: fixed;
+    z-index: 1000;
+    box-shadow: 1px 1px 9px #a0a0a0;
+    display: flex;
+    flex-flow: row-reverse;
+    justify-content: space-between;
+    border-radius: 0 0 1px 1px;
+    overflow: hidden;
+}
+
+.navBarLeftSide {
+    width: 38%;
+    height: 100%;
+    direction: ltr;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    padding-right: 10px;
+    align-items: center;
+}
+
+.navBarRightSide {
+    direction: rtl;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    padding-right: 10px;
+    text-decoration: none !important;
+}
+.navBarRightSide a{
+    color: black !important;
+    text-decoration: none;
+}
+
+.navBarItems {
+    transition: background-color 0.3s ease;
+    font-family: IRANSansMobile_Med;
+    height: 100%;
+    font-weight: normal;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    padding-right: 10px;
+    padding-left: 10px;
+
+}
+
+.navBarActive {
+    border-bottom: #9f59ec solid 3px;
+}
+
+.navBarItems:hover {
+    transition: background-color 0.3s ease;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+
+    background-color: #f1f1f1;
+}
+
+.navBarRightSide a {
+    min-height: 50px;
+    background-color: white;
+
+}
+
+.navBarIcon {
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: orange;
+}
+.logOutNavBar{
+    transition: color 0.2s ease;
+
+    cursor: pointer;
+}
+.logOutNavBar:hover{
+    transition: color 0.2s ease;
+    cursor: pointer;
+    color: #9f59ec;
+}

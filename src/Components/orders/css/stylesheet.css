@@ -1,15 +1,15 @@
-.smallBox{
-    float: right;
-
-    margin: 0 100px 20px 20px;
+.smallBox {
     padding: 10px;
+    margin: auto;
     border-radius: 10px;
     width: 80%;
     background-color: #f7f7fb;
 }
-td .btn-group button{
+
+td .btn-group button {
     font-family: IRANSansMobile_Light !important;
 }
+
 td {
     border: 1px solid #ddd;
     padding: 3px;
@@ -17,22 +17,32 @@ td {
 
 
 @media only screen and (max-width: 576px) {
-    .in-queue {border-left: 3px solid #27a844}
-    .mobile-radius {border-top-left-radius: 15px}
+    .in-queue {
+        border-left: 3px solid #27a844
+    }
+
+    .mobile-radius {
+        border-top-left-radius: 15px
+    }
 }
-td .MuiFormControl-root{
+
+td .MuiFormControl-root {
     min-width: 100px;
     vertical-align: baseline;
 }
-.ltr{
+
+.ltr {
     direction: ltr;
 }
-.dropdown-toggle::after{
-right: 5px;
+
+.dropdown-toggle::after {
+    right: 5px;
 }
-.IranSansMedium{
-    font-family:IRANSans;
+
+.IranSansMedium {
+    font-family: IRANSans;
 }
+
 .orderDeleteReason {
     max-width: 100px;
     max-height: 60px;
@@ -42,19 +52,22 @@ right: 5px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.mainContainerOrders{
+
+.mainContainerOrders {
     direction: rtl;
     text-align: center;
     vertical-align: middle;
 }
-.mainContainerOrders td{
+
+.mainContainerOrders td {
     width: 1%;
 }
-.DatePicker input{
+
+.DatePicker input {
     text-align: center;
     padding: 1rem 1.5rem;
     font-size: 1rem;
-    border:1px solid #7d5cc3;
+    border: 1px solid #7d5cc3;
     border-radius: 20px;
     box-shadow: 0px 0rem 1rem 0px rgb(212 212 212);
     color: #8e63db;

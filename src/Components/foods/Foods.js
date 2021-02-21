@@ -117,7 +117,7 @@ class Foods extends React.Component {
             return (
                 <React.Fragment>
                     <div className="justForGap"/>
-                    <div className="smallBox mainContainerOrders ">
+                    <div className="smallBox ">
                         <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                             <thead>
                             <tr className="bg-light">
@@ -150,7 +150,7 @@ class Foods extends React.Component {
         } else {
             return (
                 <React.Fragment>
-                    <div className="justForGap"/>
+                    <div className="navGap"/>
                     <div style={{paddingTop: '20px', direction: 'ltr'}} className="smallBox ">
                         <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                             <thead>

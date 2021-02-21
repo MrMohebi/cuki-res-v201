@@ -162,7 +162,7 @@ class Orders extends React.Component {
                     }}
                 />
 
-                <div className='justForGap'/>
+                <div className='navGap'/>
                 <div className="smallBox mainContainerOrders">
                     {this.state.datePikerDate.from && true ? (
                         <div style={{marginBottom: '10px'}}>

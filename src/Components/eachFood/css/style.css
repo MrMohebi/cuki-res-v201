@@ -19,7 +19,10 @@
     margin:auto;
 }
 .justForGap{
-    height: 20px;
+    height: 30px;
+}
+.navGap{
+    height: 70px;
 }
 .btn{
     font-family: auto;

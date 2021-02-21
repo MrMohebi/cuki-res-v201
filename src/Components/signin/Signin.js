@@ -41,7 +41,7 @@ class Signin extends React.Component {
     render() {
         return(
             <div className="border shadow-sm" style={loginBox}>
-                <img className="mt-4 mb-3" src="img/logo/Cuki Logo(256x256).png" width="230px" height="230px" />
+                    <img className="mt-4 mb-3" src="img/logo/Cuki Logo(256x256).png" width="230px" height="230px" />
                 <form onSubmit={this.handelSubmitForm}>
                     <div style={{width: "250px"}} className={this.state.inputClass}>
                         <input className="form-control text-right" id="usernameId" type="text" placeholder="نام کاربری " />
