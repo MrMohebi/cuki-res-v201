@@ -112,6 +112,7 @@ class Foods extends React.Component {
     }
 
     render() {
+        console.log(this.props)
         if (window.location.pathname.toString() === '/dashboard') {
             return (
                 <React.Fragment>
@@ -253,6 +254,7 @@ class Foods extends React.Component {
                     <div onClick={() => {
                         this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.foods_id === ef.foods_id))
                         this.props.history.push('/foodInfo')
+                        console.log(this.props)
                     }
                     }>{eachFood.name}</div>
                 </td>
@@ -266,13 +268,13 @@ class Foods extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
-        foodInfoTemp: store.reducerTempStates.foodInfoTemp
+        foodInfoTemp: store.reducerTempStates.foodInfoTemp,
     }
 }
 
 const mapDispatchToProps = () => {
     return {
-        setFoodInfoTemp: actions.setFoodInfoTemp
+        setFoodInfoTemp: actions.setFoodInfoTemp,
     }
 }
 
