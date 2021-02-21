@@ -76,6 +76,7 @@ class EachFood extends React.Component {
     }
 
     onFileChange = (event,foodId) => {
+        console.log(event.target.files[0])
         this.state.selectedFile = event.target.files[0]
         this.onFileUpload(null,foodId)
     };
@@ -83,7 +84,7 @@ class EachFood extends React.Component {
     onFileUpload = (args, foodId) => {
         const formData = new FormData();
         formData.append(
-            "foodThumb",
+            "foodThumbnail",
             this.state.selectedFile,
             this.state.selectedFile.name
         );
