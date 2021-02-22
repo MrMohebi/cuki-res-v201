@@ -2,8 +2,7 @@
     direction: rtl;
 }
 .foodPlaceHolderLabels{
-    width: 100%;
-    padding: 5px;
+    /*width: 100%;*/
     text-align: center;
     font-size: 20px;
 }
@@ -28,8 +27,8 @@
     font-family: auto;
 }
 .eachFoodImage{
-    width: 10rem;
-    height: 10rem;
+    width: 5rem;
+    height: 5rem;
     border: none;
     border-radius: 10000px;
     box-shadow: 0px 0px 20px 2px #d1cae670;
@@ -45,12 +44,11 @@
     z-index: -1;
 }
 .inputFile + label {
-
     font-size: 0.95em;
     font-weight: 700;
     padding: 10px;
     color: white;
-    background-color: #77639a;
+    background-color: #373737;
     border-radius: 20px;
     overflow: hidden;
     display: inline-block;
@@ -58,10 +56,49 @@
     margin-bottom: 20px;
     margin-top: 20px;
 }
-.uploadLable{
+.imgAndNameContainer{
+    margin-top: -30px;
+}
+.eachFoodName{
+    font-size: 1.6rem;
+}
+.nameAndDeliveryTime{
+    display: flex;
+    flex-flow: row-reverse;
     text-align: center;
-    max-width: 200px;
-    margin: auto;
-    font-family: IRANSansMobile_Light;
+    justify-content: center;
+}
+
+.nameInput{
+}
+.nameAndDeliveryTime input{
+    max-width: 120px;
+}
+.nameAndDeliveryTime p{
+    white-space: nowrap;
+    margin-bottom: 0;
+}
+
+.nameAndDeliveryTime .inputGroups {
+    white-space: nowrap;
+    margin-bottom: 0;
+    max-width: 160px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.biggerInputEachFood{
+    width: 160px !important;
+}
+
+
+.uploadLable{
+    /*text-align: center;*/
+    background-color: white;
+    /*max-width: 200px;*/
+    /*margin: auto;*/
+    /*font-family: IRANSansMobile_Light;*/
+}
+.cursorPointer{
+    cursor: pointer;
 }
 
