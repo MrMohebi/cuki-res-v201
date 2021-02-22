@@ -16,9 +16,9 @@ const NavBar =(props)=> {
     const handleScroll=()=> {
         setPrevScrollPos(window.pageYOffset)
         if (window.pageYOffset > prevScrollPos){
-            document.getElementById('navBarMainContainer').style.marginTop = '-50px'
+            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '-50px':<div></div>
         }else{
-            document.getElementById('navBarMainContainer').style.marginTop = '0px'
+            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '0px':<div></div>
         }
             }
 
