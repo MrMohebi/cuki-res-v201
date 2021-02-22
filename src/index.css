@@ -9,6 +9,7 @@
 }
 *{
   font-family:IRANSansMobile_Med ;
+  user-select: none;
 }
 .IranSansLight{
   font-family: IRANSansMobile_Light !important;

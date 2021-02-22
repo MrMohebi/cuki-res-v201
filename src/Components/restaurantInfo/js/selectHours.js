@@ -72,7 +72,7 @@ class SelectHours extends Component{
         return(
             <div>
                 <button style={{margin:'30px 0 30px 0'}} className='btn btn-outline-dark'  onClick={this.handleOpenButtonClicked} >ساعات باز رستوران</button>
-                <div style={{display: this.state.showHoursBlock? "inline-block": "none"}} className="shMainContainer shadow">
+                <div style={{display: this.state.showHoursBlock? "inline-block": "none",position:'absolute'}} className={"shMainContainer shadow " + (this.state.showHoursBlock?'animate__animated animate__fadeInUp':'d-none')}>
                     <div className="shRow">
                         <IconButton  color={this.state.buttonsColor[0]} onClick={this.handleButtonClicked}   size="small" className="m-1">00</IconButton>
                         <IconButton  color={this.state.buttonsColor[1]} onClick={this.handleButtonClicked}   size="small" className="m-1">01</IconButton>
@@ -105,7 +105,11 @@ class SelectHours extends Component{
                         <IconButton  color={this.state.buttonsColor[22]} onClick={this.handleButtonClicked}   size="small" className="m-1">22</IconButton>
                         <IconButton  color={this.state.buttonsColor[23]} onClick={this.handleButtonClicked}   size="small" className="m-1">23</IconButton>
                     </div>
+                    <div className='w-100 text-center'>
+                        <div className='daysSubmitButton' onClick={this.handleOpenButtonClicked}>تایید</div>
+                    </div>
                 </div>
+
             </div>
         )
     }

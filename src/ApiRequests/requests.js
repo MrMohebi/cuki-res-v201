@@ -120,8 +120,7 @@ export const getFoods = (callbackFunction)=>{
 
 export const changeRestaurantName = (persianName, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeRestaurantInfo.modify.php',{token, englishName, persianNameChange:'true',persianName}).then(res =>{
+    $.post(BASE_URL+'changeResInfo.modify.php',{token,persianName}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -129,8 +128,7 @@ export const changeRestaurantName = (persianName, callbackFunction)=>{
 
 export const changeRestaurantPhone = (phones, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeRestaurantInfo.modify.php',{token, englishName, phoneChange:'true',phone:JSON.stringify(phones)}).then(res =>{
+    $.post(BASE_URL+'changeResInfo.modify.php',{token,phone:JSON.stringify(phones)}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -138,20 +136,27 @@ export const changeRestaurantPhone = (phones, callbackFunction)=>{
 
 export const changeRestaurantAddress = (address, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeRestaurantInfo.modify.php',{token, englishName, addressChange:'true',address}).then(res =>{
+    $.post(BASE_URL+'changeResInfo.modify.php',{token,address}).then(res =>{
         callbackFunction(res)
     })
 }
 
 
-export const changeRestaurantOpenHours = (openHours, callbackFunction)=>{
+export const getRestaurantInfo = (callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
     let englishName = store.getState().reducerRestaurantUser.englishName;
-    let openTimeBaseWeekDay = {0:openHours, 1:openHours, 2:openHours, 3:openHours, 4:openHours, 5:openHours, 6:openHours}
-    $.post(BASE_URL+'changeRestaurantInfo.modify.php',{token, englishName, openTimeChange:'true',openTime:JSON.stringify(openTimeBaseWeekDay)}).then(res =>{
+    $.post(BASE_URL+'getResInfo.fetch.php',{token}).then(res =>{
         callbackFunction(res)
     })
+}
+
+
+export const changeRestaurantOpenHours = (openTime, callbackFunction)=>{
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL+'changeResInfo.modify.php',{token,openTime:JSON.stringify(openTime)}).then(res =>{
+        callbackFunction(res)
+    },(e) => {
+        console.log(e)})
 }
 
 
