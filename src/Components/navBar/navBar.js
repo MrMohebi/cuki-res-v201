@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 
 
 
-const NavBar =(props)=> {
+const NavBar =()=> {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     useEffect(() => {
         window.addEventListener('scroll', handleScroll)
@@ -16,9 +16,9 @@ const NavBar =(props)=> {
     const handleScroll=()=> {
         setPrevScrollPos(window.pageYOffset)
         if (window.pageYOffset > prevScrollPos){
-            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '-50px':<div></div>
+            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '-50px':<div/>
         }else{
-            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '0px':<div></div>
+            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '0px':<div/>
         }
             }
 
