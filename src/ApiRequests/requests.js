@@ -134,9 +134,9 @@ export const changeRestaurantPhone = (phones, callbackFunction)=>{
 }
 
 
-export const changeRestaurantAddress = (address, callbackFunction)=>{
+export const changeRestaurantAddress = (addressText, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeResInfo.modify.php',{token,address}).then(res =>{
+    $.post(BASE_URL+'changeResInfo.modify.php',{token,addressText}).then(res =>{
         callbackFunction(res)
     })
 }
@@ -149,6 +149,7 @@ export const getRestaurantInfo = (callbackFunction)=>{
         callbackFunction(res)
     })
 }
+
 
 
 export const changeRestaurantOpenHours = (openTime, callbackFunction)=>{

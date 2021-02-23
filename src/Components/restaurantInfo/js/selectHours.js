@@ -15,6 +15,16 @@ class SelectHours extends Component{
             "default","default","default","default","default","default",
             "default","default","default","default","default","default",
         ],
+        daysString: {
+            '0': 'شنبه',
+            '1': 'یکشنبه',
+            '2': 'دوشنبه',
+            '3': 'سه شنبه',
+            '4': 'چهارشنبه',
+            '5': 'پنج شنبه',
+            '6': 'جمعه',
+        },
+        nowSelectedDay:''
     }
 
     getSelectedHoursList = () =>{
@@ -73,6 +83,15 @@ class SelectHours extends Component{
             <div>
                 <button style={{margin:'30px 0 30px 0'}} className='btn btn-outline-dark'  onClick={this.handleOpenButtonClicked} >ساعات باز رستوران</button>
                 <div style={{display: this.state.showHoursBlock? "inline-block": "none",position:'absolute'}} className={"shMainContainer shadow " + (this.state.showHoursBlock?'animate__animated animate__fadeInUp':'d-none')}>
+                    <div className="shRow">
+                        <IconButton  color={this.state.buttonsColor[0]} onClick={this.handleButtonClicked}   size="small" className="m-1">شنبه</IconButton>
+                        <IconButton  color={this.state.buttonsColor[1]} onClick={this.handleButtonClicked}   size="small" className="m-1">یکشنبه</IconButton>
+                        <IconButton  color={this.state.buttonsColor[2]} onClick={this.handleButtonClicked}   size="small" className="m-1">دوشنبه</IconButton>
+                        <IconButton  color={this.state.buttonsColor[3]} onClick={this.handleButtonClicked}   size="small" className="m-1">سه شنبه</IconButton>
+                        <IconButton  color={this.state.buttonsColor[4]} onClick={this.handleButtonClicked}   size="small" className="m-1">چهار شنبه</IconButton>
+                        <IconButton  color={this.state.buttonsColor[5]} onClick={this.handleButtonClicked}   size="small" className="m-1">پنج شنبه</IconButton>
+                        <IconButton  color={this.state.buttonsColor[5]} onClick={this.handleButtonClicked}   size="small" className="m-1">جمعه</IconButton>
+                    </div>
                     <div className="shRow">
                         <IconButton  color={this.state.buttonsColor[0]} onClick={this.handleButtonClicked}   size="small" className="m-1">00</IconButton>
                         <IconButton  color={this.state.buttonsColor[1]} onClick={this.handleButtonClicked}   size="small" className="m-1">01</IconButton>
