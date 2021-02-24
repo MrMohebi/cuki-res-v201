@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import moment from 'moment';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css'
 import {
     faChevronDown,
     faCommentAlt,
@@ -200,6 +202,10 @@ class Orders extends React.Component {
 
         )
     }
+    toggleMap = (id)=>{
+
+        document.getElementById('mapOf'+id)?document.getElementById('mapOf'+id).style.height = document.getElementById('mapOf'+id).style.height === '250px'?'0':'250px':<div/>
+    }
 
     createRows = () => {
         this.isInDash = true
@@ -291,11 +297,18 @@ class Orders extends React.Component {
                                 icon={faPhone}/> {eachOrder.customer_phone}</a></td>
 
 
-                            <td className="d-none d-sm-table-cell text-center pr-2" colSpan="2">
+                            <td className="d-none d-sm-table-cell text-center pr-2"  colSpan="2">
                                 {eachOrder.order_table ?
-                                    <a title="میز"><img style={{width: "25px"}}
-                                                        src="https://img.icons8.com/material/50/000000/table.png"/> {eachOrder.order_table ? eachOrder.order_table : 0}
-                                    </a>
+                                    <div>
+                                        <a title="میز"><img style={{width: "25px"}}
+                                                            src="https://img.icons8.com/material/50/000000/table.png"/>
+                                        </a>
+                                        <div>
+                                            {eachOrder.order_table ? eachOrder.order_table : 0}
+
+                                        </div>
+                                    </div>
+
 
                                     :
                                     <div></div>
@@ -303,14 +316,41 @@ class Orders extends React.Component {
 
                                 {eachOrder.address.length > 3 ?
                                     <div>
-                                        <FontAwesomeIcon style={{marginRight: '20px'}} icon={faMapMarkerAlt}/>
+                                        <FontAwesomeIcon onClick={()=>{
+                                            this.toggleMap(eachOrder.orders_id)
+                                        }
 
-                                        {eachOrder.address.length > 3 ? eachOrder.address : 'حضوری'}
+                                        } style={{marginRight: '20px'}} icon={faMapMarkerAlt}/>
+
+                                        <div onClick={()=>{
+                                            this.toggleMap(eachOrder.orders_id)
+                                        }
+
+                                        }>
+                                            {eachOrder.address.length > 3 ? JSON.parse(eachOrder.address).addressText   : 'حضوری'}
+                                        </div>
+                                        <div className='eachOrderDetails'>
+
+
+                                            {eachOrder.address.length>3 ? (JSON.parse(eachOrder.address).addressDetails): ''}
+                                        </div>
+                                        <div id={'mapOf'+eachOrder.orders_id} style={{transition:'all 0.2s ease',height:'0px',width:'250px',margin:'auto',overflow:'hidden'}}>
+                                            <MapContainer   style={{height:'250px'}} center={JSON.parse(eachOrder.address).coordinates} zoom={20} scrollWheelZoom={true}>
+                                                <TileLayer
+                                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                                />
+                                                {/*<Marker position={JSON.parse(eachOrder.address).coordinates}/>*/}
+
+
+                                            </MapContainer>
+                                        </div>
+
                                     </div>
 
                                     :
                                     <div></div>
                                 }
+
 
                             </td>
 
