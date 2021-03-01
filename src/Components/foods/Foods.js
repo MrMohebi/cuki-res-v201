@@ -3,11 +3,13 @@ import $ from 'jquery'
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import * as requests from '../../ApiRequests/requests'
-import {Grid, Switch, Typography, withStyles} from '@material-ui/core';
+import {Button, Grid, Switch, Typography, withStyles} from '@material-ui/core';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import * as actions from '../../Stores/reduxStore/actions'
 import ReactSwal from "sweetalert2";
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 
 const AntSwitch = withStyles((theme) => ({
@@ -70,6 +72,7 @@ class Foods extends React.Component {
         requests.getFoods(this.checkFoods)
     }
 
+
     handelChangStatus = (foodId, foodStatus) => {
         requests.changeFoodStatus(foodId, foodStatus, this.checkFoodStatusChanged)
     }
@@ -121,6 +124,7 @@ class Foods extends React.Component {
                         <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                             <thead>
                             <tr className="bg-light">
+                                <th style={{borderTopLeftRadius: "15px"}}/>
                                 <th style={{borderTopLeftRadius: "15px"}}>وضعیت</th>
                                 <th style={{width: "110px"}}>قیمت</th>
                                 <th>درصد تخفیف</th>
@@ -155,6 +159,7 @@ class Foods extends React.Component {
                         <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                             <thead>
                             <tr className="bg-light">
+                                <th style={{borderTopLeftRadius: "15px"}}/>
                                 <th style={{borderTopLeftRadius: "15px"}}>وضعیت</th>
                                 <th style={{width: "110px"}}>قیمت</th>
                                 <th>درصد تخفیف</th>
@@ -202,6 +207,30 @@ class Foods extends React.Component {
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
             <tr key={`itemId_${eachFood.foods_id}`} className="bg-white">
+
+                <td>
+                    {
+                        eachFood.status !== 'deleted'?
+
+                                <Button
+                                    onClick={
+                                        () => {
+                                            this.handelChangStatus(eachFood.foods_id,'deleted')
+                                        }
+                                    }
+                                    variant="contained"
+                                    color="secondary"
+                                    className={'deleteButton'}
+                                    startIcon={<DeleteIcon />}
+                                >
+                                    حذف
+                                </Button>
+
+                            :
+                            <div/>
+                    }
+                </td>
+
                 <td>
                     <Typography component="div">
                         <Grid component="label" container alignItems="center" spacing={1}>
@@ -254,7 +283,7 @@ class Foods extends React.Component {
                     <div onClick={() => {
                         this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.foods_id === ef.foods_id))
                         this.props.history.push('/foodInfo')
-                        console.log(this.props)
+                        // console.log(this.props)
                     }
                     }>{eachFood.name}</div>
                 </td>

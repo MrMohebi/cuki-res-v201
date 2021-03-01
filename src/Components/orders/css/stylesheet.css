@@ -82,4 +82,13 @@ td .MuiFormControl-root {
 .eachOrderDetails {
     font-size: 0.7rem;
 }
+.deleteButton{
+    height: 20px;
+    font-size: 0.8rem !important;
+    width: 30px;
+}
+td .MuiTypography-root .MuiTypography-root{
+    display: flex;
+    flex-flow: row;
+}
 
