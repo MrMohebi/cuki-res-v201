@@ -9,7 +9,7 @@ import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import * as actions from '../../Stores/reduxStore/actions'
 import ReactSwal from "sweetalert2";
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import FastfoodRoundedIcon from '@material-ui/icons/FastfoodRounded';
 
 
 const AntSwitch = withStyles((theme) => ({
@@ -121,6 +121,21 @@ class Foods extends React.Component {
                 <React.Fragment>
                     <div className="justForGap"/>
                     <div className="smallBox ">
+                        <div className="w-100 text-center mt-3 mb-3 newFoodButton">
+                            <Button
+                                onClick={
+                                    () => {
+                                        this.props.history.push('/newFood');
+                                    }
+                                }
+                                variant='contained'
+                                color='primary'
+                                startIcon={<FastfoodRoundedIcon/>}>
+                                افزودن غذا
+                            </Button>
+
+
+                        </div>
                         <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                             <thead>
                             <tr className="bg-light">
@@ -205,6 +220,7 @@ class Foods extends React.Component {
     createFoodRows = () => {
         let rowCounter = 0;
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
+        console.log(this.state.foodsList)
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
             <tr key={`itemId_${eachFood.foods_id}`} className="bg-white">
 

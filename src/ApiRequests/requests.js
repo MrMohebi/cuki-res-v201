@@ -51,7 +51,11 @@ export const changeFoodPrice = (foodId, foodPrice, callbackFunction)=>{
         callbackFunction(res)
     })
 }
+export const newFood = (foodName,foodGroup,details,price,deliveryTime,thumbnail)=>{
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL+'createNewFood.add.php',{token:token,name:foodName,group:foodGroup,details:details,price,deliveryTime:deliveryTime,thumbnail})
 
+}
 export const changeFoodDiscount = (foodId, foodDiscount, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
     $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,discount :foodDiscount}).then(res =>{

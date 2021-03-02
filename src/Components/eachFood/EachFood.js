@@ -133,7 +133,7 @@ class EachFood extends React.Component {
                         </div>
 
                         <div className='nameAndDeliveryTime mt-4'>
-                            <p className='foodPlaceHolderLabels IranSansLight mr-5'>اسم</p>
+                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'>اسم</p>
                             <div className="input-group input-group-sm inputGroups biggerInputEachFood">
                                 <div className="input-group-prepend">
                                     <button value="1"  className="btn btn-outline-success" type="button" onClick={()=>{this.handelChangeFoodName(food.foods_id)}}>
@@ -143,7 +143,7 @@ class EachFood extends React.Component {
                                 <input  id={`inpName_${food.foods_id}`} type="text" placeholder={food.name} defaultValue={food.name}  className=" rtl form-control nameInput" aria-label="" aria-describedby="basic-addon1"/>
                             </div>
 
-                            <p className='foodPlaceHolderLabels IranSansLight mr-5'>زمان تحویل</p>
+                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'>زمان تحویل</p>
 
                             <div className="input-group input-group-sm inputGroups" >
 
@@ -156,7 +156,7 @@ class EachFood extends React.Component {
                             </div>
                         </div>
 
-                    <p className='foodPlaceHolderLabels IranSansLight mt-4'>جزئیات</p>
+                    <p className='foodPlaceHolderLabels IranSansLight mt-4 '>جزئیات</p>
 
                     <div className="input-group input-group-sm inputGroups">
 

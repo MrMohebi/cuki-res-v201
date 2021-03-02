@@ -270,7 +270,7 @@ class RestaurantInfo extends React.Component {
 
     render() {
 
-        return this.state.resName.length > 1 ? (
+        return (
                 <React.Fragment>
                     <div className='navGap'></div>
                     <div className='IranSansLight smallBox d-flex flex-column justify-content-center align-items-md-center'>
@@ -442,10 +442,7 @@ class RestaurantInfo extends React.Component {
 
 
                 </React.Fragment>
-            ) :
-            (
-                <div></div>
-            )
+        )
 
     }
 }
