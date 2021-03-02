@@ -92,12 +92,25 @@
 
 
 .uploadLable{
-    /*text-align: center;*/
+    transition: all 0.2s ease;
     background-color: white;
-    /*max-width: 200px;*/
-    /*margin: auto;*/
-    /*font-family: IRANSansMobile_Light;*/
+    opacity: 0;
+
 }
+.uploadLable:hover{
+    transition: all 0.2s ease;
+    background-color: white;
+    opacity: 0.8;
+}
+.uploadLable::after{
+    transition: all 0.2s ease;
+    content: 'آپلود';
+    line-height: 80px;
+    padding-left: 25px;
+    background-color: white;
+    opacity: 0.8;
+}
+
 .cursorPointer{
     cursor: pointer;
 }

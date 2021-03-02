@@ -11,6 +11,7 @@ import EachFood from "./Components/eachFood/EachFood";
 import Orders from "./Components/orders/Orders";
 import NavBar from "./Components/navBar/navBar";
 import RestaurantInfo from "./Components/restaurantInfo/RestaurantInfo";
+import NewFood from "./Components/NewFood/NewFood";
 
 $("body").css({backgroundColor: '#b7b1c2'})
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='/foodInfo' component={EachFood}/>
           <Route path='/orders' component={Orders}/>
           <Route path='/resinfo' component={RestaurantInfo}/>
+          <Route path='/newFood' component={NewFood}/>
       </Router>
 
     </div>
