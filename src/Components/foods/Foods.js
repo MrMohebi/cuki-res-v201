@@ -110,9 +110,6 @@ class Foods extends React.Component {
         }
     }
 
-    handleMoreOnClick = () => {
-        this.props.history.push('/foods')
-    }
 
     render() {
         console.log(this.props)
@@ -171,6 +168,21 @@ class Foods extends React.Component {
                 <React.Fragment>
                     <div className="navGap"/>
                     <div style={{paddingTop: '20px', direction: 'ltr'}} className="smallBox ">
+                        <div className="w-100 text-center mt-3 mb-3 newFoodButton">
+                            <Button
+                                onClick={
+                                    () => {
+                                        this.props.history.push('/newFood');
+                                    }
+                                }
+                                variant='contained'
+                                color='primary'
+                                startIcon={<FastfoodRoundedIcon/>}>
+                                افزودن غذا
+                            </Button>
+
+
+                        </div>
                         <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                             <thead>
                             <tr className="bg-light">
@@ -199,7 +211,7 @@ class Foods extends React.Component {
     uiComponent = () => {
         return (
             <div className="container">
-                <div className='justForGap'></div>
+                <div className='justForGap'/>
                 <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                     <thead>
                     <tr className="bg-light">
@@ -226,21 +238,21 @@ class Foods extends React.Component {
 
                 <td>
                     {
-                        eachFood.status !== 'deleted'?
+                        eachFood.status !== 'deleted' ?
 
-                                <Button
-                                    onClick={
-                                        () => {
-                                            this.handelChangStatus(eachFood.foods_id,'deleted')
-                                        }
+                            <Button
+                                onClick={
+                                    () => {
+                                        this.handelChangStatus(eachFood.foods_id, 'deleted')
                                     }
-                                    variant="contained"
-                                    color="secondary"
-                                    className={'deleteButton'}
-                                    startIcon={<DeleteIcon />}
-                                >
-                                    حذف
-                                </Button>
+                                }
+                                variant="contained"
+                                color="secondary"
+                                className={'deleteButton'}
+                                startIcon={<DeleteIcon/>}
+                            >
+                                حذف
+                            </Button>
 
                             :
                             <div/>

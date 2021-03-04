@@ -20,7 +20,7 @@ function App() {
     <div>
       <Router>
           <Route exact path='/' component={Signin}/>
-          <Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo']} component={NavBar}/>
+          <Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo','/newFood']} component={NavBar}/>
           <Route exact path='/dashboard' component={Dashboard}/>
           <Route exact path='/foods' component={Foods}/>
           <Route path='/foodInfo' component={EachFood}/>
