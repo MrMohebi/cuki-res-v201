@@ -21,6 +21,7 @@ export const getOrders = (startDate, endDate, callbackFunction)=>{
         if(res.statusCode === 200){
             actions.setOrdersList(res.data)
         }
+        console.log(res)
         callbackFunction(res)
     })
 }

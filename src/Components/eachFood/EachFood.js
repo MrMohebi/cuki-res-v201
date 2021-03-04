@@ -76,7 +76,6 @@ class EachFood extends React.Component {
     }
 
     onFileChange = (event,foodId) => {
-        console.log(event.target.files[0])
         this.state.selectedFile = event.target.files[0]
         this.onFileUpload(null,foodId)
     };

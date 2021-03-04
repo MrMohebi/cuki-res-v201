@@ -112,7 +112,6 @@ class Foods extends React.Component {
 
 
     render() {
-        console.log(this.props)
         if (window.location.pathname.toString() === '/dashboard') {
             return (
                 <React.Fragment>
@@ -232,7 +231,6 @@ class Foods extends React.Component {
     createFoodRows = () => {
         let rowCounter = 0;
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
-        console.log(this.state.foodsList)
         this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted')
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
             <tr key={`itemId_${eachFood.foods_id}`} className="bg-white">
@@ -312,7 +310,6 @@ class Foods extends React.Component {
                     <div onClick={() => {
                         this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.foods_id === ef.foods_id))
                         this.props.history.push('/foodInfo')
-                        // console.log(this.props)
                     }
                     }>{eachFood.name}</div>
                 </td>
