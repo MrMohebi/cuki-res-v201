@@ -233,6 +233,7 @@ class Foods extends React.Component {
         let rowCounter = 0;
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
         console.log(this.state.foodsList)
+        this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted')
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
             <tr key={`itemId_${eachFood.foods_id}`} className="bg-white">
 
