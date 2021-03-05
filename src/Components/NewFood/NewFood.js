@@ -4,6 +4,7 @@ import {faCheck, faChevronCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import {Button, FormControl, MenuItem, Select} from "@material-ui/core";
 import DoneOutlineRoundedIcon from '@material-ui/icons/DoneOutlineRounded';
 import * as requests from '../../ApiRequests/requests'
+import ReactSwal from "sweetalert2";
 
 class NewFood extends React.Component {
     state = {
@@ -16,8 +17,30 @@ class NewFood extends React.Component {
         price: 0
 
     }
+    constructor(props) {
+        super(props);
+        this.foodNameRef = React.createRef();
+        this.foodDetailsRef = React.createRef();
+        this.foodDeliveryTimeRef = React.createRef();
+        this.foodPriceRef = React.createRef();
+    }
     submitHandler = () => {
-        requests.newFood(this.state.foodName, this.state.foodGroup, this.state.foodDetails.split('+'), this.state.price)
+        requests.newFood(this.state.foodName, this.state.foodGroup, this.state.foodDetails, this.state.price,this.state.foodDeliveryTime,this.state.foodImage,this.submitCallback)
+    }
+    submitCallback = (res)=>{
+        if (res.hasOwnProperty('statusCode')&&res.statusCode === 200){
+            console.log(res)
+            this.foodNameRef.current.value = ''
+        this.foodDeliveryTimeRef.current.value = ''
+        this.foodPriceRef.current.value = ''
+        this.foodDetailsRef.current.value = ''
+            ReactSwal.fire({
+                title: 'غدا ثبت شد',
+                icon: "success",
+                timer: 1000,
+                timerProgressBar: true
+            })
+        }
     }
 
     componentDidMount() {
@@ -69,12 +92,8 @@ class NewFood extends React.Component {
                             <p className='foodPlaceHolderLabels IranSansLight'>: اسم</p>
                             <div className="  inputGroups biggerInputEachFood">
                                 <div className="input-group-prepend">
-                                    {/*<button value="1" className="btn btn-outline-success" type="button" onClick={() => {*/}
-                                    {/*}}>*/}
-                                    {/*    <FontAwesomeIcon icon={faCheck}/>*/}
-                                    {/*</button>*/}
                                 </div>
-                                <input id={`inpName`} onChange={(e) => {
+                                <input ref={this.foodNameRef} id={`inpName`} onChange={(e) => {
                                     this.state.foodName = e.target.value;
                                 }} type="text" className=" rtl form-control nameInput" aria-label=""
                                        aria-describedby="basic-addon1"/>
@@ -84,12 +103,9 @@ class NewFood extends React.Component {
                             <div className="  inputGroups">
 
                                 <div className="input-group-prepend">
-                                    {/*<button value="1" className="btn btn-outline-success" type="button" onClick={() => {*/}
-                                    {/*}}>*/}
-                                    {/*    <FontAwesomeIcon icon={faCheck}/>*/}
-                                    {/*</button>*/}
+
                                 </div>
-                                <input id={`inpDelivery`} type="text" className="form-control rtl" aria-label=""
+                                <input ref={this.foodDeliveryTimeRef} id={`inpDelivery`} type="text" className="form-control rtl" aria-label=""
                                        aria-describedby="basic-addon1" onChange={(e) => {
                                     if (parseInt(e.target.value[e.target.value.length - 1]).toString() === "NaN" || e.target.value.length > 3) {
                                         e.target.value = e.target.value.slice(0, -1)
@@ -101,12 +117,8 @@ class NewFood extends React.Component {
                             <div className="  inputGroups">
 
                                 <div className="input-group-prepend">
-                                    {/*<button value="1" className="btn btn-outline-success" type="button" onClick={() => {*/}
-                                    {/*}}>*/}
-                                    {/*    <FontAwesomeIcon icon={faCheck}/>*/}
-                                    {/*</button>*/}
                                 </div>
-                                <input id={`inpDelivery`} type="text" className="form-control rtl" aria-label=""
+                                <input ref={this.foodPriceRef} id={`inpDelivery`} type="text" className="form-control rtl" aria-label=""
                                        aria-describedby="basic-addon1" onChange={(e) => {
                                     if (parseInt(e.target.value[e.target.value.length - 1]).toString() === "NaN") {
                                         e.target.value = e.target.value.slice(0, -1)
@@ -121,12 +133,8 @@ class NewFood extends React.Component {
                         <div className="  inputGroups">
 
                             <div className="input-group-prepend">
-                                {/*<button value="1" className="btn btn-outline-success" type="button" onClick={() => {*/}
-                                {/*}}>*/}
-                                {/*    <FontAwesomeIcon icon={faCheck}/>*/}
-                                {/*</button>*/}
                             </div>
-                            <input id={`inpDetail`} type="text" placeholder={' مثال : پنیر+گوجه+خیارشور'}
+                            <input ref={this.foodDetailsRef} id={`inpDetail`} type="text" placeholder={' مثال : پنیر+گوجه+خیارشور'}
                                    onChange={(e) => {
                                        this.state.foodDetails = e.target.value;
                                    }} className=" rtl form-control" aria-label="" aria-describedby="basic-addon1"/>
