@@ -21,7 +21,6 @@ export const getOrders = (startDate, endDate, callbackFunction)=>{
         if(res.statusCode === 200){
             actions.setOrdersList(res.data)
         }
-        console.log(res)
         callbackFunction(res)
     })
 }
@@ -161,8 +160,7 @@ export const changeRestaurantOpenHours = (openTime, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
     $.post(BASE_URL+'changeResInfo.modify.php',{token,openTime:JSON.stringify(openTime)}).then(res =>{
         callbackFunction(res)
-    },(e) => {
-        console.log(e)})
+    })
 }
 
 
