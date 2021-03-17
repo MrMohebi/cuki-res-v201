@@ -14,6 +14,12 @@ import IconButton from "@material-ui/core/IconButton";
 const ReactSwal = withReactContent(Swal)
 
 class RestaurantInfo extends React.Component {
+    constructor(prop) {
+        super(prop);
+        this.resNameInput = React.createRef()
+        this.numbersInput = React.createRef()
+        this.addressInput = React.createRef()
+    }
     state = {
         selectedHours: this.props.resInfo.open_time ? this.props.resInfo.open_time : [],
         days: ['0', '1', '2', '3', '4', '5', '6'],
@@ -61,6 +67,14 @@ class RestaurantInfo extends React.Component {
             resPhones: e.data.phone,
             resAddress: e.data.address
         })
+        document.getElementById('resNameInput').value = name
+        document.getElementById("resPhonesInput").value = e.data.phone.length >1? JSON.parse(e.data.phone).join(" + "):JSON.parse(e.data.phone)[0]
+        document.getElementById("resAddressInput").value = e.data.address ? e.data.address : ""
+        let openTimeArray = JSON.parse(e.data.open_time)
+        for (let i =0;i<openTimeArray.length;i++){
+            this.state.nOpenTime[i.toString()] = openTimeArray[i]
+        }
+        console.log(this.state.nOpenTime)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -247,6 +261,7 @@ class RestaurantInfo extends React.Component {
         }
     }
     changeOpenTimeCallback = (res)=>{
+        console.log(res)
         if (res.statusCode === 200) {
             ReactSwal.fire({
                 title: <h2>!با موفقیت انجام شد</h2>,
@@ -272,17 +287,17 @@ class RestaurantInfo extends React.Component {
 
         return (
                 <React.Fragment>
-                    <div className='navGap'></div>
+                    <div className='navGap'/>
                     <div className='IranSansLight smallBox d-flex flex-column justify-content-center align-items-md-center'>
-                        <TextField style={{marginTop: '100px'}} helperText="با + از هم جدا کنید"
-                                   defaultValue={this.state.resName}
+                        <TextField id={'resNameInput'} ref={this.resNameInput} style={{marginTop: '100px'}}
+                                   defaultValue={'رستوران'}
                                    style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
                                    className='IranSansLight mt-2'/>
-                        <TextField style={{marginTop: '100px'}} helperText="با + از هم جدا کنید"
-                                   defaultValue={this.state.resPhones ? JSON.parse(this.state.resPhones).join(" + ") : ""}
+                        <TextField id={'resPhonesInput'} ref={this.numbersInput} style={{marginTop: '100px'}} helperText="با + از هم جدا کنید"
+                                   defaultValue={'09'}
                                    style={{width: "150px"}} label="شماره تماس ها" onBlur={this.handleChangePhone}
                                    className='IranSansLight mt-2'/>
-                        <TextField defaultValue={this.state.resAddress ? this.state.resAddress : ""}
+                        <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
                                    style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
                                    className='mt-2'/>
                         {/*<SelectHours style={{backgroundColor: 'red'}} defaultSh={this.state.selectedHours}*/}
@@ -294,19 +309,19 @@ class RestaurantInfo extends React.Component {
                         }} style={{margin: '90px auto 30px auto'}} className='btn btn-outline-dark mt-4'>روز های باز رستوران
                         </button>
 
-                        <FormControl style={{minWidth: "120px"}}>
-                            <InputLabel id="demo-simple-select-helper-label">نوع</InputLabel>
-                            <Select labelId="demo-simple-select-helper-label"
-                                    defaultValue={this.props.resInfo.type ? JSON.parse(this.props.resInfo.type) : ""}
-                                    onChange={this.handelChangeType}>
-                                <MenuItem value={this.state.resType}>
-                                    <em>انتخاب نشده</em>
-                                </MenuItem>
-                                <MenuItem value={['coffeeshop']}>کافه</MenuItem>
-                                <MenuItem value={['restaurant']}>رستوران</MenuItem>
-                                <MenuItem value={['coffeeshop', 'restaurant']}>کافه رستوران</MenuItem>
-                            </Select>
-                        </FormControl>
+                        {/*<FormControl style={{minWidth: "120px"}}>*/}
+                        {/*    <InputLabel id="demo-simple-select-helper-label">نوع</InputLabel>*/}
+                        {/*    <Select labelId="demo-simple-select-helper-label"*/}
+                        {/*            defaultValue={this.props.resInfo.type ? JSON.parse(this.props.resInfo.type) : ""}*/}
+                        {/*            onChange={this.handelChangeType}>*/}
+                        {/*        <MenuItem value={this.state.resType}>*/}
+                        {/*            <em>انتخاب نشده</em>*/}
+                        {/*        </MenuItem>*/}
+                        {/*        <MenuItem value={['coffeeshop']}>کافه</MenuItem>*/}
+                        {/*        <MenuItem value={['restaurant']}>رستوران</MenuItem>*/}
+                        {/*        <MenuItem value={['coffeeshop', 'restaurant']}>کافه رستوران</MenuItem>*/}
+                        {/*    </Select>*/}
+                        {/*</FormControl>*/}
                         <div style={{position: 'absolute',}}
                              className={"shMainContainer shadow " + (this.state.openTimeShow ? 'animate__animated animate__fadeInUp' : 'd-none')}>
                             <div className="shRow">
