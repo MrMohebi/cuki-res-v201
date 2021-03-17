@@ -8,7 +8,9 @@ import withReactContent from 'sweetalert2-react-content'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import moment from 'moment';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import markerPNG from './img/marker.png'
 import {
     faChevronDown,
     faCommentAlt,
@@ -25,6 +27,15 @@ import {Link} from "react-router-dom";
 
 const ReactSwal = withReactContent(Swal)
 
+let markerIcon = L.icon({
+    iconUrl: markerPNG,
+
+    iconSize:     [40, 60], // size of the icon
+    shadowSize:   [40, 30], // size of the shadow
+    iconAnchor:   [20, 60], // point of the icon which will correspond to marker's location
+    shadowAnchor: [0, 30],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
 class Orders extends React.Component {
 
     nowTimestamp = Math.floor(Date.now() / 1000)
@@ -46,7 +57,9 @@ class Orders extends React.Component {
             deleted: 'حذف شده'
 
         },
-        scroll: 0
+        scroll: 0,
+        mapKey: 5
+
     }
 
     handleClick = (Transition) => () => {
@@ -203,14 +216,19 @@ class Orders extends React.Component {
         )
     }
     toggleMap = (id)=>{
-
+        this.setState({
+            mapKey:Math.random()*100
+        })
         document.getElementById('mapOf'+id)?document.getElementById('mapOf'+id).style.height = document.getElementById('mapOf'+id).style.height === '250px'?'0':'250px':<div/>
     }
-
+    whatsMyKey = (param)=>{
+        return parseInt(param+5);
+    }
     createRows = () => {
         this.isInDash = true
-        let howManyToShow = window.location.pathname == '/dashboard' ? 4 : this.state.orders.length
+        let howManyToShow = window.location.pathname === '/dashboard' ? 4 : this.state.orders.length
         return (
+
             this.state.orders.slice(0, howManyToShow).map(eachOrder => {
                 this.isThereFood = true
                 let foodsDetails = JSON.parse(eachOrder.details)
@@ -239,9 +257,9 @@ class Orders extends React.Component {
                 let btnClasses = (eachOrder.order_status === 'done' ? 'btn-success' : eachOrder.order_status === 'inLine' ? 'btn-outline-primary' : eachOrder.order_status === 'delivered' ? 'btn-warning' : eachOrder.order_status === 'deleted' ? 'btn-outline-danger' : 'btn-outline-black')
                 return (
                     [
-                        <tr className="bg-white" id={"orderRowID_" + eachOrder.orders_id}
+                        <tr   className="bg-white" id={"orderRowID_" + eachOrder.orders_id}
                             key={"orderRowID_" + eachOrder.orders_id}>
-                            <td className="in-queue text-primary" href={"#MoreInfoID_" + eachOrder.orders_id}
+                            <td  className="in-queue text-primary" href={"#MoreInfoID_" + eachOrder.orders_id}
                                 data-toggle="collapse" style={{cursor: "pointer", userSelect: "text "}}>
                                 <FontAwesomeIcon icon={faChevronDown}/> {eachOrder.tracking_id} </td>
                             <td>
@@ -311,7 +329,8 @@ class Orders extends React.Component {
 
 
                                     :
-                                    <div></div>
+
+                                    <div/>
                                 }
 
                                 {eachOrder.address.length > 3 ?
@@ -335,26 +354,30 @@ class Orders extends React.Component {
                                             {eachOrder.address.length>3 ? (JSON.parse(eachOrder.address).addressDetails): ''}
                                         </div>
                                         <div id={'mapOf'+eachOrder.orders_id} style={{transition:'all 0.2s ease',height:'0px',width:'250px',margin:'auto',overflow:'hidden'}}>
-                                            <MapContainer   style={{height:'250px'}} center={JSON.parse(eachOrder.address).coordinates} zoom={20} scrollWheelZoom={true}>
+
+                                            <MapContainer key={this.state.mapKey+parseInt(eachOrder.orders_id)}  id={'map'+eachOrder.orders_id} style={{height:'250px'}} center={JSON.parse(eachOrder.address).coordinates} zoom={20} scrollWheelZoom={true}>
                                                 <TileLayer
                                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                                 />
-                                                {/*<Marker position={JSON.parse(eachOrder.address).coordinates}/>*/}
-
+                                                {/*<Marker icon={MarkerIcon} position={JSON.parse(eachOrder.address).coordinates}/>*/}
+                                                <Marker icon={markerIcon} position={JSON.parse(eachOrder.address).coordinates}>
+                                                    <Popup>حله همین جا</Popup>
+                                                </Marker>
 
                                             </MapContainer>
+
                                         </div>
 
                                     </div>
 
                                     :
-                                    <div></div>
+                                    <div/>
                                 }
 
 
                             </td>
 
-                            <td></td>
+                            <td/>
                             <td className="d-none d-sm-table-cell">
                                 {eachOrder.order_status === 'deleted' ?
                                     <span
@@ -389,7 +412,7 @@ class Orders extends React.Component {
                                         return eachFood + " ==> " + foodsDetails[eachFood] + "\n"
                                     })
                                     :
-                                    <div></div>
+                                    <div/>
                             }</td>
                         </tr>
                     ]
@@ -400,6 +423,7 @@ class Orders extends React.Component {
 
 
     }
+
 
     uiComponentBigDevice = () => {
         return (
