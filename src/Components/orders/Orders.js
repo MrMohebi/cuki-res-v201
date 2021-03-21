@@ -197,7 +197,7 @@ class Orders extends React.Component {
 
                     )}
                     {this.isThereFood ? null : this.uiComponentNothinFound()}
-                    {this.state.orders.length > 1 ? this.createRows() : <div/>}
+                    {this.state.orders.length >= 1 ? this.createRows() : <div/>}
                     {window.location.pathname === '/dashboard' ?
                         <Link style={{
                             color: 'blue',
