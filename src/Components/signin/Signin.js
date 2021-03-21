@@ -16,7 +16,6 @@ class Signin extends React.Component {
     }
 
     checkUserPass = (response) =>{
-        console.log(response)
         if(response.statusCode === 401 || response.statusCode === 400){
             this.setState({
                 inputClass : "input-group mb-3 ml-5 animate__animated animate__headShake"
