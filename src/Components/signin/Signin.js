@@ -4,16 +4,26 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons'
 import 'animate.css/animate.css'
+import {setCacheToken, getCacheToken} from "../../Stores/cache/cacheData";
 import * as actions from '../../Stores/reduxStore/actions'
 import * as requests from '../../ApiRequests/requests'
 
 class Signin extends React.Component {
-
-
-
     state = {
         inputClass : "input-group mb-3 ml-5"
     }
+
+    componentDidMount() {
+        setTimeout(()=>{
+            let cachedToken = getCacheToken();
+            if(this.props.token.length > 5 && cachedToken !== undefined && cachedToken.length > 5 ){
+                this.props.history.push('/dashboard')
+                $('.components > li').removeClass('active')
+                $('.dashboard').toggleClass('active')
+            }
+        }, 2000)
+    }
+
 
     checkUserPass = (response) =>{
         if(response.statusCode === 401 || response.statusCode === 400){
@@ -23,6 +33,7 @@ class Signin extends React.Component {
             setTimeout(()=>this.setState({inputClass : "input-group mb-3 ml-5"}), 3000)
         }else if(response.statusCode === 200){
             this.props.setToken(response.data.token)
+            setCacheToken(response.data.token)
             this.props.history.push('/dashboard')
             $('.components > li').removeClass('active')
             $('.dashboard').toggleClass('active')
@@ -68,12 +79,13 @@ class Signin extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
+        token: store.reducerRestaurantUser.token,
     }
 }
 
 const mapDispatchToProps = () => {
     return {
-        setToken: actions.setToken
+        setToken: actions.setToken,
     }
 }
 

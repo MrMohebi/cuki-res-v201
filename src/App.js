@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector} from "react-redux"
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import $ from 'jquery';
 import '@popperjs/core/dist/cjs/popper'
@@ -13,10 +14,23 @@ import NavBar from "./Components/navBar/navBar";
 import RestaurantInfo from "./Components/restaurantInfo/RestaurantInfo";
 import NewFood from "./Components/NewFood/NewFood";
 
+
+import {getCacheToken} from "./Stores/cache/cacheData"
+import * as actions from "./Stores/reduxStore/actions"
+
+
 $("body").css({backgroundColor: '#b7b1c2'})
 
 function App() {
-  return (
+
+    useSelector((state)=>{
+        const cacheToken = getCacheToken()
+        if(state.reducerRestaurantUser.token !== cacheToken && cacheToken !== undefined && cacheToken.length > 10){
+            actions.setToken(cacheToken)
+        }
+    })
+
+    return (
     <div>
       <Router>
           <Route exact path='/' component={Signin}/>

@@ -110,6 +110,7 @@ class Orders extends React.Component {
     }
 
     checkOrders = (response) => {
+        console.log(response);
         if (response.statusCode === 200) {
             if (this.state.lastNumberOfOrders !== response.data.length)
                 this.setState({
@@ -333,7 +334,7 @@ class Orders extends React.Component {
                                     <div/>
                                 }
 
-                                {eachOrder.address.length > 3 ?
+                                {eachOrder.hasOwnProperty('eachOrder') && eachOrder.address.length > 3 ?
                                     <div>
                                         <FontAwesomeIcon onClick={()=>{
                                             this.toggleMap(eachOrder.orders_id)
