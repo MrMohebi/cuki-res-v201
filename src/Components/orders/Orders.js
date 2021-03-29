@@ -230,6 +230,7 @@ class Orders extends React.Component {
         let howManyToShow = window.location.pathname === '/dashboard' ? 4 : this.state.orders.length
         return (
 
+
             this.state.orders.slice(0, howManyToShow).map(eachOrder => {
                 this.isThereFood = true
                 let foodsDetails = JSON.parse(eachOrder.details)
@@ -256,6 +257,7 @@ class Orders extends React.Component {
                             , 'انجام شده'
                         ]
                 let btnClasses = (eachOrder.order_status === 'done' ? 'btn-success' : eachOrder.order_status === 'inLine' ? 'btn-outline-primary' : eachOrder.order_status === 'delivered' ? 'btn-warning' : eachOrder.order_status === 'deleted' ? 'btn-outline-danger' : 'btn-outline-black')
+                if (eachOrder.address !=="null")
                 return (
                     [
                         <tr   className="bg-white" id={"orderRowID_" + eachOrder.orders_id}
@@ -347,7 +349,7 @@ class Orders extends React.Component {
                                         }
 
                                         }>
-                                            {eachOrder.address.length > 3 ? JSON.parse(eachOrder.address).addressText   : 'حضوری'}
+                                            {eachOrder.address.length > 3 ? JSON.parse(eachOrder.address).addressText ? JSON.parse(eachOrder.address).addressText:''   : 'حضوری'}
                                         </div>
                                         <div className='eachOrderDetails'>
 

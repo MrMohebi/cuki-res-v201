@@ -13,10 +13,13 @@ import Orders from "./Components/orders/Orders";
 import NavBar from "./Components/navBar/navBar";
 import RestaurantInfo from "./Components/restaurantInfo/RestaurantInfo";
 import NewFood from "./Components/NewFood/NewFood";
+import TurnPhone from "./Components/TurnPhone/TurnPhone";
+import ResState from "./Components/ResState/ResState";
 
 
 import {getCacheToken} from "./Stores/cache/cacheData"
 import * as actions from "./Stores/reduxStore/actions"
+
 
 
 $("body").css({backgroundColor: '#b7b1c2'})
@@ -35,6 +38,7 @@ function App() {
       <Router>
           <Route exact path='/' component={Signin}/>
           <Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo','/newFood']} component={NavBar}/>
+          <Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo','/newFood']} component={TurnPhone}/>
           <Route exact path='/dashboard' component={Dashboard}/>
           <Route exact path='/foods' component={Foods}/>
           <Route path='/foodInfo' component={EachFood}/>

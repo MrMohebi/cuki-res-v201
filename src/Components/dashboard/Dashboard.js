@@ -2,9 +2,9 @@ import React from "react";
 import Orders from "../orders/Orders";
 import {connect} from "react-redux";
 import Foods from '../foods/Foods'
-import {Link} from "react-router-dom";
-
-
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
+import Anime from '../TurnPhone/a.json'
+import ResState from "../ResState/ResState";
 
 class Dashboard extends React.Component{
     componentDidMount() {
@@ -17,7 +17,9 @@ class Dashboard extends React.Component{
     render() {
         return (
             <React.Fragment>
+
                 <div style={{height: "30px", width: "100%"}}/>
+                <ResState/>
                 <Orders/>
                 <Foods history={this.props.history}/>
             </React.Fragment>
