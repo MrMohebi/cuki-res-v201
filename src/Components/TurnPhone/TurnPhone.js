@@ -1,6 +1,5 @@
 import React from "react";
 import Lottie from 'react-lottie';
-import * as animationData from './a.json'
 import Anime from "./turnPhone.json";
 import {Player} from "@lottiefiles/react-lottie-player";
 
