@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Switch} from "@material-ui/core";
 import * as requests from '../../ApiRequests/requests'
 
-let resState = ()=>{
+let getResState = ()=>{
     requests.getRestaurantInfo(checkResStatus)
 }
 let changeResStatus = (newStatus)=>{
@@ -20,7 +20,7 @@ let checkResStatus = (res)=>{
 function ResState(){
     let [buttonState,setButtonState] = useState(false)
     useEffect(()=>{
-        resState()
+        getResState()
     })
     return(
             <div className={'smallBox mt-5 d-flex flex-column justify-content-center align-items-center'}>
@@ -30,11 +30,10 @@ function ResState(){
                     <Switch className={'m-2'}
                         checked={buttonState}
                         onChange={(e)=>{
-                            console.log(e)
                             if (buttonState){
-                                changeResStatus('closed')
+                                changeResStatus("disabled")
                             } else{
-                                changeResStatus('open')
+                                changeResStatus("enabled")
                             }
                             setButtonState(!buttonState)
                         }}

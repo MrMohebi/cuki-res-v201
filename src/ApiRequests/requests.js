@@ -176,8 +176,7 @@ export const changeRestaurantType = (type, callbackFunction)=>{
 
 export const changeRestaurantStatus = (status, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    // let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeRestaurantInfo.modify.php',{token:token,status:status}).then(res =>{
+    $.post(BASE_URL+'changeResInfo.modify.php',{token,status}).then(res =>{
         callbackFunction(res)
     })
 }
