@@ -31,9 +31,9 @@ function ResState(){
                         checked={buttonState}
                         onChange={(e)=>{
                             if (buttonState){
-                                changeResStatus("disabled")
+                                changeResStatus("disable")
                             } else{
-                                changeResStatus("enabled")
+                                changeResStatus("active")
                             }
                             setButtonState(!buttonState)
                         }}
