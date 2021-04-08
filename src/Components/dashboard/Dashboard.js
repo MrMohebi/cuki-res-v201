@@ -18,7 +18,6 @@ class Dashboard extends React.Component{
             <React.Fragment>
 
                 <div style={{height: "30px", width: "100%"}}/>
-                <ResState/>
                 <Orders/>
                 <Foods history={this.props.history}/>
             </React.Fragment>

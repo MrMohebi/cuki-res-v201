@@ -22,25 +22,20 @@ function ResState() {
     }
 
     let changeResStatusBack = (res) => {
-        console.log(res)
     }
 
     let checkResStatus = (res) => {
-        console.log()
         if (res.data.status){
             if (res.data.status === 'active'){
                 setButtonState(true)
             }else {
                 setButtonState(false)
-
             }
         }
     }
 
     return (
-        <div className={'smallBox mt-5 d-flex flex-column justify-content-center align-items-center'}>
-            <span>وضعیت رستوران</span>
-            <div className={'d-flex flex-row-reverse justify-content-center align-items-center mt-3 w-25'}>
+            <div className={'d-flex flex-row-reverse justify-content-center align-items-center ml-5 w-25'}>
                 <span>فعال</span>
                 <Switch className={'m-2'}
                         checked={buttonState}
@@ -58,7 +53,6 @@ function ResState() {
                 />
                 <span> غیر فعال</span>
             </div>
-        </div>
     )
 }
 

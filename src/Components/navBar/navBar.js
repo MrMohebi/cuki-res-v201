@@ -3,6 +3,7 @@ import './css/style.css';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {Link} from "react-router-dom";
 import {removeCacheToken} from "../../Stores/cache/cacheData";
+import ResState from "../ResState/ResState";
 
 
 const NavBar =(props)=> {
@@ -54,6 +55,8 @@ const NavBar =(props)=> {
                     <ExitToAppIcon style={{transform: 'rotate(180deg)', cursor: 'pointer', marginLeft: '10px'}}/>
                     <div style={{marginLeft: '5px'}}>خروج</div>
                 </div>
+                <ResState/>
+
             </div>
         </div>
     )
