@@ -19,6 +19,7 @@ class RestaurantInfo extends React.Component {
         this.resNameInput = React.createRef()
         this.numbersInput = React.createRef()
         this.addressInput = React.createRef()
+        this.counterNumberInput = React.createRef()
     }
     state = {
         selectedHours: this.props.resInfo.open_time ? this.props.resInfo.open_time : [],
@@ -70,6 +71,7 @@ class RestaurantInfo extends React.Component {
         document.getElementById('resNameInput').value = name
         document.getElementById("resPhonesInput").value = e.data.phone.length >1? JSON.parse(e.data.phone).join(" + "):JSON.parse(e.data.phone)[0]
         document.getElementById("resAddressInput").value = e.data.address ? e.data.address : ""
+        document.getElementById("resCounterPhone").value = e.data.counter_phone ? e.data.counter_phone : ""
         let openTimeArray = JSON.parse(e.data.open_time)
         for (let i =0;i<openTimeArray.length;i++){
             this.state.nOpenTime[i.toString()] = openTimeArray[i]
@@ -239,6 +241,18 @@ class RestaurantInfo extends React.Component {
 
 
     }
+    changeRestaurantCounterPhone = (e)=>{
+        let phone = e.target.value
+
+        this.swalSureToChange(() => {
+            if (phone&&phone.length===11){
+                requests.changeRestaurantCounterPhone(phone,this.changeRestaurantCounterPhoneCallback)
+            }
+        })
+    }
+    changeRestaurantCounterPhoneCallback = (res)=>{
+        console.log(res)
+    }
     resetButtons = (day) => {
         $('.hoursSelector button').css({color: 'rgba(0, 0, 0, 0.54)'})
         let arr = this.state.nOpenTime[day]
@@ -296,6 +310,10 @@ class RestaurantInfo extends React.Component {
                         <TextField id={'resPhonesInput'} ref={this.numbersInput} style={{marginTop: '100px'}} helperText="با + از هم جدا کنید"
                                    defaultValue={'09'}
                                    style={{width: "150px"}} label="شماره تماس ها" onBlur={this.handleChangePhone}
+                                   className='IranSansLight mt-2'/>
+                                   <TextField id={'resCounterPhone'} ref={this.counterNumberInput} style={{marginTop: '100px'}}
+                                   defaultValue={'09'}
+                                   style={{width: "150px",whiteSpace:'nowrap'}} label="شماره تماس صندوق دار" onBlur={this.changeRestaurantCounterPhone}
                                    className='IranSansLight mt-2'/>
                         <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
                                    style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
