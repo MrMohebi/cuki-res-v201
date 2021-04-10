@@ -206,22 +206,20 @@ export const editTable = (tableId, tableName = null, tableCapacity=null, tableSt
     })
 }
 
-export const uploadFoodThumbnail = (foodId, formData, callbackFunction)=>{
+export const uploadFoodThumbnailNew = (foodId, thumbnail, callbackFunction)=>{
     let token = store.getState().reducerRestaurantUser.token;
-    formData.append("token", token);
-    formData.append("foodId", foodId);
+    let fd = new FormData();
+    fd.append('foodThumbnail',thumbnail)
+    fd.append('token',token)
+    fd.append('foodId',foodId)
     $.ajax({
-        url: BASE_URL+'changeFoodInfo.modify.php',
+        url: BASE_URL_upload+'api/uploadfoodthumbnail.modify.php',
         type: "POST",
-        data: formData,
+        data: fd,
         contentType: false,
         processData: false,
         success: function (res) {
-            if(Number.isInteger(res.statusCode))
-                callbackFunction(res)
-            else
-                callbackFunction(JSON.parse(res))
-
+            callbackFunction(200)
         }
     });
 }
