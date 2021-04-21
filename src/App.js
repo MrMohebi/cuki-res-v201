@@ -15,6 +15,7 @@ import RestaurantInfo from "./Components/restaurantInfo/RestaurantInfo";
 import NewFood from "./Components/NewFood/NewFood";
 import TurnPhone from "./Components/TurnPhone/TurnPhone";
 import ResState from "./Components/ResState/ResState";
+import CustomerClub from './Components/CustomerClub/CustomerClub'
 
 
 import {getCacheToken} from "./Stores/cache/cacheData"
@@ -41,6 +42,7 @@ function App() {
           <Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo','/newFood']} component={TurnPhone}/>
           <Route exact path='/dashboard' component={Dashboard}/>
           <Route exact path='/foods' component={Foods}/>
+          <Route path='/CustomerClub' component={CustomerClub}/>
           <Route path='/foodInfo' component={EachFood}/>
           <Route path='/orders' component={Orders}/>
           <Route path='/resinfo' component={RestaurantInfo}/>

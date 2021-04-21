@@ -1,0 +1,43 @@
+.eachMFoodContainer {
+    transition: all 0.2s ease;
+    background-color: white;
+    width: 190px;
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: #d4d4d4 2px -1px 13px;
+}
+
+.eachMFoodContainer:hover {
+    transition: all 0.1s ease;
+    background-color: white;
+    width: 190px;
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: #d4d4d4 0px 1px 0px;
+    cursor: pointer;
+}
+
+.eachMFoodImage {
+    border-radius: 999px;
+    height: 80px;
+    width: 80px;
+    box-shadow: #a7a7a7 1px 1px 13px;
+    background: url("https://dl.cuki.ir/sampleAssets/sampleThumbnail_96x96.png");
+    background-size: cover;
+    background-position: center;
+}
+
+.eachUserCustomerClub {
+    transition: all 0.2s ease;
+    background: white;
+    height: 50px;
+    border-radius: 15px;
+    box-shadow: #d4d4d4 2px -1px 13px;
+}
+
+.eachUserCustomerClub:hover {
+    background: #fafafa;
+    height: 50px;
+    border-radius: 15px;
+    box-shadow: #b5f6dc 0px 0px 13px;
+}

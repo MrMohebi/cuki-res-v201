@@ -7,18 +7,25 @@ export const BASE_URL = "https://api.cuki.ir/v201/res/";
 export const BASE_URL_upload = "https://dl.cuki.ir/";
 
 
-export const signin = (username, password,callbackFunction)=>{
-    $.post(BASE_URL+'loginRes.fetch.php',{username, password}).then(res =>{
+export const signin = (username, password, callbackFunction) => {
+    $.post(BASE_URL + 'loginRes.fetch.php', {username, password}).then(res => {
+        res = (res !== undefined && res !== null) ? res : {}
+        callbackFunction(res)
+    })
+}
+export const getAllCustomersInfo = (callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL + 'customerClub/getCustomersInfo.fetch.php', {token}).then(res => {
         res = (res !== undefined && res !== null) ? res : {}
         callbackFunction(res)
     })
 }
 
 
-export const getOrders = (startDate, endDate, callbackFunction)=>{
+export const getOrders = (startDate, endDate, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token
-    $.post(BASE_URL+'getOrdersList.fetch.php',{token:token, startDate, endDate}).then(res =>{
-        if(res.statusCode === 200){
+    $.post(BASE_URL + 'getOrdersList.fetch.php', {token: token, startDate, endDate}).then(res => {
+        if (res.statusCode === 200) {
             actions.setOrdersList(res.data)
         }
         callbackFunction(res)
@@ -26,10 +33,10 @@ export const getOrders = (startDate, endDate, callbackFunction)=>{
 }
 
 
-export const getTables = (callbackFunction)=>{
+export const getTables = (callbackFunction) => {
     let englishName = store.getState().reducerRestaurantUser.englishName
-    $.post(BASE_URL+'getAllRestaurantData.fetch.php',{english_name: englishName}).then(res =>{
-        if(res.statusCode === 200){
+    $.post(BASE_URL + 'getAllRestaurantData.fetch.php', {english_name: englishName}).then(res => {
+        if (res.statusCode === 200) {
             actions.setTables(res.data.allTableList)
         }
         callbackFunction(res)
@@ -37,183 +44,210 @@ export const getTables = (callbackFunction)=>{
 }
 
 
-export const changeFoodStatus = (foodId, foodStatus, callbackFunction)=>{
+export const changeFoodStatus = (foodId, foodStatus, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
     let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, englishName, foodId, statusChange:'true',status:foodStatus}).then(res =>{
+    $.post(BASE_URL + 'changeFoodInfo.modify.php', {
+        token: token,
+        englishName,
+        foodId,
+        statusChange: 'true',
+        status: foodStatus
+    }).then(res => {
         callbackFunction(res)
     })
 }
 
-export const changeFoodPrice = (foodId, foodPrice, callbackFunction)=>{
+export const changeFoodPrice = (foodId, foodPrice, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,price:foodPrice}).then(res =>{
+    $.post(BASE_URL + 'changeFoodInfo.modify.php', {token: token, foodId, price: foodPrice}).then(res => {
         callbackFunction(res)
     })
 }
-export const newFood = (foodName,foodGroup,details,price,deliveryTime,thumbnail,callbackFunction)=>{
+export const newFood = (foodName, foodGroup, details, price, deliveryTime, thumbnail, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'createNewFood.add.php',{token:token,name:foodName,group:foodGroup,details:details,price,deliveryTime:deliveryTime,thumbnail}).then(res=>{
+    $.post(BASE_URL + 'createNewFood.add.php', {
+        token: token,
+        name: foodName,
+        group: foodGroup,
+        details: details,
+        price,
+        deliveryTime: deliveryTime,
+        thumbnail
+    }).then(res => {
         callbackFunction(res)
     })
 
 }
-export const changeFoodDiscount = (foodId, foodDiscount, callbackFunction)=>{
+export const changeFoodDiscount = (foodId, foodDiscount, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,discount :foodDiscount}).then(res =>{
+    $.post(BASE_URL + 'changeFoodInfo.modify.php', {token: token, foodId, discount: foodDiscount}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-export const changeFoodName = (foodId, foodName, callbackFunction)=>{
+export const changeFoodName = (foodId, foodName, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,persianName:foodName}).then(res =>{
+    $.post(BASE_URL + 'changeFoodInfo.modify.php', {token: token, foodId, persianName: foodName}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-
-export const changeFoodDetails = (foodId, foodDetails, callbackFunction)=>{
+export const changeFoodDetails = (foodId, foodDetails, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,details:foodDetails}).then(res =>{
+    $.post(BASE_URL + 'changeFoodInfo.modify.php', {token: token, foodId, details: foodDetails}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-export const getCategoryList = (callbackFunction)=>{
+export const getCategoryList = (callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'getCategoriesList.fetch.php',{token: token}).then(res =>{
+    $.post(BASE_URL + 'getCategoriesList.fetch.php', {token: token}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-export const changeFoodDeliveryTime = (foodId, foodDeliveryTime, callbackFunction)=>{
+export const changeFoodDeliveryTime = (foodId, foodDeliveryTime, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,deliveryTime:foodDeliveryTime}).then(res =>{
+    $.post(BASE_URL + 'changeFoodInfo.modify.php', {token: token, foodId, deliveryTime: foodDeliveryTime}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-export const changeFoodGroup = (foodId, newGroup, callbackFunction)=>{
+export const changeFoodGroup = (foodId, newGroup, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeFoodInfo.modify.php',{token: token, foodId,group:newGroup}).then(res =>{
+    $.post(BASE_URL + 'changeFoodInfo.modify.php', {token: token, foodId, group: newGroup}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-export const changeOrderStatus = (trackingId, newOrderStatus, deleteReason, callbackFunction)=>{
-    let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeOrderStatus.modify.php',{token:token,trackingId, newOrderStatus, deleteReason: deleteReason}).then(res =>{
-        callbackFunction(res)
-    })
-}
-
-export const getFoods = (callbackFunction)=>{
-    let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'getFoodsList.fetch.php',{token:token}).then(res =>{
-        callbackFunction(res)
-    })
-}
-
-
-
-export const changeRestaurantName = (persianName, callbackFunction)=>{
-    let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeResInfo.modify.php',{token,persianName}).then(res =>{
-        callbackFunction(res)
-    })
-}
-
-
-export const changeRestaurantPhone = (phones, callbackFunction)=>{
-    let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeResInfo.modify.php',{token,phone:JSON.stringify(phones)}).then(res =>{
-        callbackFunction(res)
-    })
-}
-
-
-export const changeRestaurantAddress = (addressText, callbackFunction)=>{
-    let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeResInfo.modify.php',{token,addressText}).then(res =>{
-        callbackFunction(res)
-    })
-}
-
-
-export const getRestaurantInfo = (callbackFunction)=>{
+export const changeOrderStatus = (trackingId, newOrderStatus, deleteReason, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
     let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'getResInfo.fetch.php',{token}).then(res =>{
+    $.post(BASE_URL + 'changeOrderStatus.modify.php', {
+        token: token,
+        trackingId,
+        newOrderStatus,
+        deleteReason: deleteReason
+    }).then(res => {
         callbackFunction(res)
     })
 }
 
-
-
-export const changeRestaurantOpenHours = (openTime, callbackFunction)=>{
+export const getFoods = (callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeResInfo.modify.php',{token,openTime:JSON.stringify(openTime)}).then(res =>{
+    $.post(BASE_URL + 'getFoodsList.fetch.php', {token: token}).then(res => {
         callbackFunction(res)
     })
 }
-export const changeRestaurantCounterPhone = (counterPhone, callbackFunction)=>{
+
+
+export const changeRestaurantName = (persianName, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeResInfo.modify.php',{token,counterPhone}).then(res =>{
+    $.post(BASE_URL + 'changeResInfo.modify.php', {token, persianName}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-export const changeRestaurantType = (type, callbackFunction)=>{
+export const changeRestaurantPhone = (phones, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeRestaurantInfo.modify.php',{token, englishName, typeChange:'true',type:JSON.stringify(type)}).then(res =>{
+    $.post(BASE_URL + 'changeResInfo.modify.php', {token, phone: JSON.stringify(phones)}).then(res => {
         callbackFunction(res)
     })
 }
 
-export const changeRestaurantStatus = (status, callbackFunction)=>{
+
+export const changeRestaurantAddress = (addressText, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL+'changeResInfo.modify.php',{token,status}).then(res =>{
+    $.post(BASE_URL + 'changeResInfo.modify.php', {token, addressText}).then(res => {
         callbackFunction(res)
     })
 }
 
 
-
-export const createTable = (tableName, tableCapacity, tableStatus, callbackFunction)=>{
-    let token = store.getState().reducerRestaurantUser.token;
-    let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'createTable.add.php',{token, englishName, tableName, tableCapacity, tableStatus}).then(res =>{
-        callbackFunction(res)
-    })
-}
-
-
-export const editTable = (tableId, tableName = null, tableCapacity=null, tableStatus=null, callbackFunction)=>{
+export const getRestaurantInfo = (callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
     let englishName = store.getState().reducerRestaurantUser.englishName;
-    $.post(BASE_URL+'changeTable.modify.php',{token, tableId, englishName, tableName, tableCapacity, tableStatus}).then(res =>{
+    $.post(BASE_URL + 'getResInfo.fetch.php', {token}).then(res => {
         callbackFunction(res)
     })
 }
 
-export const uploadFoodThumbnailNew = (foodId, thumbnail, callbackFunction)=>{
+
+export const changeRestaurantOpenHours = (openTime, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL + 'changeResInfo.modify.php', {token, openTime: JSON.stringify(openTime)}).then(res => {
+        callbackFunction(res)
+    })
+}
+export const changeRestaurantCounterPhone = (counterPhone, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL + 'changeResInfo.modify.php', {token, counterPhone}).then(res => {
+        callbackFunction(res)
+    })
+}
+
+
+export const changeRestaurantType = (type, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    let englishName = store.getState().reducerRestaurantUser.englishName;
+    $.post(BASE_URL + 'changeRestaurantInfo.modify.php', {
+        token,
+        englishName,
+        typeChange: 'true',
+        type: JSON.stringify(type)
+    }).then(res => {
+        callbackFunction(res)
+    })
+}
+
+export const changeRestaurantStatus = (status, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL + 'changeResInfo.modify.php', {token, status}).then(res => {
+        callbackFunction(res)
+    })
+}
+
+
+export const createTable = (tableName, tableCapacity, tableStatus, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    let englishName = store.getState().reducerRestaurantUser.englishName;
+    $.post(BASE_URL + 'createTable.add.php', {token, englishName, tableName, tableCapacity, tableStatus}).then(res => {
+        callbackFunction(res)
+    })
+}
+
+
+export const editTable = (tableId, tableName = null, tableCapacity = null, tableStatus = null, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    let englishName = store.getState().reducerRestaurantUser.englishName;
+    $.post(BASE_URL + 'changeTable.modify.php', {
+        token,
+        tableId,
+        englishName,
+        tableName,
+        tableCapacity,
+        tableStatus
+    }).then(res => {
+        callbackFunction(res)
+    })
+}
+
+export const uploadFoodThumbnailNew = (foodId, thumbnail, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
     let fd = new FormData();
-    fd.append('foodThumbnail',thumbnail)
-    fd.append('token',token)
-    fd.append('foodId',foodId)
+    fd.append('foodThumbnail', thumbnail)
+    fd.append('token', token)
+    fd.append('foodId', foodId)
     $.ajax({
-        url: BASE_URL_upload+'api/uploadfoodthumbnail.modify.php',
+        url: BASE_URL_upload + 'api/uploadfoodthumbnail.modify.php',
         type: "POST",
         data: fd,
         contentType: false,

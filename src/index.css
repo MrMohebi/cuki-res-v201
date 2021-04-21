@@ -12,6 +12,9 @@
     font-family: IRANSansMobile_Med;
     user-select: none;
 }
+.PED{
+    pointer-events: none !important;
+}
 
 @media only screen and (orientation: portrait){
 
