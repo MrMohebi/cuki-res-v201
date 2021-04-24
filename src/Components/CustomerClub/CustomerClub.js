@@ -7,7 +7,8 @@ import medal from './assets/img/medal.png'
 import './css/CustomerClub.css'
 import {Avatar} from "@material-ui/core";
 import moment from "jalali-moment";
-
+import {Link} from "react-router-dom";
+import {getRandomColor} from '../../functions/randomColor'
 class CustomerClub extends React.Component {
     state = {
         mostOrderedFoods: [],
@@ -83,13 +84,12 @@ class CustomerClub extends React.Component {
 
     }
 
-    getRandomColor = () => {
-        let letters = '0123456789ABCDEF';
-        let color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+
+    handleUserClick = (customer)=>{
+        this.props.history.push({
+            pathname: '/EachUserCustomerClub',
+            state: customer
+        });
     }
 
     getAllCustomersInfoCallback = (res) => {
@@ -104,21 +104,24 @@ class CustomerClub extends React.Component {
         let customersUI = storable.reverse().map(eachCustomer => {
             return (
                 (
-                    <tr className={'eachUserCustomerClub '} style={{borderSpacing: "0px 30px", cursor: "pointer"}}>
+
+
+                    <tr onClick={()=>{
+                        this.handleUserClick(eachCustomer)
+                    }} className={'eachUserCustomerClub '} style={{borderSpacing: "0px 30px", cursor: "pointer"}}>
                         <td className={'text-center'} style={{borderRadius: '0 15px 15px 0 ', border: '0'}}><Avatar
-                            style={{backgroundColor: this.getRandomColor()}} className={'m-auto'}
+                            style={{backgroundColor: getRandomColor()}} className={'m-auto'}
                             src="/broken-image.jpg"/>
                         </td>
 
                         {/*TODO change to name*/}
-                        <td className={'text-center'} style={{border: '0'}}>{eachCustomer[1].phone}</td>
+                        <td className={'text-center'} style={{border: '0'}}>{eachCustomer[1].name}</td>
                         <td className={'text-center'} style={{border: '0'}}>{eachCustomer[1].score}</td>
                         <td className={'text-center'} style={{border: '0'}}>{eachCustomer[1].order_times}</td>
                         <td className={'text-center'} style={{borderRadius: '15px 0 0px 15px', border: '0'}}>همبرگر
                             پنیری
                         </td>
                     </tr>
-                    // <div className={'tableGap'}/>
                 )
 
             )

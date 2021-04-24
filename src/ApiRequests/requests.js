@@ -20,6 +20,13 @@ export const getAllCustomersInfo = (callbackFunction) => {
         callbackFunction(res)
     })
 }
+export const getCustomerInfo = (phone,callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL + 'customerClub/getCustomerInfo.fetch.php', {token,phone}).then(res => {
+        res = (res !== undefined && res !== null) ? res : {}
+        callbackFunction(res)
+    })
+}
 
 
 export const getOrders = (startDate, endDate, callbackFunction) => {

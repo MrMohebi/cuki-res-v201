@@ -6,26 +6,27 @@ import {removeCacheToken} from "../../Stores/cache/cacheData";
 import ResState from "../ResState/ResState";
 
 
-const NavBar =(props)=> {
+const NavBar = (props) => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     useEffect(() => {
         window.addEventListener('scroll', handleScroll)
     })
 
-    const handleScroll=()=> {
+    const handleScroll = () => {
         setPrevScrollPos(window.pageYOffset)
-        if (window.pageYOffset > prevScrollPos){
-            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '-50px':<div/>
-        }else{
-            document.getElementById('navBarMainContainer')?document.getElementById('navBarMainContainer').style.marginTop = '0px':<div/>
+        if (window.pageYOffset > prevScrollPos) {
+            document.getElementById('navBarMainContainer') ? document.getElementById('navBarMainContainer').style.marginTop = '-50px' :
+                <div/>
+        } else {
+            document.getElementById('navBarMainContainer') ? document.getElementById('navBarMainContainer').style.marginTop = '0px' :
+                <div/>
         }
     }
 
-    const handleLogout = () =>{
+    const handleLogout = () => {
         removeCacheToken()
         props.history.push('/')
     }
-
 
 
     return (
@@ -49,9 +50,14 @@ const NavBar =(props)=> {
                       className={'navBarItems ' + (window.location.pathname === '/resinfo' ? ' navBarActive ' : '')}>
                     اطلاعات رستوران
                 </Link>
+                <Link to={'/CustomerClub'}
+                      className={'navBarItems ' + (window.location.pathname === '/resinfo' ? ' navBarActive ' : '')}>
+                    باشگاه مشتریان
+                </Link>
             </div>
             <div className='navBarLeftSide'>
-                <div onClick={handleLogout} className=' logOutNavBar d-flex flex-row justify-content-around align-items-center text-center'>
+                <div onClick={handleLogout}
+                     className=' logOutNavBar d-flex flex-row justify-content-around align-items-center text-center'>
                     <ExitToAppIcon style={{transform: 'rotate(180deg)', cursor: 'pointer', marginLeft: '10px'}}/>
                     <div style={{marginLeft: '5px'}}>خروج</div>
                 </div>
