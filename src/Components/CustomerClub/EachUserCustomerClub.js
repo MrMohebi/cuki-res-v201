@@ -4,14 +4,17 @@ import NavBar from "../navBar/navBar";
 import {Avatar} from "@material-ui/core";
 import {getRandomColor} from "../../functions/randomColor";
 import moment from "jalali-moment";
+
 class EachUserCustomerClub extends React.Component {
     state = {
-        name: 'محمد',
-        phone: '09031232531',
-        score: '2566',
-        birthday: '1399/9/9',
-        favFood: 'پنیر خالی',
+        name: 'در حال دریافت',
+        phone: 'درحال دریافت',
+        score: '0000',
+        birthday: '0000/0/0',
+        favFood: 'هنوز هیچی',
         userOrders: <div/>,
+        showAll: false,
+        allOrders: []
     }
 
     componentDidMount() {
@@ -19,7 +22,9 @@ class EachUserCustomerClub extends React.Component {
         this.setState({
             name: this.props.location.state[1].name,
             phone: this.props.location.state[1].phone,
-            score: this.props.location.state[1].score
+            score: this.props.location.state[1].score,
+            birthday: moment.unix(this.props.location.state[1].birthday).format("jYYYY/jMM/jDD"),
+            job: this.props.location.state[1].job
         })
 
     }
@@ -28,6 +33,7 @@ class EachUserCustomerClub extends React.Component {
         requests.getCustomerInfo(this.props.location.state[1].phone, this.getUserInfoCallback)
     }
     getUserInfoCallback = (res) => {
+
         let foods = {};
         let sortable = [];
         if (res.data.orderList) {
@@ -51,35 +57,40 @@ class EachUserCustomerClub extends React.Component {
             this.setState({
                 favFood: sortable.reverse()[0][1]
             })
+            this.state.allOrders = res.data.orderList
 
-            let orders = [];
-            orders = res.data.orderList;
-            let ordersUi = orders.map(eachOrder => {
-                let foodsInOrder = JSON.parse(eachOrder.order_list).map(eachFood=>{
-                    return(
-                        <div className={'mt-2 text-center pt-2 pb-2 eachCustomerOrderFoodNames'}>{eachFood.name + " "+eachFood.number}</div>
-                    )
-                })
-                return (
-                    <div className={'eachCustomerOrderContainer ml-2 mr-2 pb-2 mb-3 d-flex flex-column align-items-center'}>
-                        <span className={'mt-2'}>{moment.unix(eachOrder.ordered_date).format("jYYYY/jMM/jDD")}</span>
-                        <div className={'d-flex flex-row-reverse justify-content-center w-100 mt-2'}>
-                            <span>:مبلف سفارش</span>
-                            <span>250T</span>
-                        </div>
-
-                        <div className={'eachCustomerOrderFoods mt-1'}>
-                            {foodsInOrder}
-                        </div>
-
-                    </div>
-                )
-            })
-            this.setState({
-                userOrders:ordersUi
-            })
+            this.prepareOrders(res.data.orderList)
 
         }
+    }
+    prepareOrders = (orderList) => {
+
+        let orders = [];
+        orders = orderList;
+        let ordersUi = orders.slice(0, this.state.showAll ? orders.length : 5).map(eachOrder => {
+            console.log(eachOrder)
+            let foodsInOrder = JSON.parse(eachOrder.order_list).map(eachFood => {
+                return (
+                    <div
+                        className={'mt-2 text-center pt-2 pb-2 eachCustomerOrderFoodNames'}>{eachFood.name + " " + eachFood.number}</div>
+                )
+            })
+            return (
+                <div className={'eachCustomerOrderContainer ml-2 mr-2 pb-2 mb-3 d-flex flex-column align-items-center'}>
+                    <span className={'mt-2'}>{moment.unix(eachOrder.ordered_date).format("jYY/jMM/jDD")}</span>
+                    <div className={'d-flex flex-row-reverse justify-content-center w-100 mt-2'}>
+                        <span>:مبلغ سفارش</span>
+                        <span>{parseInt(eachOrder.total_price) / 1000}</span>
+                    </div>
+                    <div className={'eachCustomerOrderFoods mt-1'}>
+                        {foodsInOrder}
+                    </div>
+                </div>
+            )
+        })
+        this.setState({
+            userOrders: ordersUi
+        })
     }
 
     render() {
@@ -160,9 +171,9 @@ class EachUserCustomerClub extends React.Component {
                                     <path
                                         d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                                 </svg>
-                                <span>  :  غذای مورد علاقه </span>
+                                <span>: شغل</span>
                                 <span
-                                    className={'mr-1'}> {this.state.favFood ? this.state.favFood : 'هنوز هیچی'} </span>
+                                    className={'mr-1'}> {this.state.job ? this.state.job : 'هنوز هیچی'} </span>
                             </div>
                         </div>
                         <div className={'w-50 d-flex flex-row justify-content-center align-items-center'}/>
@@ -173,7 +184,23 @@ class EachUserCustomerClub extends React.Component {
                 <div className={'smallBox mt-2 d-flex flex-column justify-content-center align-items-center'}>
                     <span className={'text-center'}>سفارش های مشتری</span>
                     <div className=" d-flex flex-row justify-content-center flex-wrap align-items-center mt-4">
-                        {this.state.userOrders}
+                        {
+                            this.state.userOrders
+                        }
+                        {this.state.showAll === false ?
+
+                            <a onClick={() => {
+                                this.state.showAll = true;
+                                this.prepareOrders(this.state.allOrders)
+                            }
+                            } className={'w-100 text-center cursorPointer'}> نمایش همه</a>
+                            :
+                            <a onClick={() => {
+                                this.state.showAll = false;
+                                this.prepareOrders(this.state.allOrders)
+                            }
+                            } className={'w-100 text-center cursorPointer'}> نمایش 5 سفارش اخیر</a>
+                        }
                     </div>
                 </div>
             </div>

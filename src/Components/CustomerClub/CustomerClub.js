@@ -144,9 +144,9 @@ class CustomerClub extends React.Component {
                 return a[0] - b[0];
             });
             let firstFood = true;
-            let mostOrderedFoodsUi = sortable.reverse().slice(0, 3).map(eachFood => {
+            let mostOrderedFoodsUi = sortable.reverse().slice(0, 5).map(eachFood => {
                 return (
-                    <div className={'eachMFoodContainer d-flex flex-column align-items-center justify-content-around'}>
+                    <div className={'eachMFoodContainer mb-4 d-flex flex-column align-items-center justify-content-around'}>
                         <div className={'eachMFoodImage'} style={{
                             background: `url(${eachFood[1].thumbnail})`,
                             backgroundSize: 'cover',
@@ -217,7 +217,7 @@ class CustomerClub extends React.Component {
                     <span className={'IranSansMedium mb-3'}>
                         غذا های برتر رستوران
                     </span>
-                    <div className={'w-100 d-flex flex-row-reverse justify-content-around align-items-center pb-3'}>
+                    <div className={'w-100 d-flex flex-row-reverse flex-wrap justify-content-around align-items-center pb-3'}>
                         {this.state.mostOrderedFoodsUi}
                     </div>
 
@@ -229,7 +229,7 @@ class CustomerClub extends React.Component {
                         <span onClick={this.nextWeek}
                               className={'IranSans mb-3 cursorPointer animate__animated ' + this.state.nextWeekAnimateClass}>هفته بعد</span>
                     </div>
-                    <LineChart width={800} height={400} data={this.state.chartData}>
+                    <LineChart width={600} height={400} data={this.state.chartData}>
                         <Line type="monotone" dataKey="uv" stroke="#8884d8"/>
                         <CartesianGrid stroke="#ccc"/>
                         <XAxis dataKey="name"/>
