@@ -51,7 +51,7 @@ const NavBar = (props) => {
                     اطلاعات رستوران
                 </Link>
                 <Link to={'/CustomerClub'}
-                      className={'navBarItems ' + (window.location.pathname === '/resinfo' ? ' navBarActive ' : '')}>
+                      className={'navBarItems ' + (window.location.pathname === '/CustomerClub' ? ' navBarActive ' : '')}>
                     باشگاه مشتریان
                 </Link>
             </div>
