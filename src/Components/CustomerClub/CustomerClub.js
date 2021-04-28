@@ -10,6 +10,10 @@ import moment from "jalali-moment";
 import {Link} from "react-router-dom";
 import {getRandomColor} from '../../functions/randomColor'
 class CustomerClub extends React.Component {
+    constructor(props) {
+        super(props);
+        this.mostOrderedFoodsContainerRef = React.createRef();
+    }
     state = {
         mostOrderedFoods: [],
         mostOrderedFoodsUi: [],
@@ -27,7 +31,9 @@ class CustomerClub extends React.Component {
         ],
         nextWeekAnimateClass: 'invisible',
         ableToChangeWeekPrev: false,
-        ableToChangeWeekNext: false
+        ableToChangeWeekNext: false,
+        showAllFoods:false,
+        allFoods:[]
     }
 
     componentDidMount() {
@@ -135,18 +141,20 @@ class CustomerClub extends React.Component {
     checkFoods = (response) => {
 
         if (response.statusCode === 200) {
+            this.state.allFoods = response
             let sortable = []
 
-            response.data.map(eachFood => {
+            this.state.allFoods.data.map(eachFood => {
                 sortable.push([parseInt(eachFood.order_times), eachFood])
             })
             sortable.sort(function (a, b) {
                 return a[0] - b[0];
             });
             let firstFood = true;
-            let mostOrderedFoodsUi = sortable.reverse().slice(0, 5).map(eachFood => {
+            let mostOrderedFoodsUi = sortable.reverse().slice(0, this.state.showAllFoods ? 20 : 5).map(eachFood => {
                 return (
-                    <div className={'eachMFoodContainer mb-4 d-flex flex-column align-items-center justify-content-around'}>
+                    <div
+                        className={' animate__animated invisible eachMFoodContainer mr-3 mb-4 d-flex flex-column align-items-center justify-content-around '}>
                         <div className={'eachMFoodImage'} style={{
                             background: `url(${eachFood[1].thumbnail})`,
                             backgroundSize: 'cover',
@@ -174,7 +182,18 @@ class CustomerClub extends React.Component {
 
             this.setState({
                 mostOrderedFoodsUi: mostOrderedFoodsUi
-            })
+            },()=>{
+                console.log(this.mostOrderedFoodsContainerRef.current.childNodes[0].classList)
+
+                for (let i = 0 ;i<this.mostOrderedFoodsContainerRef.current.childNodes.length;i++){
+                    setTimeout(()=>{
+                        if (this.mostOrderedFoodsContainerRef.current.childNodes[i].classList.contains("invisible")){
+                            this.mostOrderedFoodsContainerRef.current.childNodes[i].classList.remove("invisible")
+                            this.mostOrderedFoodsContainerRef.current.childNodes[i].classList.add("animate__fadeInUp")
+                        }
+                    },i*80)
+                }
+            });
         }
     }
 
@@ -217,9 +236,27 @@ class CustomerClub extends React.Component {
                     <span className={'IranSansMedium mb-3'}>
                         غذا های برتر رستوران
                     </span>
-                    <div className={'w-100 d-flex flex-row-reverse flex-wrap justify-content-around align-items-center pb-3'}>
+                    <div ref={this.mostOrderedFoodsContainerRef} className={'w-100 d-flex flex-row-reverse mostOrderedHolder overflow-hidden flex-wrap justify-content-center align-items-center pb-3'}>
                         {this.state.mostOrderedFoodsUi}
                     </div>
+                    <a className={'cursorPointer w-100 text-center'} onClick={()=>{
+                        if (this.state.showAllFoods){
+                            this.setState({
+                                showAllFoods : false,
+                            },()=>{
+                                this.checkFoods(this.state.allFoods)
+
+                            })
+                        }else{
+                            this.setState({
+                                showAllFoods : true,
+                            },()=>{
+                                this.checkFoods(this.state.allFoods)
+
+                            })
+                        }
+
+                    }}>{this.state.showAllFoods===false?"نمایش 20 غذای برتر":"نمایش کمتر"} </a>
 
                 </div>
                 <div className="smallBox d-flex flex-column align-items-center">
