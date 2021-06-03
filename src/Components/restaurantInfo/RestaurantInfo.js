@@ -22,7 +22,7 @@ class RestaurantInfo extends React.Component {
         this.counterNumberInput = React.createRef()
     }
     state = {
-        selectedHours: this.props.resInfo.open_time ? this.props.resInfo.open_time : [],
+        selectedHours: this.props.resInfo.openTime ? this.props.resInfo.openTime : [],
         days: ['0', '1', '2', '3', '4', '5', '6'],
         daysString: {
             '0': 'شنبه',
@@ -61,8 +61,7 @@ class RestaurantInfo extends React.Component {
     }
 
     getInfoBack = (e) => {
-        console.log(e.data)
-        let name = e.data.persian_name
+        let name = e.data.persianName
         this.setState({
             resName: name,
             resPhones: e.data.phone,
@@ -71,12 +70,11 @@ class RestaurantInfo extends React.Component {
         document.getElementById('resNameInput').value = name
         document.getElementById("resPhonesInput").value = e.data.phone.length >1? JSON.parse(e.data.phone).join(" + "):JSON.parse(e.data.phone)[0]
         document.getElementById("resAddressInput").value = e.data.address ? e.data.address : ""
-        document.getElementById("resCounterPhone").value = e.data.counter_phone ? e.data.counter_phone : ""
-        let openTimeArray = JSON.parse(e.data.open_time)
+        document.getElementById("resCounterPhone").value = e.data.counterPhone ? e.data.counterPhone : ""
+        let openTimeArray = JSON.parse(e.data.openTime)
         for (let i =0;i<openTimeArray.length;i++){
             this.state.nOpenTime[i.toString()] = openTimeArray[i]
         }
-        console.log(this.state.nOpenTime)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -110,7 +108,6 @@ class RestaurantInfo extends React.Component {
 
 
     checkInfoChanged = (res) => {
-        console.log(res)
         if (res.statusCode === 200) {
             ReactSwal.fire({
                 title: <h2>!با موفقیت انجام شد</h2>,
@@ -169,7 +166,6 @@ class RestaurantInfo extends React.Component {
                 timerProgressBar: true
             })
         }
-        console.log(phoneArr);
     }
 
     handleChangeAddress = (elem) => {
@@ -185,13 +181,10 @@ class RestaurantInfo extends React.Component {
     }
 
     onCloseSelectHours = () => {
-        console.log(this.state.selectedHours)
-        console.log(this.state.selectedDays)
         let openTime = {}
         for (let i = 0; i < this.state.selectedDays.length; i++) {
             openTime[this.state.selectedDays[i]] = this.state.selectedHours
         }
-        console.log(JSON.stringify(openTime))
         this.swalSureToChange(() => {
             requests.changeRestaurantOpenHours(openTime, this.checkInfoChanged);
         })
@@ -237,9 +230,6 @@ class RestaurantInfo extends React.Component {
                 document.getElementById('h' + arr[i]).style.color = '#5A4A9A'
             }
         }
-        console.log(this.state.nOpenTime)
-
-
     }
     changeRestaurantCounterPhone = (e)=>{
         let phone = e.target.value
@@ -251,7 +241,6 @@ class RestaurantInfo extends React.Component {
         })
     }
     changeRestaurantCounterPhoneCallback = (res)=>{
-        console.log(res)
     }
     resetButtons = (day) => {
         $('.hoursSelector button').css({color: 'rgba(0, 0, 0, 0.54)'})
@@ -267,7 +256,6 @@ class RestaurantInfo extends React.Component {
         this.state.nSelectedDay = event
     }
     buttonColor = (event) => {
-        console.log(event)
     }
     handleChangeOpenTime = ()=>{
         if (this.state.nOpenTime){
@@ -275,7 +263,6 @@ class RestaurantInfo extends React.Component {
         }
     }
     changeOpenTimeCallback = (res)=>{
-        console.log(res)
         if (res.statusCode === 200) {
             ReactSwal.fire({
                 title: <h2>!با موفقیت انجام شد</h2>,

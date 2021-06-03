@@ -26,7 +26,7 @@ function ResState() {
 
     let checkResStatus = (res) => {
         if (res.data.status){
-            if (res.data.status === 'active'){
+            if (res.data.status === 'open'){
                 setButtonState(true)
             }else {
                 setButtonState(false)

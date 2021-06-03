@@ -156,7 +156,7 @@ class NewFood extends React.Component {
                                         this.state.categories.map(eachCategory => {
                                             return (
                                                 <MenuItem style={{fontFamily: 'IRANSansMobile_Light'}}
-                                                          value={eachCategory.english_name}>{eachCategory.persian_name}</MenuItem>
+                                                          value={eachCategory.englishName}>{eachCategory.persianName}</MenuItem>
                                             )
                                         })
                                     }

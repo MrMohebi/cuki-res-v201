@@ -2,8 +2,6 @@ import React from "react";
 import Orders from "../orders/Orders";
 import {connect} from "react-redux";
 import Foods from '../foods/Foods'
-import { Player, Controls } from '@lottiefiles/react-lottie-player';
-import ResState from "../ResState/ResState";
 
 class Dashboard extends React.Component{
     componentDidMount() {

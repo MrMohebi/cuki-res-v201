@@ -73,7 +73,7 @@ class Foods extends React.Component {
     }
 
 
-    handelChangStatus = (foodId, foodStatus) => {
+    handleChangStatus = (foodId, foodStatus) => {
         requests.changeFoodStatus(foodId, foodStatus, this.checkFoodStatusChanged)
     }
 
@@ -82,11 +82,11 @@ class Foods extends React.Component {
             this.getFoods();
         }
     }
-    handelFoodPrice = (foodId) => {
+    handleFoodPrice = (foodId) => {
         let foodPrice = $(`#itemPrice_${foodId}`).val()
         requests.changeFoodPrice(foodId, foodPrice, this.checkFoodPriceChanged)
     }
-    handelFoodDiscount = (foodId) => {
+    handleFoodDiscount = (foodId) => {
         let foodDiscount = $(`#itemDiscount_${foodId}`).val()
         requests.changeFoodDiscount(foodId, foodDiscount, this.checkFoodDiscountChanged)
 
@@ -233,7 +233,7 @@ class Foods extends React.Component {
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
         this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted')
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
-            <tr key={`itemId_${eachFood.foods_id}`} className="bg-white">
+            <tr key={`itemId_${eachFood.id}`} className="bg-white">
 
                 <td>
                     {
@@ -242,7 +242,7 @@ class Foods extends React.Component {
                             <Button
                                 onClick={
                                     () => {
-                                        this.handelChangStatus(eachFood.foods_id, 'deleted')
+                                        this.handleChangStatus(eachFood.id, 'deleted')
                                     }
                                 }
                                 variant="contained"
@@ -264,10 +264,10 @@ class Foods extends React.Component {
                             <Grid item>ناموجود</Grid>
                             <Grid item>
                                 <AntSwitch
-                                    disabled={!(eachFood.status === "out of stock" || eachFood.status === "in stock")}
-                                    checked={((eachFood.status === "out of stock" || eachFood.status === "in stock") && eachFood.status === "in stock")}
+                                    disabled={!(eachFood.status === "outOfStock" || eachFood.status === "inStock")}
+                                    checked={((eachFood.status === "outOfStock" || eachFood.status === "inStock") && eachFood.status === "inStock")}
                                     onChange={() => {
-                                        this.handelChangStatus(eachFood.foods_id, ((eachFood.status === "in stock") ? ("out of stock") : ("in stock")))
+                                        this.handleChangStatus(eachFood.id, ((eachFood.status === "inStock") ? ("outOfStock") : ("inStock")))
                                     }}/>
                             </Grid>
                             <Grid item>موجود</Grid>
@@ -279,12 +279,12 @@ class Foods extends React.Component {
                         <div className="input-group-prepend ">
                             <button style={{height: '31px'}} value="1" className="btn btn-outline-success" type="button"
                                     onClick={() => {
-                                        this.handelFoodPrice(eachFood.foods_id)
+                                        this.handleFoodPrice(eachFood.id)
                                     }}>
                                 <FontAwesomeIcon icon={faCheck}/>
                             </button>
                         </div>
-                        <input id={`itemPrice_${eachFood.foods_id}`} type="text" placeholder={eachFood.price}
+                        <input id={`itemPrice_${eachFood.id}`} type="text" placeholder={eachFood.price}
                                defaultValue={eachFood.price} className="form-control" aria-label=""
                                aria-describedby="basic-addon1"/>
                     </div>
@@ -294,12 +294,12 @@ class Foods extends React.Component {
                         <div className="input-group-prepend ">
                             <button style={{height: '31px'}} value="1" className="btn btn-outline-success" type="button"
                                     onClick={() => {
-                                        this.handelFoodDiscount(eachFood.foods_id)
+                                        this.handleFoodDiscount(eachFood.id)
                                     }}>
                                 <FontAwesomeIcon icon={faCheck}/>
                             </button>
                         </div>
-                        <input style={{maxWidth: '40px'}} id={`itemDiscount_${eachFood.foods_id}`} type="text"
+                        <input style={{maxWidth: '40px'}} id={`itemDiscount_${eachFood.id}`} type="text"
                                placeholder={eachFood.discount}
                                defaultValue={eachFood.discount} className="form-control" aria-label=""
                                aria-describedby="basic-addon1"/>
@@ -308,10 +308,10 @@ class Foods extends React.Component {
 
                 <td>
                     <div onClick={() => {
-                        this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.foods_id === ef.foods_id))
+                        this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.id === ef.id))
                         this.props.history.push('/foodInfo')
                     }
-                    }>{eachFood.name}</div>
+                    }>{eachFood.persianName}</div>
                 </td>
                 <td>{rowCounter++}</td>
             </tr>

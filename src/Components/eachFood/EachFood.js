@@ -31,7 +31,7 @@ class EachFood extends React.Component {
         requests.getFoods(this.checkFoods)
     }
 
-    handelChangeFoodName = (foodId) => {
+    handleChangeFoodName = (foodId) => {
         let foodName = $(`#inpName_${foodId}`).val()
         requests.changeFoodName(foodId, foodName, this.checkFoodNameChanged)
     }
@@ -41,7 +41,7 @@ class EachFood extends React.Component {
         }
     }
 
-    handelChangeFoodDetails = (foodId) => {
+    handleChangeFoodDetails = (foodId) => {
         let foodDetails = $(`#inpDetails_${foodId}`).val()
         requests.changeFoodDetails(foodId, foodDetails, this.checkFoodDetailsChanged)
     }
@@ -51,7 +51,7 @@ class EachFood extends React.Component {
         }
     }
 
-    handelChangeFoodDeliveryTime = (foodId) => {
+    handleChangeFoodDeliveryTime = (foodId) => {
         let foodDeliveryTime = $(`#inpDeliveryTime_${foodId}`).val()
         requests.changeFoodDeliveryTime(foodId, foodDeliveryTime, this.checkFoodDeliveryTimeChanged)
     }
@@ -61,7 +61,7 @@ class EachFood extends React.Component {
         }
     }
 
-    handelChangeGroup = (elem) => {
+    handleChangeGroup = (elem) => {
         let foodId = elem.target.name.split("_")[1]
         let newGroup = elem.target.value
         if (newGroup.length > 2) {
@@ -116,7 +116,7 @@ class EachFood extends React.Component {
                     }}>بازگشت</span>
                     <div className='w-100'>
                         <div className='w-100 d-flex flex-row justify-content-end imgAndNameContainer'>
-                            <div className='text-center eachFoodName  pr-3 pt-3'>{food.name}</div>
+                            <div className='text-center eachFoodName  pr-3 pt-3'>{food.persianName}</div>
                             <div>
                                 <div style={{
                                     background: `url(${food.thumbnail})`,
@@ -131,7 +131,7 @@ class EachFood extends React.Component {
                                     <input ref='fileUploadInput' id='uploadI' className='inputFile' type="file"
                                            accept='.png,.jpg,.jpeg'
                                            onChange={(e) => {
-                                               this.onFileChange(e, food.foods_id)
+                                               this.onFileChange(e, food.id)
                                            }}/>
 
                                 </div>
@@ -144,13 +144,13 @@ class EachFood extends React.Component {
                             <div className="input-group input-group-sm inputGroups biggerInputEachFood">
                                 <div className="input-group-prepend">
                                     <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
-                                        this.handelChangeFoodName(food.foods_id)
+                                        this.handleChangeFoodName(food.id)
                                     }}>
                                         <FontAwesomeIcon icon={faCheck}/>
                                     </button>
                                 </div>
-                                <input id={`inpName_${food.foods_id}`} type="text" placeholder={food.name}
-                                       defaultValue={food.name} className=" rtl form-control nameInput" aria-label=""
+                                <input id={`inpName_${food.id}`} type="text" placeholder={food.persianName}
+                                       defaultValue={food.persianName} className=" rtl form-control nameInput" aria-label=""
                                        aria-describedby="basic-addon1"/>
                             </div>
 
@@ -160,13 +160,13 @@ class EachFood extends React.Component {
 
                                 <div className="input-group-prepend">
                                     <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
-                                        this.handelChangeFoodDeliveryTime(food.foods_id)
+                                        this.handleChangeFoodDeliveryTime(food.id)
                                     }}>
                                         <FontAwesomeIcon icon={faCheck}/>
                                     </button>
                                 </div>
-                                <input id={`inpDeliveryTime_${food.foods_id}`} type="text"
-                                       placeholder={food.delivery_time} defaultValue={food.delivery_time}
+                                <input id={`inpDeliveryTime_${food.id}`} type="text"
+                                       placeholder={food.deliveryTime} defaultValue={food.deliveryTime}
                                        className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
                             </div>
                         </div>
@@ -177,12 +177,12 @@ class EachFood extends React.Component {
 
                             <div className="input-group-prepend">
                                 <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
-                                    this.handelChangeFoodDetails(food.foods_id)
+                                    this.handleChangeFoodDetails(food.id)
                                 }}>
                                     <FontAwesomeIcon icon={faCheck}/>
                                 </button>
                             </div>
-                            <input id={`inpDetails_${food.foods_id}`} type="text"
+                            <input id={`inpDetails_${food.id}`} type="text"
                                    placeholder={' مثال : پنیر+گوجه+خیارشور'}
                                    defaultValue={JSON.parse(food.details).join('+')} className=" rtl form-control"
                                    aria-label="" aria-describedby="basic-addon1"/>
@@ -194,8 +194,8 @@ class EachFood extends React.Component {
                                 style={{direction: 'rtl', minWidth: "120px", margin: 'auto', textAlign: 'center'}}>
                                 <Select style={{fontFamily: 'IRANSansMobile_Med'}}
                                         labelId="demo-simple-select-helper-label"
-                                        name={'selectorGroup_' + food.foods_id} defaultValue={food.group}
-                                        onChange={this.handelChangeGroup}>
+                                        name={'selectorGroup_' + food.id} defaultValue={food.group}
+                                        onChange={this.handleChangeGroup}>
                                     <MenuItem value="">
                                         <em>انتخاب نشده</em>
                                     </MenuItem>
@@ -203,7 +203,7 @@ class EachFood extends React.Component {
                                         this.state.categories.map(eachCategory => {
                                             return (
                                                 <MenuItem style={{fontFamily: 'IRANSansMobile_Light'}}
-                                                          value={eachCategory.english_name}>{eachCategory.persian_name}</MenuItem>
+                                                          value={eachCategory.englishName}>{eachCategory.persianName}</MenuItem>
 
                                             )
                                         })
@@ -215,7 +215,7 @@ class EachFood extends React.Component {
 
                         {/*<p className='foodPlaceHolderLabels mt-5'>نمایه غذا</p>*/}
 
-                        {/*<button onClick={(args)=>{this.onFileUpload(args, food.foods_id)}}>*/}
+                        {/*<button onClick={(args)=>{this.onFileUpload(args, food.id)}}>*/}
                         {/*    آپلود عکس*/}
                         {/*</button>*/}
                         {this.state.selectedFile ? this.state.selectedFile.name : null}

@@ -155,7 +155,7 @@ class Orders extends React.Component {
         }
     }
 
-    handelChangeOrderStatus = (trakingId, newStatus, deleteReason) => {
+    handleChangeOrderStatus = (trakingId, newStatus, deleteReason) => {
         this.state.scroll = document.documentElement.scrollTop
         requests.changeOrderStatus(trakingId, newStatus, deleteReason, this.callBackChangeOrderStatus)
     }
@@ -232,16 +232,16 @@ class Orders extends React.Component {
 
             this.state.orders.slice(0, howManyToShow).map(eachOrder => {
                 this.isThereFood = true
-                let foodsDetails = JSON.parse(eachOrder.details)
-                let orderList = JSON.parse(eachOrder.order_list)
+                let foodsDetails = eachOrder.details ? JSON.parse(eachOrder.details) : {general:[], eachFood:[]}
+                let orderList = JSON.parse(eachOrder.items)
                 let sum = 0;
-                let payStatus = func.numberWithCommas(eachOrder.paid_amount ? eachOrder.paid_amount : 0);
+                let payStatus = func.numberWithCommas(eachOrder["paidAmount"] ? eachOrder["paidAmount"] : 0);
                 orderList.forEach((item) => {
                     sum += item.number * item.priceAfterDiscount;
                 });
                 sum = func.numberWithCommas(sum);
 
-                let orderStatus = eachOrder.order_status
+                let orderStatus = eachOrder["orderStatus"]
                 let twoOtherOption = orderStatus === 'inLine' ? [
                         'انجام شده'
                         , 'تحویل شده'
@@ -255,27 +255,27 @@ class Orders extends React.Component {
                             'در صف'
                             , 'انجام شده'
                         ]
-                let btnClasses = (eachOrder.order_status === 'done' ? 'btn-success' : eachOrder.order_status === 'inLine' ? 'btn-outline-primary' : eachOrder.order_status === 'delivered' ? 'btn-warning' : eachOrder.order_status === 'deleted' ? 'btn-outline-danger' : 'btn-outline-black')
+                let btnClasses = (orderStatus === 'done' ? 'btn-success' : orderStatus === 'inLine' ? 'btn-outline-primary' : orderStatus === 'delivered' ? 'btn-warning' : orderStatus === 'deleted' ? 'btn-outline-danger' : 'btn-outline-black')
                 if (eachOrder.address !=="null")
                 return (
                     [
-                        <tr   className="bg-white" id={"orderRowID_" + eachOrder.orders_id}
-                            key={"orderRowID_" + eachOrder.orders_id}>
-                            <td  className="in-queue text-primary" href={"#MoreInfoID_" + eachOrder.orders_id}
+                        <tr   className="bg-white" id={"orderRowID_" + eachOrder.id}
+                            key={"orderRowID_" + eachOrder.id}>
+                            <td  className="in-queue text-primary" href={"#MoreInfoID_" + eachOrder.id}
                                 data-toggle="collapse" style={{cursor: "pointer", userSelect: "text "}}>
-                                <FontAwesomeIcon icon={faChevronDown}/> {eachOrder.tracking_id} </td>
+                                <FontAwesomeIcon icon={faChevronDown}/> {eachOrder["trackingId"]} </td>
                             <td>
                                 {
                                     orderList.map(eachFood => {
                                         return (
                                             <div key={Math.floor(Math.random() * 10000)}>
-                                                {eachFood.name} => {eachFood.number}
+                                                {eachFood.persianName} => {eachFood.number}
                                             </div>
                                         )
                                     })
                                 }
                             </td>
-                            <td className="d-none d-sm-table-cell">{func.days_passed(eachOrder.ordered_date) ? func.days_passed(eachOrder.ordered_date).split("\n").map(eachPart => {
+                            <td className="d-none d-sm-table-cell">{func.days_passed(eachOrder["createdAt"]) ? func.days_passed(eachOrder["createdAt"]).split("\n").map(eachPart => {
                                 return <p>{eachPart}</p>
                             }) : ''}</td>
                             <td className="d-none d-sm-table-cell">{sum} <br/><span
@@ -285,7 +285,7 @@ class Orders extends React.Component {
                                     <button type="button"
                                             className={'btn ' + btnClasses}
                                             onClick={() => {
-                                                eachOrder.order_status === 'done' ? this.handelChangeOrderStatus(eachOrder.tracking_id, 'inLine') : this.handelChangeOrderStatus(eachOrder.tracking_id, 'done')
+                                                eachOrder["orderStatus"] === 'done' ? this.handleChangeOrderStatus(eachOrder["trackingId"], 'inLine') : this.handleChangeOrderStatus(eachOrder["trackingId"], 'done')
                                             }}>
                                         {this.state.orderStatusPersian[orderStatus.toString()]}
 
@@ -297,11 +297,11 @@ class Orders extends React.Component {
                                     </button>
                                     <div className="dropdown-menu">
                                         <a className="dropdown-item IranSansMedium" onClick={() => {
-                                            this.handelChangeOrderStatus(eachOrder.tracking_id, (twoOtherOption[0] === 'انجام شده' ? 'done' : twoOtherOption[0] === 'تحویل شده' ? 'delivered' : twoOtherOption[0] === 'در صف' ? 'inLine' : ''))
+                                            this.handleChangeOrderStatus(eachOrder["trackingId"], (twoOtherOption[0] === 'انجام شده' ? 'done' : twoOtherOption[0] === 'تحویل شده' ? 'delivered' : twoOtherOption[0] === 'در صف' ? 'inLine' : ''))
                                         }} href="#">{twoOtherOption[0]}</a>
                                         <div className="dropdown-divider"/>
                                         <a className="dropdown-item IranSansMedium" href="#" onClick={() => {
-                                            this.handelChangeOrderStatus(eachOrder.tracking_id, (twoOtherOption[1] === 'انجام شده' ? 'done' : twoOtherOption[1] === 'تحویل شده' ? 'delivered' : twoOtherOption[1] === 'در صف' ? 'inLine' : ''))
+                                            this.handleChangeOrderStatus(eachOrder["trackingId"], (twoOtherOption[1] === 'انجام شده' ? 'done' : twoOtherOption[1] === 'تحویل شده' ? 'delivered' : twoOtherOption[1] === 'در صف' ? 'inLine' : ''))
                                         }}>{twoOtherOption[1]}</a>
                                     </div>
                                 </div>
@@ -310,21 +310,21 @@ class Orders extends React.Component {
 
                         ,
 
-                        <tr id={"MoreInfoID_" + eachOrder.orders_id} className="collapse bg-light"
-                            style={{lineHeight: "40px"}} key={"MoreInfoID_" + eachOrder.orders_id}>
+                        <tr id={"MoreInfoID_" + eachOrder.id} className="collapse bg-light"
+                            style={{lineHeight: "40px"}} key={"MoreInfoID_" + eachOrder.id}>
                             <td className="d-none d-sm-table-cell text-success"><a title="تماس مستقیم"
-                                                                                   href={"tel:" + eachOrder.customer_phone}><FontAwesomeIcon
-                                icon={faPhone}/> {eachOrder.customer_phone}</a></td>
+                                                                                   href={"tel:" + eachOrder["userPhone"]}><FontAwesomeIcon
+                                icon={faPhone}/> {eachOrder["userPhone"]}</a></td>
 
 
                             <td className="d-none d-sm-table-cell text-center pr-2"  colSpan="2">
-                                {eachOrder.order_table ?
+                                {eachOrder["table"] ?
                                     <div>
                                         <a title="میز"><img style={{width: "25px"}}
                                                             src="https://img.icons8.com/material/50/000000/table.png"/>
                                         </a>
                                         <div>
-                                            {eachOrder.order_table ? eachOrder.order_table : 0}
+                                            {eachOrder["table"] ? eachOrder["table"] : 0}
 
                                         </div>
                                     </div>
@@ -338,13 +338,13 @@ class Orders extends React.Component {
                                 {eachOrder.hasOwnProperty('eachOrder') && eachOrder.address.length > 3 ?
                                     <div>
                                         <FontAwesomeIcon onClick={()=>{
-                                            this.toggleMap(eachOrder.orders_id)
+                                            this.toggleMap(eachOrder.id)
                                         }
 
                                         } style={{marginRight: '20px'}} icon={faMapMarkerAlt}/>
 
                                         <div onClick={()=>{
-                                            this.toggleMap(eachOrder.orders_id)
+                                            this.toggleMap(eachOrder.id)
                                         }
 
                                         }>
@@ -355,15 +355,15 @@ class Orders extends React.Component {
 
                                             {eachOrder.address.length>3 ? (JSON.parse(eachOrder.address).addressDetails): ''}
                                         </div>
-                                        <div id={'mapOf'+eachOrder.orders_id} style={{transition:'all 0.2s ease',height:'0px',width:'250px',margin:'auto',overflow:'hidden'}}>
+                                        <div id={'mapOf'+eachOrder.id} style={{transition:'all 0.2s ease',height:'0px',width:'250px',margin:'auto',overflow:'hidden'}}>
 
-                                            <MapContainer key={this.state.mapKey+parseInt(eachOrder.orders_id)}  id={'map'+eachOrder.orders_id} style={{height:'250px'}} center={JSON.parse(eachOrder.address).coordinates} zoom={20} scrollWheelZoom={true}>
+                                            <MapContainer key={this.state.mapKey+parseInt(eachOrder.id)}  id={'map'+eachOrder.id} style={{height:'250px'}} center={JSON.parse(eachOrder.address).coordinates} zoom={20} scrollWheelZoom={true}>
                                                 <TileLayer
                                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                                 />
                                                 {/*<Marker icon={MarkerIcon} position={JSON.parse(eachOrder.address).coordinates}/>*/}
                                                 <Marker icon={markerIcon} position={JSON.parse(eachOrder.address).coordinates}>
-                                                    <Popup>حله همین جا</Popup>
+                                                    <Popup>اینجا</Popup>
                                                 </Marker>
 
                                             </MapContainer>
@@ -381,15 +381,15 @@ class Orders extends React.Component {
 
                             <td/>
                             <td className="d-none d-sm-table-cell">
-                                {eachOrder.order_status === 'deleted' ?
+                                {eachOrder["orderStatus"] === 'deleted' ?
                                     <span
-                                        className='IranSansMedium orderDeleteReason'>{eachOrder.delete_reason}</span>
+                                        className='IranSansMedium orderDeleteReason'>{eachOrder["deleteReason"]}</span>
                                     :
                                     <button className="IranSansMedium btn-sm btn-danger" onClick={() => {
-                                        this.handelChangeOrderStatus(eachOrder.tracking_id, 'deleted')
+                                        this.handleChangeOrderStatus(eachOrder["trackingId"], 'deleted')
                                     }} title="حذف" style={{cursor: "pointer"}} type="button"><FontAwesomeIcon
                                         style={{marginLeft: '10px'}} icon={faTrash}
-                                        aria-hidden="true"/>{eachOrder.order_status === "deleted" ? "لغو حذف" : "حذف"}
+                                        aria-hidden="true"/>{eachOrder["orderStatus"] === "deleted" ? "لغو حذف" : "حذف"}
                                     </button>
                                 }
                             </td>
@@ -397,16 +397,16 @@ class Orders extends React.Component {
 
                         ,
 
-                        <tr id={"MoreInfoID_" + eachOrder.orders_id} className="collapse bg-light"
-                            style={{lineHeight: "40px"}} key={"MoreInfo1ID_" + eachOrder.orders_id}>
+                        <tr id={"MoreInfoID_" + eachOrder.id} className="collapse bg-light"
+                            style={{lineHeight: "40px"}} key={"MoreInfo1ID_" + eachOrder.id}>
                             <td className="d-none d-sm-table-cell text-right pr-2" colSpan="5"><FontAwesomeIcon
                                 icon={faCommentAlt}/>{foodsDetails.general}</td>
                         </tr>
 
                         ,
 
-                        <tr id={"MoreInfoID_" + eachOrder.orders_id} className="collapse bg-light"
-                            style={{lineHeight: "40px"}} key={"MoreInfo2ID_" + eachOrder.orders_id}>
+                        <tr id={"MoreInfoID_" + eachOrder.id} className="collapse bg-light"
+                            style={{lineHeight: "40px"}} key={"MoreInfo2ID_" + eachOrder.id}>
                             <td className="d-none d-sm-table-cell text-right pr-2" colSpan="5"><FontAwesomeIcon
                                 icon={faUtensils}/>{
                                 foodsDetails.eachFood ?
