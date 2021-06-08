@@ -3,11 +3,11 @@ import * as actions from '../Stores/reduxStore/actions'
 import {store} from '../Stores/reduxStore/store'
 
 
-export const BASE_URL = "https://api.cukim.ir/api/res/";
+export const BASE_URL = "https://api.cukim.ir/api/v1/res/";
 
 
 export const signin = (username, password, callbackFunction) => {
-    $.post(BASE_URL + '/login', {username, password}).then(res => {
+    $.post(BASE_URL + 'login', {username, password}).then(res => {
         res = (res !== undefined && res !== null) ? res : {}
         callbackFunction(res)
     })
@@ -122,7 +122,7 @@ export const changeFoodGroup = (foodId, newGroup, callbackFunction) => {
 
 export const changeOrderStatus = (trackingId, newOrderStatus, deleteReason, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL + 'changeOrderStatus', {token, trackingId, status, deleteReason}).then(res => {
+    $.post(BASE_URL + 'changeOrderStatus', {token, trackingId, status:newOrderStatus, deleteReason}).then(res => {
         callbackFunction(res)
     })
 }
@@ -162,6 +162,7 @@ export const changeRestaurantAddress = (addressText, callbackFunction) => {
 export const getRestaurantInfo = (callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
     $.post(BASE_URL + 'getResInfo', {token}).then(res => {
+        console.log(res);
         callbackFunction(res)
     })
 }
