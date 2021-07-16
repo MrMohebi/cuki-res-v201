@@ -5,23 +5,18 @@ import * as requests from '../../ApiRequests/requests'
 
 
 function ResState() {
+    let [buttonState, setButtonState] = useState(false)
+
     useEffect(() => {
         getResState()
-    })
-    let [buttonState, setButtonState] = useState(false)
-    let changeButtonState = (newState)=>{
-        setButtonState(newState)
-    }
+    },[buttonState])
 
 
     let getResState = () => {
         requests.getRestaurantInfo(checkResStatus)
     }
     let changeResStatus = (newStatus) => {
-        requests.changeRestaurantStatus(newStatus, changeResStatusBack)
-    }
-
-    let changeResStatusBack = (res) => {
+        requests.changeRestaurantStatus(newStatus, ()=>{})
     }
 
     let checkResStatus = (res) => {
@@ -39,11 +34,11 @@ function ResState() {
                 <span>فعال</span>
                 <Switch className={'m-2'}
                         checked={buttonState}
-                        onChange={(e) => {
+                        onChange={() => {
                             if (buttonState) {
-                                changeResStatus("disable")
+                                changeResStatus("close")
                             } else {
-                                changeResStatus("active")
+                                changeResStatus("open")
                             }
                             setButtonState(!buttonState)
                         }}

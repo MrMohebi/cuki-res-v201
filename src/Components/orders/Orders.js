@@ -54,11 +54,12 @@ class Orders extends React.Component {
             inLine: 'در صف',
             done: 'انجام شده',
             delivered: 'تحویل شده',
-            deleted: 'حذف شده'
-
+            deleted: 'حذف شده',
+            pendingToSubmit:"در انتظار تایید"
         },
         scroll: 0,
-        mapKey: 5
+        mapKey: 5,
+        intervalIdRefreshOrderList:"",
 
     }
 
@@ -83,11 +84,14 @@ class Orders extends React.Component {
             this.getOrders(startDate, endDate)
         }
         this.refreshOrderList()
+        this.setState({
+            intervalIdRefreshOrderList: setInterval(this.refreshOrderList, 5000)
+        })
 
     }
 
     componentWillUnmount() {
-        clearInterval(this.intervalId)
+        clearInterval(this.state.intervalIdRefreshOrderList)
     }
 
     refreshOrderList = () => {
@@ -104,10 +108,6 @@ class Orders extends React.Component {
 
     }
 
-    intervalId = setInterval(this.refreshOrderList, 3000);
-
-    componentWillUpdate(nextProps, nextState, nextContext) {
-    }
 
     checkOrders = (response) => {
         if (response.statusCode === 200) {
@@ -255,7 +255,7 @@ class Orders extends React.Component {
                             'در صف'
                             , 'انجام شده'
                         ]
-                let btnClasses = (orderStatus === 'done' ? 'btn-success' : orderStatus === 'inLine' ? 'btn-outline-primary' : orderStatus === 'delivered' ? 'btn-warning' : orderStatus === 'deleted' ? 'btn-outline-danger' : 'btn-outline-black')
+                let btnClasses = (orderStatus === 'done' ? 'btn-success'  : orderStatus === 'inLine' ? 'btn-outline-primary' : orderStatus === 'delivered' ? 'btn-warning' : orderStatus === 'deleted' ? 'btn-outline-danger' : 'btn-outline-dark')
                 if (eachOrder.address !=="null")
                 return (
                     [
@@ -281,30 +281,33 @@ class Orders extends React.Component {
                             <td className="d-none d-sm-table-cell">{sum} <br/><span
                                 style={{color: "#0dec1a"}}>{payStatus}</span></td>
                             <td className="d-none d-sm-table-cell ltr IranSansMedium">
-                                <div className="btn-group">
-                                    <button type="button"
-                                            className={'btn ' + btnClasses}
-                                            onClick={() => {
-                                                eachOrder["orderStatus"] === 'done' ? this.handleChangeOrderStatus(eachOrder["trackingId"], 'inLine') : this.handleChangeOrderStatus(eachOrder["trackingId"], 'done')
-                                            }}>
-                                        {this.state.orderStatusPersian[orderStatus.toString()]}
-
-                                    </button>
-                                    <button type="button"
-                                            className={"btn dropdown-toggle dropdown-toggle-split " + btnClasses}
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span className="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <div className="dropdown-menu">
-                                        <a className="dropdown-item IranSansMedium" onClick={() => {
-                                            this.handleChangeOrderStatus(eachOrder["trackingId"], (twoOtherOption[0] === 'انجام شده' ? 'done' : twoOtherOption[0] === 'تحویل شده' ? 'delivered' : twoOtherOption[0] === 'در صف' ? 'inLine' : ''))
-                                        }} href="#">{twoOtherOption[0]}</a>
-                                        <div className="dropdown-divider"/>
-                                        <a className="dropdown-item IranSansMedium" href="#" onClick={() => {
-                                            this.handleChangeOrderStatus(eachOrder["trackingId"], (twoOtherOption[1] === 'انجام شده' ? 'done' : twoOtherOption[1] === 'تحویل شده' ? 'delivered' : twoOtherOption[1] === 'در صف' ? 'inLine' : ''))
-                                        }}>{twoOtherOption[1]}</a>
+                                {orderStatus === "pendingToSubmit"?
+                                    <button type="button" style={{width:"120px"}} className={"btn btn-info"} onClick={()=>(this.handleChangeOrderStatus(eachOrder["trackingId"], 'inLine'))}>تایید</button>
+                                    :
+                                    <div className="btn-group">
+                                        <button type="button"
+                                                className={'btn ' + btnClasses}
+                                                onClick={() => {
+                                                    eachOrder["orderStatus"] === 'done' ? this.handleChangeOrderStatus(eachOrder["trackingId"], 'inLine') : this.handleChangeOrderStatus(eachOrder["trackingId"], 'done')
+                                                }}>
+                                            {this.state.orderStatusPersian[orderStatus]}
+                                        </button>
+                                        <button type="button"
+                                                className={"btn dropdown-toggle dropdown-toggle-split " + btnClasses}
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span className="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div className="dropdown-menu">
+                                            <a className="dropdown-item IranSansMedium" onClick={() => {
+                                                this.handleChangeOrderStatus(eachOrder["trackingId"], (twoOtherOption[0] === 'انجام شده' ? 'done' : twoOtherOption[0] === 'تحویل شده' ? 'delivered' : twoOtherOption[0] === 'در صف' ? 'inLine' : ''))
+                                            }} href="#">{twoOtherOption[0]}</a>
+                                            <div className="dropdown-divider"/>
+                                            <a className="dropdown-item IranSansMedium" href="#" onClick={() => {
+                                                this.handleChangeOrderStatus(eachOrder["trackingId"], (twoOtherOption[1] === 'انجام شده' ? 'done' : twoOtherOption[1] === 'تحویل شده' ? 'delivered' : twoOtherOption[1] === 'در صف' ? 'inLine' : ''))
+                                            }}>{twoOtherOption[1]}</a>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </td>
                         </tr>
 
@@ -320,7 +323,7 @@ class Orders extends React.Component {
                             <td className="d-none d-sm-table-cell text-center pr-2"  colSpan="2">
                                 {eachOrder["table"] ?
                                     <div>
-                                        <a title="میز"><img style={{width: "25px"}}
+                                        <a title="میز"><img style={{width: "25px"}} alt={"table"}
                                                             src="https://img.icons8.com/material/50/000000/table.png"/>
                                         </a>
                                         <div>

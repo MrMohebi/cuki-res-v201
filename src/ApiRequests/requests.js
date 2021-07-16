@@ -162,7 +162,6 @@ export const changeRestaurantAddress = (addressText, callbackFunction) => {
 export const getRestaurantInfo = (callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
     $.post(BASE_URL + 'getResInfo', {token}).then(res => {
-        console.log(res);
         callbackFunction(res)
     })
 }
@@ -233,7 +232,7 @@ export const uploadFoodThumbnailNew = (foodId, thumbnail, callbackFunction) => {
         data: fd,
         contentType: false,
         processData: false,
-        success: function (res) {
+        success: function () {
             callbackFunction(200)
         }
     });
