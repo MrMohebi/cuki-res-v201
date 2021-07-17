@@ -1,6 +1,6 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faChevronCircleLeft} from "@fortawesome/free-solid-svg-icons";
+import {faChevronCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import {Button, FormControl, MenuItem, Select} from "@material-ui/core";
 import DoneOutlineRoundedIcon from '@material-ui/icons/DoneOutlineRounded';
 import * as requests from '../../ApiRequests/requests'
@@ -25,15 +25,14 @@ class NewFood extends React.Component {
         this.foodPriceRef = React.createRef();
     }
     submitHandler = () => {
-        requests.newFood(this.state.foodName, this.state.foodGroup, this.state.foodDetails, this.state.price,this.state.foodDeliveryTime,this.state.foodImage,this.submitCallback)
+        requests.newFood(this.state.foodName, this.state.foodGroup, this.state.foodDetails, this.state.price,this.state.foodDeliveryTime,this.submitCallback)
     }
     submitCallback = (res)=>{
-        if (res.hasOwnProperty('statusCode')&&res.statusCode === 200){
-            console.log(res)
+        if (res.hasOwnProperty('statusCode')&& res.statusCode === 200){
             this.foodNameRef.current.value = ''
-        this.foodDeliveryTimeRef.current.value = ''
-        this.foodPriceRef.current.value = ''
-        this.foodDetailsRef.current.value = ''
+            this.foodDeliveryTimeRef.current.value = ''
+            this.foodPriceRef.current.value = ''
+            this.foodDetailsRef.current.value = ''
             ReactSwal.fire({
                 title: 'غدا ثبت شد',
                 icon: "success",
