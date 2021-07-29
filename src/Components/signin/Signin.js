@@ -51,7 +51,7 @@ class Signin extends React.Component {
     render() {
         return(
             <div className="border shadow-sm" style={loginBox}>
-                    <img className="mt-4 mb-3" src="img/logo/Cuki Logo(256x256).png" width="230px" height="230px" />
+                    <img className="mt-4 mb-3" src="img/logo/Cuki Logo.png" width="230px" height="230px"  alt={"logo"}/>
                 <form onSubmit={this.handelSubmitForm}>
                     <div style={{width: "250px"}} className={this.state.inputClass}>
                         <input className="form-control text-right" id="usernameId" type="text" placeholder="نام کاربری " />
@@ -66,11 +66,11 @@ class Signin extends React.Component {
                         </div>
                     </div>
 
-                    <div style={{textAlign:"right", margin:"0 50px 10px 0"}}>
-                        <input id="remember_me" type="checkbox" name="remember" defaultChecked/>
-                        <label htmlFor="remember_me" className="mr-1 ml-2"> مرا به خاطر بسپار</label>
-                    </div>
-                    <button className="red_button btn-danger pr-4 pl-4 mb-4 rounded" name="login"><span> ورود </span></button>
+                    {/*<div style={{textAlign:"right", margin:"0 50px 10px 0"}}>*/}
+                    {/*    <input id="remember_me" type="checkbox" name="remember" defaultChecked/>*/}
+                    {/*    <label htmlFor="remember_me" className="mr-1 ml-2"> مرا به خاطر بسپار</label>*/}
+                    {/*</div>*/}
+                    <button className="red_button btn-danger pr-4 pl-4 mb-4 rounded w-25" name="login"><span> ورود </span></button>
                 </form>
             </div>
         )

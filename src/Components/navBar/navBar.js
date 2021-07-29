@@ -50,10 +50,10 @@ const NavBar = (props) => {
                       className={'navBarItems ' + (window.location.pathname === '/resinfo' ? ' navBarActive ' : '')}>
                     اطلاعات رستوران
                 </Link>
-                <Link to={'/CustomerClub'}
-                      className={'navBarItems ' + (window.location.pathname === '/CustomerClub' ? ' navBarActive ' : '')}>
-                    باشگاه مشتریان
-                </Link>
+                {/*<Link to={'/CustomerClub'}*/}
+                {/*      className={'navBarItems ' + (window.location.pathname === '/CustomerClub' ? ' navBarActive ' : '')}>*/}
+                {/*    باشگاه مشتریان*/}
+                {/*</Link>*/}
             </div>
             <div className='navBarLeftSide'>
                 <div onClick={handleLogout}
