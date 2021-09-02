@@ -68,17 +68,22 @@ class RestaurantInfo extends React.Component {
             resAddress: e.data.address
         })
         document.getElementById('resNameInput').value = name
-        document.getElementById("resPhonesInput").value = e.data.phone.length >1? JSON.parse(e.data.phone).join(" + "):JSON.parse(e.data.phone)[0]
+
+            if (e.data.phone){
+                document.getElementById("resPhonesInput").value =e.data.phone.length > 1? JSON.parse(e.data.phone).join(" + "):JSON.parse(e.data.phone)[0]
+            }
         document.getElementById("resAddressInput").value = e.data.address ? e.data.address : ""
         document.getElementById("resCounterPhone").value = e.data.counterPhone ? e.data.counterPhone : ""
+
         let openTimeArray = JSON.parse(e.data.openTime)
-        for (let i =0;i<openTimeArray.length;i++){
-            this.state.nOpenTime[i.toString()] = openTimeArray[i]
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
+        console.log(openTimeArray)
+        console.log('asldkfj;asdlkfj;saldkjf;lsadkfjl;sdkajf')
+        this.setState({
+            nOpenTime:e.data.openTime
+        })
+        // for (let i =0;i<openTimeArray.length;i++){
+        //     this.state.nOpenTime[i.toString()] = openTimeArray[i]
+        // }
     }
 
     swalSureToChange = (funcOnSubmit = () => {
@@ -139,6 +144,7 @@ class RestaurantInfo extends React.Component {
             })
 
         }
+
     }
 
     handleChangeName = (elem) => {
@@ -212,6 +218,7 @@ class RestaurantInfo extends React.Component {
             daysDialogAnimateClass: 'd-none'
         })
         this.onCloseSelectHours()
+        console.log(this.state.selectedDays)
     }
     handleButtonClickedNew = (event) => {
         if (this.state.nOpenTime[this.state.nSelectedDay]) {
@@ -247,7 +254,9 @@ class RestaurantInfo extends React.Component {
         let arr = this.state.nOpenTime[day]
         if (arr && arr.length > 0) {
             for (let i = 0; i < arr.length; i++) {
-                document.getElementById('h' + arr[i]).style.color = '#5A4A9A'
+                console.log(
+                    document.getElementById('h' + arr[i]).style.color = '#5A4A9A'
+                )
             }
         }
 
