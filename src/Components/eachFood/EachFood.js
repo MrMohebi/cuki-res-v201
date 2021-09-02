@@ -103,7 +103,6 @@ class EachFood extends React.Component {
 
     render() {
         let food = this.props.foodInfoTemp[0]
-        console.log(food)
         return (
             <React.Fragment>
                 <div className="navGap"/>

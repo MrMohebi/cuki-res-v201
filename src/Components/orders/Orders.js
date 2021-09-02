@@ -197,7 +197,13 @@ class Orders extends React.Component {
 
                     )}
                     {this.isThereFood ? null : this.uiComponentNothinFound()}
-                    {this.state.orders.length >= 1 ? this.createRows() : <div/>}
+                    <table>
+                        <tbody>
+                        {this.state.orders.length >= 1 ? this.createRows() : <tr/>}
+
+                        </tbody>
+
+                    </table>
                     {window.location.pathname === '/dashboard' ?
                         <Link style={{
                             color: 'blue',
@@ -228,8 +234,6 @@ class Orders extends React.Component {
         this.isInDash = true
         let howManyToShow = window.location.pathname === '/dashboard' ? 4 : this.state.orders.length
         return (
-
-
             this.state.orders.slice(0, howManyToShow).map(eachOrder => {
                 this.isThereFood = true
                 let foodsDetails = eachOrder.details ? JSON.parse(eachOrder.details) : {general:[], eachFood:[]}
@@ -276,7 +280,7 @@ class Orders extends React.Component {
                                 }
                             </td>
                             <td className="d-none d-sm-table-cell">{func.days_passed(eachOrder["createdAt"]) ? func.days_passed(eachOrder["createdAt"]).split("\n").map(eachPart => {
-                                return <p>{eachPart}</p>
+                                return <p key={eachPart}>{eachPart}</p>
                             }) : ''}</td>
                             <td className="d-none d-sm-table-cell">{sum} <br/><span
                                 style={{color: "#0dec1a"}}>{payStatus}</span></td>

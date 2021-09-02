@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {FormControl, Input, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
 import * as requests from '../../ApiRequests/requests'
@@ -8,7 +8,6 @@ import {store} from "../../Stores/reduxStore/store";
 import './css/style.css';
 import $ from 'jquery';
 
-import SelectHours from "./js/selectHours";
 import IconButton from "@material-ui/core/IconButton";
 
 const ReactSwal = withReactContent(Swal)
@@ -21,6 +20,7 @@ class RestaurantInfo extends React.Component {
         this.addressInput = React.createRef()
         this.counterNumberInput = React.createRef()
     }
+
     state = {
         selectedHours: this.props.resInfo.openTime ? this.props.resInfo.openTime : [],
         days: ['0', '1', '2', '3', '4', '5', '6'],
@@ -49,7 +49,7 @@ class RestaurantInfo extends React.Component {
             '5': [],
             '6': [],
         },
-        openTimeShow:false
+        openTimeShow: false
     }
 
     componentDidMount() {
@@ -69,21 +69,14 @@ class RestaurantInfo extends React.Component {
         })
         document.getElementById('resNameInput').value = name
 
-            if (e.data.phone){
-                document.getElementById("resPhonesInput").value =e.data.phone.length > 1? JSON.parse(e.data.phone).join(" + "):JSON.parse(e.data.phone)[0]
-            }
+        if (e.data.phone) {
+            document.getElementById("resPhonesInput").value = e.data.phone.length > 1 ? JSON.parse(e.data.phone).join(" + ") : JSON.parse(e.data.phone)[0]
+        }
         document.getElementById("resAddressInput").value = e.data.address ? e.data.address : ""
         document.getElementById("resCounterPhone").value = e.data.counterPhone ? e.data.counterPhone : ""
-
-        let openTimeArray = JSON.parse(e.data.openTime)
-        console.log(openTimeArray)
-        console.log('asldkfj;asdlkfj;saldkjf;lsadkfjl;sdkajf')
         this.setState({
-            nOpenTime:e.data.openTime
+            nOpenTime: JSON.parse(e.data.openTime)
         })
-        // for (let i =0;i<openTimeArray.length;i++){
-        //     this.state.nOpenTime[i.toString()] = openTimeArray[i]
-        // }
     }
 
     swalSureToChange = (funcOnSubmit = () => {
@@ -158,7 +151,6 @@ class RestaurantInfo extends React.Component {
         let value = elem.target.value
         let phoneArr = value.split(/[\s\n\rA-Za-z+.]+/).filter(eachInp => eachInp.length === 11 && parseInt(eachInp[0]) === 0);
         if (phoneArr.length < 4 && phoneArr.length > 0) {
-            console.log("number are correct")
             this.swalSureToChange(() => {
                 requests.changeRestaurantPhone(phoneArr, this.checkInfoChanged);
             })
@@ -181,11 +173,6 @@ class RestaurantInfo extends React.Component {
         })
     }
 
-    setSelectedHours = (shList) => {
-        let shListNew = [...shList];
-        this.state.selectedHours = shListNew
-    }
-
     onCloseSelectHours = () => {
         let openTime = {}
         for (let i = 0; i < this.state.selectedDays.length; i++) {
@@ -196,9 +183,6 @@ class RestaurantInfo extends React.Component {
         })
     }
 
-    getStyle = (day) => {
-
-    }
     handelChangeType = (event) => {
         let typeNew = event.target.value
         this.swalSureToChange(() => {
@@ -218,7 +202,6 @@ class RestaurantInfo extends React.Component {
             daysDialogAnimateClass: 'd-none'
         })
         this.onCloseSelectHours()
-        console.log(this.state.selectedDays)
     }
     handleButtonClickedNew = (event) => {
         if (this.state.nOpenTime[this.state.nSelectedDay]) {
@@ -238,25 +221,23 @@ class RestaurantInfo extends React.Component {
             }
         }
     }
-    changeRestaurantCounterPhone = (e)=>{
+    changeRestaurantCounterPhone = (e) => {
         let phone = e.target.value
 
         this.swalSureToChange(() => {
-            if (phone&&phone.length===11){
-                requests.changeRestaurantCounterPhone(phone,this.changeRestaurantCounterPhoneCallback)
+            if (phone && phone.length === 11) {
+                requests.changeRestaurantCounterPhone(phone, this.changeRestaurantCounterPhoneCallback)
             }
         })
     }
-    changeRestaurantCounterPhoneCallback = (res)=>{
+    changeRestaurantCounterPhoneCallback = () => {
     }
     resetButtons = (day) => {
         $('.hoursSelector button').css({color: 'rgba(0, 0, 0, 0.54)'})
         let arr = this.state.nOpenTime[day]
         if (arr && arr.length > 0) {
             for (let i = 0; i < arr.length; i++) {
-                console.log(
-                    document.getElementById('h' + arr[i]).style.color = '#5A4A9A'
-                )
+                document.getElementById('h' + arr[i]).style.color = '#5A4A9A'
             }
         }
 
@@ -266,12 +247,12 @@ class RestaurantInfo extends React.Component {
     }
     buttonColor = (event) => {
     }
-    handleChangeOpenTime = ()=>{
-        if (this.state.nOpenTime){
-            requests.changeRestaurantOpenHours(this.state.nOpenTime,this.changeOpenTimeCallback)
+    handleChangeOpenTime = () => {
+        if (this.state.nOpenTime) {
+            requests.changeRestaurantOpenHours(this.state.nOpenTime, this.changeOpenTimeCallback)
         }
     }
-    changeOpenTimeCallback = (res)=>{
+    changeOpenTimeCallback = (res) => {
         if (res.statusCode === 200) {
             ReactSwal.fire({
                 title: <h2>!با موفقیت انجام شد</h2>,
@@ -296,181 +277,184 @@ class RestaurantInfo extends React.Component {
     render() {
 
         return (
-                <React.Fragment>
-                    <div className='navGap'/>
-                    <div className='IranSansLight smallBox d-flex flex-column justify-content-center align-items-md-center'>
-                        <TextField id={'resNameInput'} ref={this.resNameInput} style={{marginTop: '100px'}}
-                                   defaultValue={'رستوران'}
-                                   style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
-                                   className='IranSansLight mt-2'/>
-                        <TextField id={'resPhonesInput'} ref={this.numbersInput} style={{marginTop: '100px'}} helperText="با + از هم جدا کنید"
-                                   defaultValue={'09'}
-                                   style={{width: "150px"}} label="شماره تماس ها" onBlur={this.handleChangePhone}
-                                   className='IranSansLight mt-2'/>
-                                   <TextField id={'resCounterPhone'} ref={this.counterNumberInput} style={{marginTop: '100px'}}
-                                   defaultValue={'09'}
-                                   style={{width: "150px",whiteSpace:'nowrap'}} label="شماره تماس صندوق دار" onBlur={this.changeRestaurantCounterPhone}
-                                   className='IranSansLight mt-2'/>
-                        <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
-                                   style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
-                                   className='mt-2'/>
-                        {/*<SelectHours style={{backgroundColor: 'red'}} defaultSh={this.state.selectedHours}*/}
-                        {/*             onClose={this.onCloseSelectHours} setSh={this.setSelectedHours}/>*/}
-                        <button onClick={() => {
-                            this.setState({
-                                openTimeShow:true
-                            })
-                        }} style={{margin: '90px auto 30px auto'}} className='btn btn-outline-dark mt-4'>روز های باز رستوران
-                        </button>
+            <React.Fragment>
+                <div className='navGap'/>
+                <div className='IranSansLight smallBox d-flex flex-column justify-content-center align-items-md-center'>
+                    <TextField id={'resNameInput'} ref={this.resNameInput} style={{marginTop: '100px'}}
+                               defaultValue={'رستوران'}
+                               style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
+                               className='IranSansLight mt-2'/>
+                    <TextField id={'resPhonesInput'} ref={this.numbersInput} style={{marginTop: '100px'}}
+                               helperText="با + از هم جدا کنید"
+                               defaultValue={'09'}
+                               style={{width: "150px"}} label="شماره تماس ها" onBlur={this.handleChangePhone}
+                               className='IranSansLight mt-2'/>
+                    <TextField id={'resCounterPhone'} ref={this.counterNumberInput} style={{marginTop: '100px'}}
+                               defaultValue={'09'}
+                               style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره تماس صندوق دار"
+                               onBlur={this.changeRestaurantCounterPhone}
+                               className='IranSansLight mt-2'/>
+                    <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
+                               style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
+                               className='mt-2'/>
+                    {/*<SelectHours style={{backgroundColor: 'red'}} defaultSh={this.state.selectedHours}*/}
+                    {/*             onClose={this.onCloseSelectHours} setSh={this.setSelectedHours}/>*/}
+                    <button onClick={() => {
+                        this.setState({
+                            openTimeShow: true
+                        })
+                    }} style={{margin: '90px auto 30px auto'}} className='btn btn-outline-dark mt-4'>روز های باز رستوران
+                    </button>
 
-                        {/*<FormControl style={{minWidth: "120px"}}>*/}
-                        {/*    <InputLabel id="demo-simple-select-helper-label">نوع</InputLabel>*/}
-                        {/*    <Select labelId="demo-simple-select-helper-label"*/}
-                        {/*            defaultValue={this.props.resInfo.type ? JSON.parse(this.props.resInfo.type) : ""}*/}
-                        {/*            onChange={this.handelChangeType}>*/}
-                        {/*        <MenuItem value={this.state.resType}>*/}
-                        {/*            <em>انتخاب نشده</em>*/}
-                        {/*        </MenuItem>*/}
-                        {/*        <MenuItem value={['coffeeshop']}>کافه</MenuItem>*/}
-                        {/*        <MenuItem value={['restaurant']}>رستوران</MenuItem>*/}
-                        {/*        <MenuItem value={['coffeeshop', 'restaurant']}>کافه رستوران</MenuItem>*/}
-                        {/*    </Select>*/}
-                        {/*</FormControl>*/}
-                        <div style={{position: 'absolute',}}
-                             className={"shMainContainer shadow " + (this.state.openTimeShow ? 'animate__animated animate__fadeInUp' : 'd-none')}>
-                            <div className="shRow">
-                                <IconButton color={this.state.nSelectedDay === '0' ? 'primary' : ''} onClick={(e) => {
-                                    this.resetButtons(0)
-                                    this.setState({
-                                        nSelectedDay: '0'
-                                    })
-                                    this.state.nSelectedDay = '0'
+                    {/*<FormControl style={{minWidth: "120px"}}>*/}
+                    {/*    <InputLabel id="demo-simple-select-helper-label">نوع</InputLabel>*/}
+                    {/*    <Select labelId="demo-simple-select-helper-label"*/}
+                    {/*            defaultValue={this.props.resInfo.type ? JSON.parse(this.props.resInfo.type) : ""}*/}
+                    {/*            onChange={this.handelChangeType}>*/}
+                    {/*        <MenuItem value={this.state.resType}>*/}
+                    {/*            <em>انتخاب نشده</em>*/}
+                    {/*        </MenuItem>*/}
+                    {/*        <MenuItem value={['coffeeshop']}>کافه</MenuItem>*/}
+                    {/*        <MenuItem value={['restaurant']}>رستوران</MenuItem>*/}
+                    {/*        <MenuItem value={['coffeeshop', 'restaurant']}>کافه رستوران</MenuItem>*/}
+                    {/*    </Select>*/}
+                    {/*</FormControl>*/}
+                    <div style={{position: 'absolute',}}
+                         className={"shMainContainer shadow " + (this.state.openTimeShow ? 'animate__animated animate__fadeInUp' : 'd-none')}>
+                        <div className="shRow">
+                            <IconButton color={this.state.nSelectedDay === '0' ? 'primary' : 'default'} onClick={(e) => {
+                                this.resetButtons(0)
+                                this.setState({
+                                    nSelectedDay: '0'
+                                })
+                                this.state.nSelectedDay = '0'
 
-                                }} size="small"
-                                            className="m-1">شنبه</IconButton>
-                                <IconButton color={this.state.nSelectedDay === '1' ? 'primary' : ''} onClick={(e) => {
-                                    this.setState({
-                                        nSelectedDay: '1'
-                                    })
-                                    this.state.nSelectedDay = '1'
-                                    this.resetButtons(1)
+                            }} size="small"
+                                        className="m-1">شنبه</IconButton>
+                            <IconButton color={this.state.nSelectedDay === '1' ? 'primary' : 'default'} onClick={(e) => {
+                                this.setState({
+                                    nSelectedDay: '1'
+                                })
+                                this.state.nSelectedDay = '1'
+                                this.resetButtons(1)
 
-                                }} size="small"
-                                            className="m-1">یکشنبه</IconButton>
-                                <IconButton color={this.state.nSelectedDay === '2' ? 'primary' : ''} onClick={(e) => {
-                                    this.setState({
-                                        nSelectedDay: '2'
-                                    })
-                                    this.resetButtons(2)
+                            }} size="small"
+                                        className="m-1">یکشنبه</IconButton>
+                            <IconButton color={this.state.nSelectedDay === '2' ? 'primary' : 'default'} onClick={(e) => {
+                                this.setState({
+                                    nSelectedDay: '2'
+                                })
+                                this.resetButtons(2)
 
-                                }} size="small"
-                                            className="m-1">دوشنبه</IconButton>
-                                <IconButton color={this.state.nSelectedDay === '3' ? 'primary' : ''} onClick={(e) => {
-                                    this.setState({
-                                        nSelectedDay: '3'
-                                    })
-                                    this.resetButtons(3)
+                            }} size="small"
+                                        className="m-1">دوشنبه</IconButton>
+                            <IconButton color={this.state.nSelectedDay === '3' ? 'primary' : 'default'} onClick={(e) => {
+                                this.setState({
+                                    nSelectedDay: '3'
+                                })
+                                this.resetButtons(3)
 
-                                }} size="small" className="m-1">سه
-                                    شنبه</IconButton>
-                                <IconButton color={this.state.nSelectedDay === '4' ? 'primary' : ''} onClick={(e) => {
-                                    this.setState({
-                                        nSelectedDay: '4'
-                                    })
-                                    this.resetButtons(4)
+                            }} size="small" className="m-1">سه
+                                شنبه</IconButton>
+                            <IconButton color={this.state.nSelectedDay === '4' ? 'primary' : 'default'} onClick={(e) => {
+                                this.setState({
+                                    nSelectedDay: '4'
+                                })
+                                this.resetButtons(4)
 
-                                }} size="small" className="m-1">چهار
-                                    شنبه</IconButton>
-                                <IconButton color={this.state.nSelectedDay === '5' ? 'primary' : ''} onClick={(e) => {
-                                    this.setState({
-                                        nSelectedDay: '5'
-                                    })
-                                    this.resetButtons(5)
+                            }} size="small" className="m-1">چهار
+                                شنبه</IconButton>
+                            <IconButton color={this.state.nSelectedDay === '5' ? 'primary' : 'default'} onClick={(e) => {
+                                this.setState({
+                                    nSelectedDay: '5'
+                                })
+                                this.resetButtons(5)
 
-                                }} size="small" className="m-1">پنج
-                                    شنبه</IconButton>
-                                <IconButton color={this.state.nSelectedDay === '6' ? 'primary' : ''} onClick={(e) => {
-                                    this.setState({
-                                        nSelectedDay: '6'
-                                    })
-                                    this.resetButtons(6)
+                            }} size="small" className="m-1">پنج
+                                شنبه</IconButton>
+                            <IconButton color={this.state.nSelectedDay === '6' ? 'primary' : 'default'} onClick={(e) => {
+                                this.setState({
+                                    nSelectedDay: '6'
+                                })
+                                this.resetButtons(6)
 
-                                }} size="small"
-                                            className="m-1">جمعه</IconButton>
-                            </div>
-                            <div className='hoursSelector'>
-                                <div className="shRow">
-                                    <IconButton id='h0'
-                                                onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">00</IconButton>
-                                    <IconButton id='h1' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">01</IconButton>
-                                    <IconButton id='h2' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">02</IconButton>
-                                    <IconButton id='h3' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">03</IconButton>
-                                    <IconButton id='h4' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">04</IconButton>
-                                    <IconButton id='h5' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">05</IconButton>
-                                </div>
-                                <div className="shRow">
-                                    <IconButton id='h6' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">06</IconButton>
-                                    <IconButton id='h7' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">07</IconButton>
-                                    <IconButton id='h8' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">08</IconButton>
-                                    <IconButton id='h9' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">09</IconButton>
-                                    <IconButton id='h10' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">10</IconButton>
-                                    <IconButton id='h11' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">11</IconButton>
-                                </div>
-                                <div className="shRow">
-                                    <IconButton id='h12' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">12</IconButton>
-                                    <IconButton id='h13' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">13</IconButton>
-                                    <IconButton id='h14' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">14</IconButton>
-                                    <IconButton id='h15' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">15</IconButton>
-                                    <IconButton id='h16' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">16</IconButton>
-                                    <IconButton id='h17' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">17</IconButton>
-                                </div>
-                                <div className="shRow">
-                                    <IconButton id='h18' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">18</IconButton>
-                                    <IconButton id='h19' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">19</IconButton>
-                                    <IconButton id='h20' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">20</IconButton>
-                                    <IconButton id='h21' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">21</IconButton>
-                                    <IconButton id='h22' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">22</IconButton>
-                                    <IconButton id='h23' onClick={this.handleButtonClickedNew} size="small"
-                                                className="m-1">23</IconButton>
-                                </div>
-                                <div className='w-100 text-center'>
-                                    <div className='daysSubmitButton' onClick={() => {
-                                        this.handleChangeOpenTime()
-                                        this.setState({
-                                            openTimeShow:false
-                                        })
-                                    }}>تایید</div>
-                                </div>
-                            </div>
-
+                            }} size="small"
+                                        className="m-1">جمعه</IconButton>
                         </div>
+                        <div className='hoursSelector'>
+                            <div className="shRow">
+                                <IconButton id='h0'
+                                            onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">00</IconButton>
+                                <IconButton id='h1' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">01</IconButton>
+                                <IconButton id='h2' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">02</IconButton>
+                                <IconButton id='h3' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">03</IconButton>
+                                <IconButton id='h4' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">04</IconButton>
+                                <IconButton id='h5' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">05</IconButton>
+                            </div>
+                            <div className="shRow">
+                                <IconButton id='h6' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">06</IconButton>
+                                <IconButton id='h7' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">07</IconButton>
+                                <IconButton id='h8' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">08</IconButton>
+                                <IconButton id='h9' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">09</IconButton>
+                                <IconButton id='h10' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">10</IconButton>
+                                <IconButton id='h11' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">11</IconButton>
+                            </div>
+                            <div className="shRow">
+                                <IconButton id='h12' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">12</IconButton>
+                                <IconButton id='h13' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">13</IconButton>
+                                <IconButton id='h14' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">14</IconButton>
+                                <IconButton id='h15' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">15</IconButton>
+                                <IconButton id='h16' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">16</IconButton>
+                                <IconButton id='h17' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">17</IconButton>
+                            </div>
+                            <div className="shRow">
+                                <IconButton id='h18' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">18</IconButton>
+                                <IconButton id='h19' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">19</IconButton>
+                                <IconButton id='h20' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">20</IconButton>
+                                <IconButton id='h21' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">21</IconButton>
+                                <IconButton id='h22' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">22</IconButton>
+                                <IconButton id='h23' onClick={this.handleButtonClickedNew} size="small"
+                                            className="m-1">23</IconButton>
+                            </div>
+                            <div className='w-100 text-center'>
+                                <div className='daysSubmitButton' onClick={() => {
+                                    this.handleChangeOpenTime()
+                                    this.setState({
+                                        openTimeShow: false
+                                    })
+                                }}>تایید
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+                </div>
 
 
-                </React.Fragment>
+            </React.Fragment>
         )
 
     }

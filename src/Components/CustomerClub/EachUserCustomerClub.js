@@ -68,7 +68,6 @@ class EachUserCustomerClub extends React.Component {
         let orders = [];
         orders = orderList;
         let ordersUi = orders.slice(0, this.state.showAll ? orders.length : 5).map(eachOrder => {
-            console.log(eachOrder)
             let foodsInOrder = JSON.parse(eachOrder.order_list).map(eachFood => {
                 return (
                     <div

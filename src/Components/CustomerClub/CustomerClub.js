@@ -7,7 +7,6 @@ import medal from './assets/img/medal.png'
 import './css/CustomerClub.css'
 import {Avatar} from "@material-ui/core";
 import moment from "jalali-moment";
-import {Link} from "react-router-dom";
 import {getRandomColor} from '../../functions/randomColor'
 class CustomerClub extends React.Component {
     constructor(props) {
@@ -183,8 +182,6 @@ class CustomerClub extends React.Component {
             this.setState({
                 mostOrderedFoodsUi: mostOrderedFoodsUi
             },()=>{
-                console.log(this.mostOrderedFoodsContainerRef.current.childNodes[0].classList)
-
                 for (let i = 0 ;i<this.mostOrderedFoodsContainerRef.current.childNodes.length;i++){
                     setTimeout(()=>{
                         if (this.mostOrderedFoodsContainerRef.current.childNodes[i].classList.contains("invisible")){

@@ -9,7 +9,7 @@ function TurnPhone(){
         <div className={'TurnPhone position-absolute flex-column w-100 h-100 bg-white  justify-content-center align-items-center'}>
             <span> اندازه صفحه کوچک تر از حد مجاز</span>
             <Player
-                autoplay
+                autoPlay
                 loop
                 src={Anime}
                 style={{ height: '300px', width: '300px' }}
