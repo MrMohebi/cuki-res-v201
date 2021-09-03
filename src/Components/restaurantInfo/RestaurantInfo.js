@@ -6,6 +6,7 @@ import withReactContent from 'sweetalert2-react-content'
 import * as requests from '../../ApiRequests/requests'
 import {store} from "../../Stores/reduxStore/store";
 import './css/style.css';
+import './js/css/selectedHoursStylesheet.css'
 import $ from 'jquery';
 
 import IconButton from "@material-ui/core/IconButton";
@@ -275,7 +276,6 @@ class RestaurantInfo extends React.Component {
 
 
     render() {
-
         return (
             <React.Fragment>
                 <div className='navGap'/>
@@ -320,7 +320,7 @@ class RestaurantInfo extends React.Component {
                     {/*    </Select>*/}
                     {/*</FormControl>*/}
                     <div style={{position: 'absolute',}}
-                         className={"shMainContainer shadow " + (this.state.openTimeShow ? 'animate__animated animate__fadeInUp' : 'd-none')}>
+                         className={"shMainContainer openDays shadow " + (this.state.openTimeShow ? 'animate__animated animate__fadeInUp' : 'd-none')}>
                         <div className="shRow">
                             <IconButton color={this.state.nSelectedDay === '0' ? 'primary' : 'default'} onClick={(e) => {
                                 this.resetButtons(0)
