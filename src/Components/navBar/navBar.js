@@ -50,6 +50,10 @@ const NavBar = (props) => {
                       className={'navBarItems ' + (window.location.pathname === '/resinfo' ? ' navBarActive ' : '')}>
                     اطلاعات رستوران
                 </Link>
+                <Link to={'/tutorials'}
+                      className={'navBarItems ' + (window.location.pathname === '/tutorials' ? ' navBarActive ' : '')}>
+                    آموزش های پنل
+                </Link>
                 {/*<Link to={'/CustomerClub'}*/}
                 {/*      className={'navBarItems ' + (window.location.pathname === '/CustomerClub' ? ' navBarActive ' : '')}>*/}
                 {/*    باشگاه مشتریان*/}

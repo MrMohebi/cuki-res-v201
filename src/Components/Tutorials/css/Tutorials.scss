@@ -1,0 +1,29 @@
+.each-tutorial-section {
+  .each-tutorial-body {
+    //transition: .4s ease;
+    //max-height: 0;
+    overflow: hidden;
+  }
+}
+i{
+  transition: .2s ease ;
+
+}
+
+.tutorial-open {
+  .each-tutorial-body {
+    //max-height: 100vh;
+  }
+  i.angle{
+    transform: rotate(180deg);
+  }
+}
+
+.checkbox-holder{
+  transition: .3s ease;
+  overflow: hidden;
+  border: #e3e3e3 solid 1px;
+  &:hover{
+    box-shadow: #c7c7c7 0 0 5px;
+  }
+}

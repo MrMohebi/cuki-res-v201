@@ -1,0 +1,22 @@
+.each-tutorial-section .each-tutorial-body {
+  overflow: hidden;
+}
+
+i {
+  transition: 0.2s ease;
+}
+
+.tutorial-open i.angle {
+  transform: rotate(180deg);
+}
+
+.checkbox-holder {
+  transition: 0.3s ease;
+  overflow: hidden;
+  border: #e3e3e3 solid 1px;
+}
+.checkbox-holder:hover {
+  box-shadow: #c7c7c7 0 0 5px;
+}
+
+/*# sourceMappingURL=Tutorials.css.map */
