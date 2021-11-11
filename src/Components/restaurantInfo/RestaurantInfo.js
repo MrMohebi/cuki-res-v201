@@ -20,6 +20,7 @@ class RestaurantInfo extends React.Component {
         this.numbersInput = React.createRef()
         this.addressInput = React.createRef()
         this.counterNumberInput = React.createRef()
+        this.RestaurantAccountCode = React.createRef()
     }
 
     state = {
@@ -173,6 +174,13 @@ class RestaurantInfo extends React.Component {
             requests.changeRestaurantAddress(value, this.checkInfoChanged);
         })
     }
+    changeRestaurantAccountCode = (elem) => {
+        let value = elem.target.value
+        this.swalSureToChange(() => {
+            // requests.changeRestaurantAddress(value, this.checkInfoChanged);
+            //TODO add the request
+        })
+    }
 
     onCloseSelectHours = () => {
         let openTime = {}
@@ -294,11 +302,18 @@ class RestaurantInfo extends React.Component {
                                style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره تماس صندوق دار"
                                onBlur={this.changeRestaurantCounterPhone}
                                className='IranSansLight mt-2'/>
+
                     <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
                                style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
                                className='mt-2'/>
                     {/*<SelectHours style={{backgroundColor: 'red'}} defaultSh={this.state.selectedHours}*/}
                     {/*             onClose={this.onCloseSelectHours} setSh={this.setSelectedHours}/>*/}
+                    <TextField id={'resCounterPhone'} ref={this.RestaurantAccountCode} style={{marginTop: '100px'}}
+                               defaultValue={'00000000000000'}
+                               style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره حساب"
+                               onBlur={this.changeRestaurantAccountCode}
+                               className='IranSansLight mt-2'/>
+
                     <button onClick={() => {
                         this.setState({
                             openTimeShow: true

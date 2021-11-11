@@ -8,6 +8,7 @@ import {FormControl, MenuItem, Select} from '@material-ui/core';
 import './css/style.css'
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import FoodGallery from "./components/FoodGallery";
 
 const ReactSwal = withReactContent(Swal)
 
@@ -218,6 +219,8 @@ class EachFood extends React.Component {
                         {/*    آپلود عکس*/}
                         {/*</button>*/}
                         {this.state.selectedFile ? this.state.selectedFile.name : null}
+                        <FoodGallery/>
+
                     </div>
 
                 </div>
