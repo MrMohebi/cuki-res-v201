@@ -3,7 +3,6 @@ import './css/style.css';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {Link} from "react-router-dom";
 import {removeCacheToken} from "../../Stores/cache/cacheData";
-import ResState from "../ResState/ResState";
 
 
 const NavBar = (props) => {
@@ -36,24 +35,24 @@ const NavBar = (props) => {
                       className={'navBarItems ' + (window.location.pathname === '/dashboard' ? ' navBarActive ' : '')}>
                     داشبورد
                 </Link>
-                <Link to={'/foods'}
-                      className={'navBarItems ' + (window.location.pathname === '/foods' ? ' navBarActive ' : '')}
-                >
-                    لیست غذا
-                </Link>
-                <Link to={'/orders'}
-                      className={'navBarItems ' + (window.location.pathname === '/orders' ? ' navBarActive ' : '')}
-                >
-                    لیست سفارشات
-                </Link>
+                {/*<Link to={'/foods'}*/}
+                {/*      className={'navBarItems ' + (window.location.pathname === '/foods' ? ' navBarActive ' : '')}*/}
+                {/*>*/}
+                {/*    لیست غذا*/}
+                {/*</Link>*/}
+                {/*<Link to={'/orders'}*/}
+                {/*      className={'navBarItems ' + (window.location.pathname === '/orders' ? ' navBarActive ' : '')}*/}
+                {/*>*/}
+                {/*    لیست سفارشات*/}
+                {/*</Link>*/}
                 <Link to={'/resinfo'}
                       className={'navBarItems ' + (window.location.pathname === '/resinfo' ? ' navBarActive ' : '')}>
                     اطلاعات رستوران
                 </Link>
-                <Link to={'/tutorials'}
-                      className={'navBarItems ' + (window.location.pathname === '/tutorials' ? ' navBarActive ' : '')}>
-                    آموزش های پنل
-                </Link>
+                {/*<Link to={'/tutorials'}*/}
+                {/*      className={'navBarItems ' + (window.location.pathname === '/tutorials' ? ' navBarActive ' : '')}>*/}
+                {/*    آموزش های پنل*/}
+                {/*</Link>*/}
                 {/*<Link to={'/CustomerClub'}*/}
                 {/*      className={'navBarItems ' + (window.location.pathname === '/CustomerClub' ? ' navBarActive ' : '')}>*/}
                 {/*    باشگاه مشتریان*/}
@@ -65,7 +64,7 @@ const NavBar = (props) => {
                     <ExitToAppIcon style={{transform: 'rotate(180deg)', cursor: 'pointer', marginLeft: '10px'}}/>
                     <div style={{marginLeft: '5px'}}>خروج</div>
                 </div>
-                <ResState/>
+                {/*<ResState/>*/}
 
             </div>
         </div>

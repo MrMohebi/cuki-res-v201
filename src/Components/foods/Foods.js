@@ -137,8 +137,14 @@ class Foods extends React.Component {
                             <tr className="bg-light">
                                 <th style={{borderTopLeftRadius: "15px"}}/>
                                 <th style={{borderTopLeftRadius: "15px"}}>وضعیت</th>
-                                <th style={{width: "110px"}}>قیمت</th>
-                                <th>درصد تخفیف</th>
+                                <th style={{width: "110px"}}> <span style={{
+                                    fontSize:'0.7rem',
+                                    color:'grey'
+                                }}>(تومان)</span> قیمت</th>
+                                <th><span style={{
+                                    fontSize:'0.7rem',
+                                    color:'grey'
+                                }}>(درصد)</span> تخفیف</th>
                                 <th>نام</th>
                                 <th style={{borderTopRightRadius: "15px"}}>#</th>
                             </tr>

@@ -1,5 +1,4 @@
 import React from "react";
-import Orders from "../orders/Orders";
 import {connect} from "react-redux";
 import Foods from '../foods/Foods'
 
@@ -16,7 +15,7 @@ class Dashboard extends React.Component{
             <React.Fragment>
 
                 <div style={{height: "30px", width: "100%"}}/>
-                <Orders/>
+                {/*<Orders/>*/}
                 <Foods history={this.props.history}/>
             </React.Fragment>
         )

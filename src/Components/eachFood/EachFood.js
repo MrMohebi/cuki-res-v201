@@ -154,7 +154,10 @@ class EachFood extends React.Component {
                                        aria-describedby="basic-addon1"/>
                             </div>
 
-                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'>زمان تحویل</p>
+                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'> <span style={{
+                                fontSize:'0.7rem',
+                                color:'grey'
+                            }}>(دقیقه)</span>  زمان تحویل </p>
 
                             <div className="input-group input-group-sm inputGroups">
 
