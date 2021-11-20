@@ -1,6 +1,8 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {TextField} from "@material-ui/core";
+import {ButtonBase} from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";   //true
+
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
 import * as requests from '../../ApiRequests/requests'
@@ -38,7 +40,7 @@ class RestaurantInfo extends React.Component {
         selectedDays: ['0'],
         daysDialogAnimateClass: 'd-none',
         resName: '',
-        resPhones: '',
+        resPhones: [],
         resAddress: '',
         resType: '',
         nSelectedDay: '',
@@ -51,6 +53,7 @@ class RestaurantInfo extends React.Component {
             '5': [],
             '6': [],
         },
+        resNumbersCounter: 2,
         openTimeShow: false
     }
 
@@ -66,14 +69,11 @@ class RestaurantInfo extends React.Component {
         let name = e.data.persianName
         this.setState({
             resName: name,
-            resPhones: e.data.phone,
+            resPhones: JSON.parse(e.data['phones']),
             resAddress: e.data.address
         })
         document.getElementById('resNameInput').value = name
 
-        if (e.data.phone) {
-            document.getElementById("resPhonesInput").value = e.data.phone.length > 1 ? JSON.parse(e.data.phone).join(" + ") : JSON.parse(e.data.phone)[0]
-        }
         document.getElementById("resAddressInput").value = e.data.address ? e.data.address : ""
         document.getElementById("resCounterPhone").value = e.data.counterPhone ? e.data.counterPhone : ""
         this.setState({
@@ -288,38 +288,132 @@ class RestaurantInfo extends React.Component {
             <React.Fragment>
                 <div className='navGap'/>
                 <div className='IranSansLight smallBox d-flex flex-column justify-content-center align-items-md-center'>
-                    <TextField id={'resNameInput'} ref={this.resNameInput} style={{marginTop: '100px'}}
-                               defaultValue={'رستوران'}
-                               style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
-                               className='IranSansLight mt-2'/>
-                    <TextField id={'resPhonesInput'} ref={this.numbersInput} style={{marginTop: '100px'}}
-                               helperText="با + از هم جدا کنید"
-                               defaultValue={'09'}
-                               style={{width: "150px"}} label="شماره تماس ها" onBlur={this.handleChangePhone}
-                               className='IranSansLight mt-2'/>
-                    <TextField id={'resCounterPhone'} ref={this.counterNumberInput} style={{marginTop: '100px'}}
-                               defaultValue={'09'}
-                               style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره تماس صندوق دار"
-                               onBlur={this.changeRestaurantCounterPhone}
-                               className='IranSansLight mt-2'/>
+                    <span>لوگو</span>
+                    <div className={'d-flex justify-content-center align-items-center flex-column'}>
+                        <div className={'mt-3'} style={{
+                            height: 100,
+                            width: 100,
+                            backgroundSize: 'cover',
+                            backgroundImage: `url(${'https://img.freepik.com/free-vector/food-logo-design_139869-254.jpg?size=626&ext=jpg'})`,
+                            backgroundPosition: 'center',
+                            borderRadius: '100%'
+                        }}/>
+                        <ButtonBase className={'mt-2'}
+                                    style={{
+                                        border: '1px gray solid',
+                                        borderRadius: '10px',
+                                        width: 80,
+                                        height: 40,
+                                        fontSize: '0.9rem'
+                                    }}
+                        >
+                            تغیر لوگو
+                        </ButtonBase>
+                    </div>
+                    <div className={'mt-4'}></div>
+                    <span>اطلاعات مجموعه</span>
+                    <div className={'mt-1'}></div>
 
-                    <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
-                               style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
-                               className='mt-2'/>
-                    {/*<SelectHours style={{backgroundColor: 'red'}} defaultSh={this.state.selectedHours}*/}
-                    {/*             onClose={this.onCloseSelectHours} setSh={this.setSelectedHours}/>*/}
-                    <TextField id={'resCounterPhone'} ref={this.RestaurantAccountCode} style={{marginTop: '100px'}}
-                               defaultValue={'00000000000000'}
-                               style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره حساب"
-                               onBlur={this.changeRestaurantAccountCode}
-                               className='IranSansLight mt-2'/>
 
-                    <button onClick={() => {
-                        this.setState({
-                            openTimeShow: true
-                        })
-                    }} style={{margin: '90px auto 30px auto'}} className='btn btn-outline-dark mt-4'>روز های باز رستوران
-                    </button>
+                    <div dir={'rtl'} className={'IranSansLight d-flex flex-column'}>
+                        <TextField id={'resNameInput'} ref={this.resNameInput} style={{marginTop: '100px'}}
+                                   defaultValue={'رستوران'}
+                                   style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
+                                   className='IranSansLight mt-3'
+                        />
+
+                        {
+                            this.state.resPhones.map((eachNumber, index) => {
+                                return (
+                                    <TextField id={'resPhonesInput-' + index} ref={this.numbersInput}
+                                               style={{marginTop: '100px', width: "150px", transition: '.3s ease'}}
+                                               defaultValue={eachNumber}
+                                               label="شماره تماس "
+                                               onBlur={this.handleChangePhone}
+                                               onChange={(e) => {
+                                                   this.state.resPhones[index] = e.currentTarget.value
+                                                   this.setState({
+                                                       resPhones: this.state.resPhones
+                                                   })
+                                               }}
+                                               className='IranSansLight mt-3'
+                                    />
+                                )
+                            })
+                        }
+                        {
+                            this.state.resPhones.length < 5 ?
+                                <ButtonBase className={'mt-2'}
+                                            style={{
+                                                border: '1px gray solid',
+                                                borderRadius: '10px',
+                                                width: '100%',
+                                                height: 40,
+                                                fontSize: '0.9rem'
+                                            }}
+                                            onClick={() => {
+                                                if (this.state.resPhones[this.state.resPhones.length - 1]) {
+                                                    this.state.resPhones.push('')
+                                                    this.setState({
+                                                        resPhones: this.state.resPhones
+                                                    })
+                                                } else {
+                                                    let textField = document.getElementById('resPhonesInput-' + (this.state.resPhones.length - 1)).parentElement.parentElement
+                                                    if (!textField.classList.contains('phone-error')){
+                                                        textField.classList.add("phone-error")
+                                                        setTimeout(()=>{
+                                                            textField.classList.remove("phone-error")
+                                                        },1000)
+                                                    }
+
+                                                    // document.getElementById('resPhonesInput-' + (this.state.resPhones.length - 1)).parentElement.classList.add('phone-error')
+                                                    // document.getElementById('resPhonesInput-'+(this.state.resPhones.length-1)).classList.add('phone-error')
+                                                }
+                                            }}
+
+                                >
+                                    افزودن شماره تماس
+                                    <i style={{fontSize: '0.7rem'}} className={'fas fa-plus mx-2'}/>
+                                </ButtonBase>
+                                :
+                                null
+                        }
+
+
+                        <TextField id={'resCounterPhone'} ref={this.counterNumberInput} style={{marginTop: '100px'}}
+                                   defaultValue={'09'}
+                                   style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره تماس صندوق دار"
+                                   onBlur={this.changeRestaurantCounterPhone}
+                                   className='IranSansLight mt-3'/>
+
+                        <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
+                                   style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
+                                   multiline
+                                   className='mt-2'/>
+
+                        <TextField id={'resCounterPhone'} ref={this.RestaurantAccountCode} style={{marginTop: '100px'}}
+                                   defaultValue={'00000000000000'}
+                                   style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره حساب"
+                                   onBlur={this.changeRestaurantAccountCode}
+                                   className='IranSansLight mt-3'/>
+                        <ButtonBase onClick={() => {
+                            this.setState({
+                                openTimeShow: true
+                            })
+                        }} style={{
+                            margin: '90px auto 30px auto',
+                            border: '1px gray solid',
+                            borderRadius: '10px',
+                            width: '100%',
+                            height: 40,
+                            fontSize: '0.9rem'
+
+                        }} className='btn btn-outline-dark mt-4'>روز های باز رستوران
+                        </ButtonBase>
+
+
+                    </div>
+
 
                     {/*<FormControl style={{minWidth: "120px"}}>*/}
                     {/*    <InputLabel id="demo-simple-select-helper-label">نوع</InputLabel>*/}
@@ -337,122 +431,83 @@ class RestaurantInfo extends React.Component {
                     <div style={{position: 'absolute',}}
                          className={"shMainContainer openDays shadow " + (this.state.openTimeShow ? 'animate__animated animate__fadeInUp' : 'd-none')}>
                         <div className="shRow">
-                            <IconButton color={this.state.nSelectedDay === '0' ? 'primary' : 'default'} onClick={(e) => {
-                                this.resetButtons(0)
-                                this.setState({
-                                    nSelectedDay: '0'
-                                })
-                                this.state.nSelectedDay = '0'
+                            <IconButton color={this.state.nSelectedDay === '0' ? 'primary' : 'default'}
+                                        onClick={(e) => {
+                                            this.resetButtons(0)
+                                            this.setState({
+                                                nSelectedDay: '0'
+                                            })
+                                            this.state.nSelectedDay = '0'
 
-                            }} size="small"
+                                        }} size="small"
                                         className="m-1">شنبه</IconButton>
-                            <IconButton color={this.state.nSelectedDay === '1' ? 'primary' : 'default'} onClick={(e) => {
-                                this.setState({
-                                    nSelectedDay: '1'
-                                })
-                                this.state.nSelectedDay = '1'
-                                this.resetButtons(1)
+                            <IconButton color={this.state.nSelectedDay === '1' ? 'primary' : 'default'}
+                                        onClick={(e) => {
+                                            this.setState({
+                                                nSelectedDay: '1'
+                                            })
+                                            this.state.nSelectedDay = '1'
+                                            this.resetButtons(1)
 
-                            }} size="small"
+                                        }} size="small"
                                         className="m-1">یکشنبه</IconButton>
-                            <IconButton color={this.state.nSelectedDay === '2' ? 'primary' : 'default'} onClick={(e) => {
-                                this.setState({
-                                    nSelectedDay: '2'
-                                })
-                                this.resetButtons(2)
+                            <IconButton color={this.state.nSelectedDay === '2' ? 'primary' : 'default'}
+                                        onClick={(e) => {
+                                            this.setState({
+                                                nSelectedDay: '2'
+                                            })
+                                            this.resetButtons(2)
 
-                            }} size="small"
+                                        }} size="small"
                                         className="m-1">دوشنبه</IconButton>
-                            <IconButton color={this.state.nSelectedDay === '3' ? 'primary' : 'default'} onClick={(e) => {
-                                this.setState({
-                                    nSelectedDay: '3'
-                                })
-                                this.resetButtons(3)
+                            <IconButton color={this.state.nSelectedDay === '3' ? 'primary' : 'default'}
+                                        onClick={(e) => {
+                                            this.setState({
+                                                nSelectedDay: '3'
+                                            })
+                                            this.resetButtons(3)
 
-                            }} size="small" className="m-1">سه
+                                        }} size="small" className="m-1">سه
                                 شنبه</IconButton>
-                            <IconButton color={this.state.nSelectedDay === '4' ? 'primary' : 'default'} onClick={(e) => {
-                                this.setState({
-                                    nSelectedDay: '4'
-                                })
-                                this.resetButtons(4)
+                            <IconButton color={this.state.nSelectedDay === '4' ? 'primary' : 'default'}
+                                        onClick={(e) => {
+                                            this.setState({
+                                                nSelectedDay: '4'
+                                            })
+                                            this.resetButtons(4)
 
-                            }} size="small" className="m-1">چهار
+                                        }} size="small" className="m-1">چهار
                                 شنبه</IconButton>
-                            <IconButton color={this.state.nSelectedDay === '5' ? 'primary' : 'default'} onClick={(e) => {
-                                this.setState({
-                                    nSelectedDay: '5'
-                                })
-                                this.resetButtons(5)
+                            <IconButton color={this.state.nSelectedDay === '5' ? 'primary' : 'default'}
+                                        onClick={(e) => {
+                                            this.setState({
+                                                nSelectedDay: '5'
+                                            })
+                                            this.resetButtons(5)
 
-                            }} size="small" className="m-1">پنج
+                                        }} size="small" className="m-1">پنج
                                 شنبه</IconButton>
-                            <IconButton color={this.state.nSelectedDay === '6' ? 'primary' : 'default'} onClick={(e) => {
-                                this.setState({
-                                    nSelectedDay: '6'
-                                })
-                                this.resetButtons(6)
+                            <IconButton color={this.state.nSelectedDay === '6' ? 'primary' : 'default'}
+                                        onClick={(e) => {
+                                            this.setState({
+                                                nSelectedDay: '6'
+                                            })
+                                            this.resetButtons(6)
 
-                            }} size="small"
+                                        }} size="small"
                                         className="m-1">جمعه</IconButton>
                         </div>
                         <div className='hoursSelector'>
                             <div className="shRow">
-                                <IconButton id='h0'
-                                            onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">00</IconButton>
-                                <IconButton id='h1' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">01</IconButton>
-                                <IconButton id='h2' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">02</IconButton>
-                                <IconButton id='h3' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">03</IconButton>
-                                <IconButton id='h4' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">04</IconButton>
-                                <IconButton id='h5' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">05</IconButton>
-                            </div>
-                            <div className="shRow">
-                                <IconButton id='h6' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">06</IconButton>
-                                <IconButton id='h7' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">07</IconButton>
-                                <IconButton id='h8' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">08</IconButton>
-                                <IconButton id='h9' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">09</IconButton>
-                                <IconButton id='h10' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">10</IconButton>
-                                <IconButton id='h11' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">11</IconButton>
-                            </div>
-                            <div className="shRow">
-                                <IconButton id='h12' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">12</IconButton>
-                                <IconButton id='h13' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">13</IconButton>
-                                <IconButton id='h14' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">14</IconButton>
-                                <IconButton id='h15' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">15</IconButton>
-                                <IconButton id='h16' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">16</IconButton>
-                                <IconButton id='h17' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">17</IconButton>
-                            </div>
-                            <div className="shRow">
-                                <IconButton id='h18' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">18</IconButton>
-                                <IconButton id='h19' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">19</IconButton>
-                                <IconButton id='h20' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">20</IconButton>
-                                <IconButton id='h21' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">21</IconButton>
-                                <IconButton id='h22' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">22</IconButton>
-                                <IconButton id='h23' onClick={this.handleButtonClickedNew} size="small"
-                                            className="m-1">23</IconButton>
+                                {
+                                    Array.apply(1, Array(24)).map((eachButton, index) => {
+                                        return (
+                                            <IconButton id={'h' + index}
+                                                        onClick={this.handleButtonClickedNew} size="small"
+                                                        className="m-1">{index < 10 ? '0' + index : index}</IconButton>
+                                        )
+                                    })
+                                }
                             </div>
                             <div className='w-100 text-center'>
                                 <div className='daysSubmitButton' onClick={() => {

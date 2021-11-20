@@ -1,6 +1,32 @@
-.IranSansLight label{
-font-family: IRANSansMobile_Light;
+.IranSansLight label {
+    font-family: IRANSansMobile_Light, serif;
 }
-.IranSansLight p{
-font-family: IRANSansMobile_Light;
+
+.IranSansLight p {
+    font-family: IRANSansMobile_Light, serif;
+}
+
+.MuiFormControl-root label {
+    right: 0;
+    left: auto;
+    transform-origin: top right;
+}
+
+.phone-error label, .phone-error div {
+    animation: phoneError 0.5s ease;
+    /*animation-fill-mode: forwards;*/
+}
+
+@keyframes phoneError {
+    0% {
+        color: #838889;
+    }
+    50% {
+        color: red;
+    }
+    100% {
+        color: #838889;
+    }
+
+
 }
