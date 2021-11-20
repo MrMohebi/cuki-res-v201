@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {ButtonBase} from "@material-ui/core";
+import {Box, ButtonBase} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";   //true
 
 import Swal from 'sweetalert2';
@@ -12,6 +12,7 @@ import './js/css/selectedHoursStylesheet.css'
 import $ from 'jquery';
 
 import IconButton from "@material-ui/core/IconButton";
+import {AccountCircle} from "@material-ui/icons";
 
 const ReactSwal = withReactContent(Swal)
 
@@ -321,6 +322,17 @@ class RestaurantInfo extends React.Component {
                                    style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
                                    className='IranSansLight mt-3'
                         />
+                        <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
+                                   style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
+                                   multiline
+                                   className='mt-2'/>
+                        <TextField id={'resInstaId'} ref={this.addressInput} defaultValue={'@'}
+                                   onChange={(e)=>{
+                                       e.currentTarget.value = '@'+e.currentTarget.value.slice(1)
+                                   }}
+                                   style={{width: "150px",direction:'ltr'}} label="ایدی اینستاگرام" onBlur={()=>{}}
+                                   multiline
+                                   className='mt-2'/>
 
                         {
                             this.state.resPhones.map((eachNumber, index) => {
@@ -386,10 +398,7 @@ class RestaurantInfo extends React.Component {
                                    onBlur={this.changeRestaurantCounterPhone}
                                    className='IranSansLight mt-3'/>
 
-                        <TextField id={'resAddressInput'} ref={this.addressInput} defaultValue={'خیابان'}
-                                   style={{width: "150px"}} label="آدرس" onBlur={this.handleChangeAddress}
-                                   multiline
-                                   className='mt-2'/>
+
 
                         <TextField id={'resCounterPhone'} ref={this.RestaurantAccountCode} style={{marginTop: '100px'}}
                                    defaultValue={'00000000000000'}
@@ -410,6 +419,7 @@ class RestaurantInfo extends React.Component {
 
                         }} className='btn btn-outline-dark mt-4'>روز های باز رستوران
                         </ButtonBase>
+
 
 
                     </div>
