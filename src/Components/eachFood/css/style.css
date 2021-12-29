@@ -196,4 +196,34 @@
   color: white;
 }
 
+.food-subsets {
+  background-color: transparent;
+  transition: 0.2s ease;
+}
+.food-subsets .subset-remove {
+  transition: 0.3s ease;
+  color: white !important;
+  opacity: 0;
+  font-size: 1.5rem;
+}
+.food-subsets:hover {
+  background-color: rgba(218, 0, 0, 0.74);
+  color: rgba(0, 0, 0, 0.18) !important;
+}
+.food-subsets:hover .subset-remove {
+  font-size: 1.5rem;
+  color: white !important;
+  opacity: 1;
+}
+
+.new-food-subset-holder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.66);
+  z-index: 2;
+}
+
 /*# sourceMappingURL=style.css.map */

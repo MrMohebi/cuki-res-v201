@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import Foods from '../foods/Foods'
+import Foods from '../Foods/Foods'
 
 class Dashboard extends React.Component{
     componentDidMount() {

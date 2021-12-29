@@ -4,11 +4,15 @@ import {connect} from 'react-redux';
 import * as requests from '../../ApiRequests/requests'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck, faChevronCircleLeft} from "@fortawesome/free-solid-svg-icons";
-import {FormControl, MenuItem, Select} from '@material-ui/core';
+import {ButtonBase, FormControl, MenuItem, Select} from '@material-ui/core';
 import './css/style.css'
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import FoodGallery from "./components/FoodGallery";
+import NewFood from "../NewFood/NewFood";
+import * as actions from "../../Stores/reduxStore/actions";
+import '@fortawesome/fontawesome-free/css/all.css'
+import _ from 'lodash'
 
 const ReactSwal = withReactContent(Swal)
 
@@ -17,9 +21,67 @@ class EachFood extends React.Component {
     state = {
         selectedFile: null,
         categories: [],
+        newFoodVisible: false,
+        foods: [],
+        subsets: []
     }
 
+
+    setVisible = (state) => {
+        if (state === false) {
+            this.setState({
+                foods: []
+            }, () => {
+                this.refreshSubsets()
+
+            })
+
+
+        }
+        this.setState({
+            newFoodVisible: state
+        })
+    }
+
+
+    refreshSubsets = () => {
+        if (!this.state.foods.length) {
+            requests.getFoods((foods) => {
+                let subsets = [];
+                this.setState({
+                    foods: foods.data
+                })
+
+                foods.data.map(food => {
+                    if (food.relatedMainPersianName === this.props.foodInfoTemp[0].persianName) {
+                        subsets.push(food)
+                    }
+                })
+
+                this.setState({
+                    subsets: subsets
+                })
+            })
+        } else {
+            let subsets = [];
+
+            this.state.foods.map(food => {
+                if (food.relatedMainPersianName === this.props.foodInfoTemp[0].persianName) {
+                    subsets.push(food)
+                }
+            })
+
+            this.setState({
+                subsets: subsets
+            })
+        }
+
+
+    }
+
+
     componentDidMount() {
+        this.refreshSubsets()
         requests.getCategoryList((e) => {
             if (e)
                 this.setState({
@@ -30,6 +92,16 @@ class EachFood extends React.Component {
 
     getFoods = () => {
         requests.getFoods(this.checkFoods)
+    }
+    handleChangStatus = (foodId, foodStatus) => {
+        requests.changeFoodStatus(foodId, foodStatus, (res) => {
+            this.setState({
+                foods: []
+            }, () => {
+                this.refreshSubsets()
+            })
+
+        })
     }
 
     handleChangeFoodName = (foodId) => {
@@ -55,6 +127,12 @@ class EachFood extends React.Component {
     handleChangeFoodDeliveryTime = (foodId) => {
         let foodDeliveryTime = $(`#inpDeliveryTime_${foodId}`).val()
         requests.changeFoodDeliveryTime(foodId, foodDeliveryTime, this.checkFoodDeliveryTimeChanged)
+    }
+    handleChangeFoodPrice = (foodId) => {
+
+        let foodPrice = $(`#inpFoodPrice_${foodId}`).val()
+        requests.changeFoodPrice(foodId, foodPrice, (res) => {
+        })
     }
     checkFoodDeliveryTimeChanged = (res) => {
         if (res.statusCode === 200) {
@@ -150,16 +228,21 @@ class EachFood extends React.Component {
                                     </button>
                                 </div>
                                 <input id={`inpName_${food.id}`} type="text" placeholder={food.persianName}
-                                       defaultValue={food.persianName} className=" rtl form-control nameInput" aria-label=""
+                                       defaultValue={food.persianName} className=" rtl form-control nameInput"
+                                       aria-label=""
                                        aria-describedby="basic-addon1"/>
                             </div>
 
                             <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'> <span style={{
-                                fontSize:'0.7rem',
-                                color:'grey'
-                            }}>(دقیقه)</span>  زمان تحویل </p>
+                                fontSize: '0.7rem',
+                                color: 'grey'
+                            }}>(دقیقه)</span> زمان تحویل </p>
 
-                            <div className="input-group input-group-sm inputGroups">
+                            <div
+                                style={{
+                                    maxWidth: 80
+                                }}
+                                className="input-group input-group-sm inputGroups">
 
                                 <div className="input-group-prepend">
                                     <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
@@ -170,6 +253,29 @@ class EachFood extends React.Component {
                                 </div>
                                 <input id={`inpDeliveryTime_${food.id}`} type="text"
                                        placeholder={food.deliveryTime} defaultValue={food.deliveryTime}
+                                       className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
+                            </div>
+
+                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'> <span style={{
+                                fontSize: '0.7rem',
+                                color: 'grey'
+                            }}>(تومان)</span> قیمت </p>
+
+                            <div
+                                style={{
+                                    maxWidth: 100
+                                }}
+                                className="input-group input-group-sm inputGroups">
+
+                                <div className="input-group-prepend">
+                                    <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
+                                        this.handleChangeFoodPrice(food.id)
+                                    }}>
+                                        <FontAwesomeIcon icon={faCheck}/>
+                                    </button>
+                                </div>
+                                <input id={`inpFoodPrice_${food.id}`} type="text"
+                                       placeholder={food.deliveryTime} defaultValue={food.price}
                                        className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
                             </div>
                         </div>
@@ -192,6 +298,7 @@ class EachFood extends React.Component {
                         </div>
 
                         <p style={{width: '100%', textAlign: 'center', marginTop: '10px'}}>دسته بندی</p>
+
                         <div className="input-group input-group-sm ">
                             <FormControl
                                 style={{direction: 'rtl', minWidth: "120px", margin: 'auto', textAlign: 'center'}}>
@@ -212,7 +319,83 @@ class EachFood extends React.Component {
                                         })
                                     }
                                 </Select>
+
                             </FormControl>
+                        </div>
+
+                        <section className={'w-100 text-center mt-4 d-flex flex-column align-items-center'}>
+                            <span>زیر مجموعه های غذا</span>
+                            <span className={'text-black-50 small mt-1'}>برای مثال: سایز، نوع و دستور پخت</span>
+                            <div
+                                className={'w-100 d-flex flex-row-reverse align-items-center mt-2 justify-content-center'}>
+
+                                <ButtonBase
+                                    onClick={() => {
+                                        this.setState({
+                                            newFoodVisible: true
+                                        })
+                                        // setInterval(() => {
+                                        //     this.refreshSubsets()
+                                        // }, 1000)
+                                    }}
+                                    style={{
+                                        width: 120,
+                                        height: 50,
+                                        border: 'solid 1px gray',
+                                        display: 'flex',
+                                        flexFlow: 'column',
+                                        alignItems: 'center',
+                                        color: '#696969',
+                                        borderRadius: 5,
+                                        borderStyle: 'dashed',
+                                        margin: '0 10px'
+                                    }}
+                                >
+                                    <i style={{}} className={'fas fa-plus mt-1'}></i>
+                                    <span>افزودن</span>
+                                </ButtonBase>
+
+                                {
+                                    this.state.subsets.map(subset => {
+                                        if (subset.status !== 'deleted')
+                                            return (
+                                                <ButtonBase
+                                                    className={'food-subsets'}
+
+                                                    onClick={() => {
+                                                        this.handleChangStatus(subset.id, 'deleted')
+                                                    }}
+                                                    style={{
+                                                        width: 120,
+                                                        height: 50,
+                                                        border: 'solid 1px gray',
+                                                        display: 'flex',
+                                                        flexFlow: 'column',
+                                                        alignItems: 'center',
+                                                        color: '#1a1a1a',
+                                                        borderRadius: 5,
+                                                        margin: '0 10px',
+                                                        position: "relative"
+                                                    }}
+                                                >
+                                                    <div
+                                                        className={'d-flex flex-column align-items-center justify-content-center w-100 h-100 position-absolute top-0 start-0 subset-remove'}>
+                                                        <i className={'fas fa-trash-alt'}/>
+                                                    </div>
+                                                    <span>{subset.persianName}</span>
+                                                    <span style={{fontSize: '0.7rem'}}>{subset.price} تومان</span>
+                                                </ButtonBase>
+                                            )
+                                    })
+                                }
+                            </div>
+                        </section>
+
+
+                        <div className={'new-food-subset-holder ' + (this.state.newFoodVisible ? '' : 'd-none')}>
+                            <div className={'w-100 h-100 position-relative pt-5'}>
+                                <NewFood relatedName={food.persianName} setVisible={this.setVisible}/>
+                            </div>
                         </div>
 
 
@@ -236,7 +419,8 @@ class EachFood extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
-        foodInfoTemp: store.reducerTempStates.foodInfoTemp
+        foodInfoTemp: store.reducerTempStates.foodInfoTemp,
+        setFoodInfoTemp: actions.setFoodInfoTemp,
     }
 }
 

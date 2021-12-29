@@ -1,0 +1,24 @@
+.add-subset-btn{
+  width: 120px;
+  height: 50px;
+  background-color: white !important;
+  border-radius: 10px!important;
+  border: solid  1px!important;
+  //color: #b2a2c7 !important;
+  //color: #96ec96;
+}
+.each-subset{
+  width: 150px;
+}
+.no-shadow{
+  box-shadow: none !important;
+}
+.new-food-subset-holder{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0,0,0,0.6);
+  left: 0;
+  top: 0;
+  z-index: 999;
+}

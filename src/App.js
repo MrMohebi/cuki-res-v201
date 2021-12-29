@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle'
 import Signin from "./Components/signin/Signin";
 import Dashboard from "./Components/dashboard/Dashboard";
-import Foods from "./Components/foods/Foods";
+import Foods from "./Components/Foods/Foods";
 import EachFood from "./Components/eachFood/EachFood";
 import Orders from "./Components/orders/Orders";
 import NavBar from "./Components/navBar/navBar";

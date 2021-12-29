@@ -64,9 +64,9 @@ export const changeFoodPrice = (foodId, foodPrice, callbackFunction) => {
         callbackFunction(res)
     })
 }
-export const newFood = (foodName, foodGroup, details, price, deliveryTime, callbackFunction) => {
+export const newFood = (foodName, foodGroup, details, price, deliveryTime,relatedMainPersianName,relatedPriceRange, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL + 'createFood', {token, persianName: foodName, group: foodGroup, details: details, price, deliveryTime,}).then(res => {
+    $.post(BASE_URL + 'createFood', {token, persianName: foodName, group: foodGroup, details: details, price, deliveryTime,relatedMainPersianName,relatedPriceRange}).then(res => {
         callbackFunction(res)
     })
 

@@ -17,18 +17,21 @@ class NewFood extends React.Component {
         price: 0
 
     }
+
     constructor(props) {
         super(props);
         this.foodNameRef = React.createRef();
         this.foodDetailsRef = React.createRef();
         this.foodDeliveryTimeRef = React.createRef();
         this.foodPriceRef = React.createRef();
+        this.relatedName = React.createRef();
     }
+
     submitHandler = () => {
-        requests.newFood(this.state.foodName, this.state.foodGroup, this.state.foodDetails, this.state.price,this.state.foodDeliveryTime,this.submitCallback)
+        requests.newFood(this.state.foodName, this.state.foodGroup, this.state.foodDetails, this.state.price, this.state.foodDeliveryTime, this.relatedName.current, "[0,0]", this.submitCallback)
     }
-    submitCallback = (res)=>{
-        if (res.hasOwnProperty('statusCode')&& res.statusCode === 200){
+    submitCallback = (res) => {
+        if (res.hasOwnProperty('statusCode') && res.statusCode === 200) {
             this.foodNameRef.current.value = ''
             this.foodDeliveryTimeRef.current.value = ''
             this.foodPriceRef.current.value = ''
@@ -38,11 +41,17 @@ class NewFood extends React.Component {
                 icon: "success",
                 timer: 1000,
                 timerProgressBar: true
+            }).then(() => {
+                this.props.setVisible(false)
             })
         }
     }
 
     componentDidMount() {
+
+        if (this.props.relatedName) {
+            this.relatedName.current = this.props.relatedName;
+        }
         requests.getCategoryList((e) => {
             if (e)
                 this.setState({
@@ -50,6 +59,7 @@ class NewFood extends React.Component {
                 })
         })
     }
+
 
     render() {
         return (
@@ -59,21 +69,28 @@ class NewFood extends React.Component {
                     <FontAwesomeIcon className="backIcon" onClick={() => {
                         this.props.history.push("/foods")
                     }} icon={faChevronCircleLeft}/>
-                    <span className='backText' onClick={() => {
-                        this.props.history.push("/foods")
+                    <span
+                        style={{zIndex: 9999}}
+                        className='backText' onClick={() => {
+                        if (this.relatedName.current) {
+                            this.props.setVisible(false)
+                        } else {
+                            this.props.history.push("/foods")
+                        }
 
                     }}>بازگشت</span>
-                    <div className='w-100'>
+                    <div className='w-100 '>
                         <div className='w-100 d-flex flex-row justify-content-end imgAndNameContainer'>
                             {/*<div className='text-center eachFoodName  pr-3 pt-3'>{food.name}</div>*/}
                             <div>
-                                <div style={{
-                                    background: `url(${this.state.foodImage})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    cursor: 'pointer',
-                                    overflow: 'hidden'
-                                }} className='eachFoodImage'>
+                                <div
+                                    style={{
+                                        background: `url(${this.state.foodImage})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        cursor: 'pointer',
+                                        overflow: 'hidden'
+                                    }} className='eachFoodImage'>
                                     <label className='uploadLable w-100 h-100 cursorPointer' htmlFor='uploadI'/>
                                 </div>
                                 <div className="  inputGroups d-flex flex-column text-center">
@@ -86,6 +103,23 @@ class NewFood extends React.Component {
 
                             </div>
                         </div>
+                        {
+                            this.relatedName.current ?
+
+                                <span
+                                    style={{
+                                        marginTop: '-70px',
+                                        position: 'absolute',
+                                        right: '50%',
+                                        // top: '0',
+                                        transform: 'translateX(50%)'
+                                    }}> {' افزودن زیر مجموعه برای  ' + this.relatedName.current}
+                                </span>
+                                :
+                                null
+
+                        }
+
 
                         <div className='nameAndDeliveryTime mt-4'>
                             <p className='foodPlaceHolderLabels IranSansLight'>: اسم</p>
@@ -98,13 +132,17 @@ class NewFood extends React.Component {
                                        aria-describedby="basic-addon1"/>
                             </div>
 
-                            <p className='foodPlaceHolderLabels IranSansLight mr-4'>: زمان تحویل</p>
+                            <p className='foodPlaceHolderLabels IranSansLight mr-4'> :<span style={{
+                                fontSize: '0.7rem',
+                                color: 'grey'
+                            }}>(دقیقه)</span> زمان تحویل</p>
                             <div className="  inputGroups">
 
                                 <div className="input-group-prepend">
 
                                 </div>
-                                <input ref={this.foodDeliveryTimeRef} id={`inpDelivery`} type="text" className="form-control rtl" aria-label=""
+                                <input ref={this.foodDeliveryTimeRef} id={`inpDelivery`} type="text"
+                                       className="form-control rtl" aria-label=""
                                        aria-describedby="basic-addon1" onChange={(e) => {
                                     if (parseInt(e.target.value[e.target.value.length - 1]).toString() === "NaN" || e.target.value.length > 3) {
                                         e.target.value = e.target.value.slice(0, -1)
@@ -112,12 +150,16 @@ class NewFood extends React.Component {
                                     this.state.foodDeliveryTime = e.target.value
                                 }}/>
                             </div>
-                            <p className='foodPlaceHolderLabels IranSansLight mr-4'>: قیمت</p>
+                            <p className='foodPlaceHolderLabels IranSansLight mr-4'>:<span style={{
+                                fontSize: '0.7rem',
+                                color: 'grey'
+                            }}>(تومان)</span> قیمت</p>
                             <div className="  inputGroups">
 
                                 <div className="input-group-prepend">
                                 </div>
-                                <input ref={this.foodPriceRef} id={`inpDelivery`} type="text" className="form-control rtl" aria-label=""
+                                <input ref={this.foodPriceRef} id={`inpDelivery`} type="text"
+                                       className="form-control rtl" aria-label=""
                                        aria-describedby="basic-addon1" onChange={(e) => {
                                     if (parseInt(e.target.value[e.target.value.length - 1]).toString() === "NaN") {
                                         e.target.value = e.target.value.slice(0, -1)
@@ -133,7 +175,8 @@ class NewFood extends React.Component {
 
                             <div className="input-group-prepend">
                             </div>
-                            <input ref={this.foodDetailsRef} id={`inpDetail`} type="text" placeholder={' مثال : پنیر+گوجه+خیارشور'}
+                            <input ref={this.foodDetailsRef} id={`inpDetail`} type="text"
+                                   placeholder={' مثال : پنیر+گوجه+خیارشور'}
                                    onChange={(e) => {
                                        this.state.foodDetails = e.target.value;
                                    }} className=" rtl form-control" aria-label="" aria-describedby="basic-addon1"/>

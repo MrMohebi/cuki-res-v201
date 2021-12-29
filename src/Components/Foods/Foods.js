@@ -93,7 +93,7 @@ class Foods extends React.Component {
     }
     checkFoodDiscountChanged = (res) => {
         if (res.hasOwnProperty('statusCode') && res.statusCode === 200) {
-            //    some staff
+            //some staff
         }
     }
 
@@ -112,105 +112,65 @@ class Foods extends React.Component {
 
 
     render() {
-        if (window.location.pathname.toString() === '/dashboard') {
-            return (
-                <React.Fragment>
-                    <div className="justForGap"/>
-                    <div className="smallBox ">
-                        <div className="w-100 text-center mt-3 mb-3 newFoodButton">
-                            <Button
-                                onClick={
-                                    () => {
-                                        this.props.history.push('/newFood');
-                                    }
+        return (
+            <React.Fragment>
+                <div className="justForGap"/>
+                <div className="smallBox ">
+                    <div className="w-100 text-center mt-3 mb-3 newFoodButton">
+                        <Button
+                            onClick={
+                                () => {
+                                    this.props.history.push('/newFood');
                                 }
-                                variant='contained'
-                                color='primary'
-                                startIcon={<FastfoodRoundedIcon/>}>
-                                افزودن غذا
-                            </Button>
+                            }
+                            variant='contained'
+                            color='primary'
+                            startIcon={<FastfoodRoundedIcon/>}>
+                            افزودن غذا
+                        </Button>
 
-
-                        </div>
-                        <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
-                            <thead>
-                            <tr className="bg-light">
-                                <th style={{borderTopLeftRadius: "15px"}}/>
-                                <th style={{borderTopLeftRadius: "15px"}}>وضعیت</th>
-                                <th style={{width: "110px"}}> <span style={{
-                                    fontSize:'0.7rem',
-                                    color:'grey'
-                                }}>(تومان)</span> قیمت</th>
-                                <th><span style={{
-                                    fontSize:'0.7rem',
-                                    color:'grey'
-                                }}>(درصد)</span> تخفیف</th>
-                                <th>نام</th>
-                                <th style={{borderTopRightRadius: "15px"}}>#</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {this.createFoodRows()}
-                            </tbody>
-                        </table>
-                        <Link style={{
-                            color: 'blue',
-                            width: '100%',
-                            display: 'block',
-                            marginTop: '20px',
-                            textAlign: 'right'
-                        }}
-                              to={'/foods'}><span
-
-                            style={{width: '100$', textAlign: 'center', marginTop: '20px'}}>بیشتر...</span></Link>
 
                     </div>
-                </React.Fragment>
+                    <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
+                        <thead>
+                        <tr className="bg-light">
+                            <th style={{borderTopLeftRadius: "15px"}}/>
+                            <th style={{borderTopLeftRadius: "15px"}}>وضعیت</th>
+                            <th style={{width: "110px"}}>
+                                    <span style={{
+                                        fontSize: '0.7rem',
+                                        color: 'grey'
+                                    }}>(تومان)</span>
+                                قیمت
+                            </th>
+                            <th><span style={{
+                                fontSize: '0.7rem',
+                                color: 'grey'
+                            }}>(درصد)</span> تخفیف
+                            </th>
+                            <th>نام</th>
+                            <th style={{borderTopRightRadius: "15px"}}>#</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.createFoodRows()}
+                        </tbody>
+                    </table>
+                    <Link style={{
+                        color: 'blue',
+                        width: '100%',
+                        display: 'block',
+                        marginTop: '20px',
+                        textAlign: 'right'
+                    }}
+                          to={'/foods'}><span
 
-            )
-        } else {
-            return (
-                <React.Fragment>
-                    <div className="navGap"/>
-                    <div style={{paddingTop: '20px', direction: 'ltr'}} className="smallBox ">
-                        <div className="w-100 text-center mt-3 mb-3 newFoodButton">
-                            <Button
-                                onClick={
-                                    () => {
-                                        this.props.history.push('/newFood');
-                                    }
-                                }
-                                variant='contained'
-                                color='primary'
-                                startIcon={<FastfoodRoundedIcon/>}>
-                                افزودن غذا
-                            </Button>
+                        style={{width: '100$', textAlign: 'center', marginTop: '20px'}}>بیشتر...</span></Link>
 
+                </div>
+            </React.Fragment>
 
-                        </div>
-                        <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
-                            <thead>
-                            <tr className="bg-light">
-                                <th style={{borderTopLeftRadius: "15px"}}/>
-                                <th style={{borderTopLeftRadius: "15px"}}>وضعیت</th>
-                                <th style={{width: "110px"}}>قیمت</th>
-                                <th>درصد تخفیف</th>
-                                <th>نام</th>
-                                <th style={{borderTopRightRadius: "15px"}}>#</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {this.createFoodRows()}
-                            </tbody>
-                        </table>
-
-                    </div>
-                </React.Fragment>
-            )
-
-
-        }
-
+        )
     }
 
     uiComponent = () => {
@@ -237,6 +197,11 @@ class Foods extends React.Component {
     createFoodRows = () => {
         let rowCounter = 0;
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
+        this.state.foodsList.map(food=>{
+            if(food.relatedMainPersianName){
+                console.log(food)
+            }
+        })
         this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted')
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
             <tr key={`itemId_${eachFood.id}`} className="bg-white">
