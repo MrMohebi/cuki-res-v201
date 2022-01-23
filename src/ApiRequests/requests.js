@@ -19,9 +19,9 @@ export const getAllCustomersInfo = (callbackFunction) => {
         callbackFunction(res)
     })
 }
-export const getCustomerInfo = (phone,callbackFunction) => {
+export const getCustomerInfo = (phone, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL + 'customerClub/getCustomerInfo.fetch.php', {token,phone}).then(res => {
+    $.post(BASE_URL + 'customerClub/getCustomerInfo.fetch.php', {token, phone}).then(res => {
         res = (res !== undefined && res !== null) ? res : {}
         callbackFunction(res)
     })
@@ -52,7 +52,16 @@ export const getOrders = (startDate, endDate, callbackFunction) => {
 
 export const changeFoodStatus = (foodId, foodStatus, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL + 'changeFoodInfo', {token, foodId, status: foodStatus
+    $.post(BASE_URL + 'changeFoodInfo', {
+        token, foodId, status: foodStatus
+    }).then(res => {
+        callbackFunction(res)
+    })
+}
+export const createNewCategory = (catPersianName, catEnglishName, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    $.post(BASE_URL + 'createCategory', {
+        token, catPersianName, catEnglishName,rank:0
     }).then(res => {
         callbackFunction(res)
     })
@@ -64,9 +73,18 @@ export const changeFoodPrice = (foodId, foodPrice, callbackFunction) => {
         callbackFunction(res)
     })
 }
-export const newFood = (foodName, foodGroup, details, price, deliveryTime,relatedMainPersianName,relatedPriceRange, callbackFunction) => {
+export const newFood = (foodName, foodGroup, details, price, deliveryTime, relatedMainPersianName, relatedPriceRange, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL + 'createFood', {token, persianName: foodName, group: foodGroup, details: details, price, deliveryTime,relatedMainPersianName,relatedPriceRange}).then(res => {
+    $.post(BASE_URL + 'createFood', {
+        token,
+        persianName: foodName,
+        group: foodGroup,
+        details: details,
+        price,
+        deliveryTime,
+        relatedMainPersianName,
+        relatedPriceRange
+    }).then(res => {
         callbackFunction(res)
     })
 
@@ -121,7 +139,7 @@ export const changeFoodGroup = (foodId, newGroup, callbackFunction) => {
 
 export const changeOrderStatus = (trackingId, newOrderStatus, deleteReason, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
-    $.post(BASE_URL + 'changeOrderStatus', {token, trackingId, status:newOrderStatus, deleteReason}).then(res => {
+    $.post(BASE_URL + 'changeOrderStatus', {token, trackingId, status: newOrderStatus, deleteReason}).then(res => {
         callbackFunction(res)
     })
 }

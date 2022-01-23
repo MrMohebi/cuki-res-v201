@@ -7,7 +7,8 @@ import {Button, Grid, Switch, Typography, withStyles} from '@material-ui/core';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import * as actions from '../../Stores/reduxStore/actions'
-import ReactSwal from "sweetalert2";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FastfoodRoundedIcon from '@material-ui/icons/FastfoodRounded';
 
@@ -56,7 +57,15 @@ class Foods extends React.Component {
 
     componentDidMount() {
         this.getFoods();
+        this.removeEventListeners()
+
     }
+
+    removeEventListeners(){
+        window.removeEventListener('keydown',()=>{
+        })
+    }
+
 
     checkFoods = (response) => {
         if (response.statusCode === 200) {
@@ -83,7 +92,13 @@ class Foods extends React.Component {
         }
     }
     handleFoodPrice = (foodId) => {
-        let foodPrice = $(`#itemPrice_${foodId}`).val()
+        let foodPriceInput = $(`#itemPrice_${foodId}`)
+        let foodPrice = foodPriceInput.val()
+        if (foodPrice.length<4){
+            foodPrice = foodPrice + "000"
+        }
+        console.log(foodPrice)
+        foodPriceInput.val(foodPrice)
         requests.changeFoodPrice(foodId, foodPrice, this.checkFoodPriceChanged)
     }
     handleFoodDiscount = (foodId) => {
@@ -99,22 +114,22 @@ class Foods extends React.Component {
 
     checkFoodPriceChanged = (res) => {
         if (res.statusCode === 200) {
-            this.getFoods();
-            ReactSwal.fire({
-                title: 'قیمت با موفقیت تغیر کرد',
-                icon: "success",
-                timer: 2000,
-                timerProgressBar: true
-            })
-
+            toast.success("با موفقیت تغیر کرد")
         }
+        toast.error("خطا هنگام تغیر قیمت")
     }
 
 
     render() {
         return (
             <React.Fragment>
-                <div className="justForGap"/>
+                <ToastContainer
+                position={'bottom-center'}
+                rtl={true}
+                autoClose={2000}
+                />
+                <div style={{height: "30px", width: "100%"}}/>
+                <div style={{height: "30px", width: "100%"}}/>
                 <div className="smallBox ">
                     <div className="w-100 text-center mt-3 mb-3 newFoodButton">
                         <Button
@@ -197,13 +212,10 @@ class Foods extends React.Component {
     createFoodRows = () => {
         let rowCounter = 0;
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
-        this.state.foodsList.map(food=>{
-            if(food.relatedMainPersianName){
-                console.log(food)
-            }
-        })
-        this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted')
+        this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted'&& !eFood.relatedMainPersianName)
+        console.log(this.state.foodsList)
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
+
             <tr key={`itemId_${eachFood.id}`} className="bg-white">
 
                 <td>
@@ -255,7 +267,11 @@ class Foods extends React.Component {
                                 <FontAwesomeIcon icon={faCheck}/>
                             </button>
                         </div>
-                        <input id={`itemPrice_${eachFood.id}`} type="text" placeholder={eachFood.price}
+                        <input id={`itemPrice_${eachFood.id}`} type="text" placeholder={eachFood.price} onFocus={(e)=>{
+                        e.currentTarget.select()
+                        }} onBlur={()=>{
+                        this.handleFoodPrice(eachFood.id)
+                        }}
                                defaultValue={eachFood.price} className="form-control" aria-label=""
                                aria-describedby="basic-addon1"/>
                     </div>
