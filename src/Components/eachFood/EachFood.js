@@ -218,67 +218,80 @@ class EachFood extends React.Component {
                         </div>
 
                         <div className='nameAndDeliveryTime mt-4'>
-                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'>اسم</p>
-                            <div className="input-group input-group-sm inputGroups biggerInputEachFood">
-                                <div className="input-group-prepend">
-                                    <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
-                                        this.handleChangeFoodName(food.id)
-                                    }}>
-                                        <FontAwesomeIcon icon={faCheck}/>
-                                    </button>
+                            <div className={'flex-column d-flex each-food-inputs justify-content-center align-items-center '}>
+                                <p className='foodPlaceHolderLabels IranSansLight '>اسم</p>
+                                <div className="input-group input-group-sm inputGroups biggerInputEachFood">
+                                    <div className="input-group-prepend">
+                                        <button value="1" className="btn btn-outline-success" type="button"
+                                                onClick={() => {
+                                                    this.handleChangeFoodName(food.id)
+                                                }}>
+                                            <FontAwesomeIcon icon={faCheck}/>
+                                        </button>
+                                    </div>
+                                    <input id={`inpName_${food.id}`} type="text" placeholder={food.persianName}
+                                           defaultValue={food.persianName} className=" rtl form-control nameInput"
+                                           aria-label=""
+                                           aria-describedby="basic-addon1"/>
                                 </div>
-                                <input id={`inpName_${food.id}`} type="text" placeholder={food.persianName}
-                                       defaultValue={food.persianName} className=" rtl form-control nameInput"
-                                       aria-label=""
-                                       aria-describedby="basic-addon1"/>
                             </div>
 
-                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'> <span style={{
-                                fontSize: '0.7rem',
-                                color: 'grey'
-                            }}>(دقیقه)</span> زمان تحویل </p>
 
+                            <div className=" flex-column d-flex each-food-inputs justify-content-center align-items-center ">
+                                <p className='foodPlaceHolderLabels IranSansLight '> <span style={{
+                                    fontSize: '0.7rem',
+                                    color: 'grey'
+                                }}>(دقیقه)</span> زمان تحویل </p>
+
+                                <div
+                                    style={{
+                                        // maxWidth: 80
+                                    }}
+                                    className="input-group input-group-sm inputGroups biggerInputEachFood">
+
+                                    <div className="input-group-prepend">
+                                        <button value="1" className="btn btn-outline-success" type="button"
+                                                onClick={() => {
+                                                    this.handleChangeFoodDeliveryTime(food.id)
+                                                }}>
+                                            <FontAwesomeIcon icon={faCheck}/>
+                                        </button>
+                                    </div>
+                                    <input id={`inpDeliveryTime_${food.id}`} type="text"
+                                           placeholder={food.deliveryTime} defaultValue={food.deliveryTime}
+                                           className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
+                                </div>
+
+                            </div>
                             <div
-                                style={{
-                                    maxWidth: 80
-                                }}
-                                className="input-group input-group-sm inputGroups">
+                            className={'flex-column d-flex each-food-inputs justify-content-center align-items-center '}
+                            >
+                                <p className='foodPlaceHolderLabels IranSansLight '> <span style={{
+                                    fontSize: '0.7rem',
+                                    color: 'grey'
+                                }}>(تومان)</span> قیمت </p>
 
-                                <div className="input-group-prepend">
-                                    <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
-                                        this.handleChangeFoodDeliveryTime(food.id)
-                                    }}>
-                                        <FontAwesomeIcon icon={faCheck}/>
-                                    </button>
+                                <div
+                                    style={{
+                                        // maxWidth: 100
+                                    }}
+                                    className="input-group input-group-sm inputGroups biggerInputEachFood">
+
+                                    <div className="input-group-prepend">
+                                        <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
+                                            this.handleChangeFoodPrice(food.id)
+                                        }}>
+                                            <FontAwesomeIcon icon={faCheck}/>
+                                        </button>
+                                    </div>
+                                    <input id={`inpFoodPrice_${food.id}`} type="text"
+                                           placeholder={food.deliveryTime} defaultValue={food.price}
+                                           className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
                                 </div>
-                                <input id={`inpDeliveryTime_${food.id}`} type="text"
-                                       placeholder={food.deliveryTime} defaultValue={food.deliveryTime}
-                                       className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
+                            </div>
                             </div>
 
-                            <p className='foodPlaceHolderLabels IranSansLight mr-5 ml-3'> <span style={{
-                                fontSize: '0.7rem',
-                                color: 'grey'
-                            }}>(تومان)</span> قیمت </p>
 
-                            <div
-                                style={{
-                                    maxWidth: 100
-                                }}
-                                className="input-group input-group-sm inputGroups">
-
-                                <div className="input-group-prepend">
-                                    <button value="1" className="btn btn-outline-success" type="button" onClick={() => {
-                                        this.handleChangeFoodPrice(food.id)
-                                    }}>
-                                        <FontAwesomeIcon icon={faCheck}/>
-                                    </button>
-                                </div>
-                                <input id={`inpFoodPrice_${food.id}`} type="text"
-                                       placeholder={food.deliveryTime} defaultValue={food.price}
-                                       className="form-control rtl" aria-label="" aria-describedby="basic-addon1"/>
-                            </div>
-                        </div>
 
                         <p className='foodPlaceHolderLabels IranSansLight mt-4 '>جزئیات</p>
 

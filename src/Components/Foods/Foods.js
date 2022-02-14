@@ -97,7 +97,6 @@ class Foods extends React.Component {
         if (foodPrice.length<4){
             foodPrice = foodPrice + "000"
         }
-        console.log(foodPrice)
         foodPriceInput.val(foodPrice)
         requests.changeFoodPrice(foodId, foodPrice, this.checkFoodPriceChanged)
     }
@@ -149,7 +148,7 @@ class Foods extends React.Component {
                     <table className="fixed_header table-hover table-striped table-sm text-center m-auto">
                         <thead>
                         <tr className="bg-light">
-                            <th style={{borderTopLeftRadius: "15px"}}/>
+                            <th style={{borderTopLeftRadius: "15px"}} className={'delete-food-td'}/>
                             <th style={{borderTopLeftRadius: "15px"}}>وضعیت</th>
                             <th style={{width: "110px"}}>
                                     <span style={{
@@ -158,7 +157,7 @@ class Foods extends React.Component {
                                     }}>(تومان)</span>
                                 قیمت
                             </th>
-                            <th><span style={{
+                            <th className={'discount-td'}><span style={{
                                 fontSize: '0.7rem',
                                 color: 'grey'
                             }}>(درصد)</span> تخفیف
@@ -213,12 +212,11 @@ class Foods extends React.Component {
         let rowCounter = 0;
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
         this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted'&& !eFood.relatedMainPersianName)
-        console.log(this.state.foodsList)
         return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
 
             <tr key={`itemId_${eachFood.id}`} className="bg-white">
 
-                <td>
+                <td className={'delete-food-td'}>
                     {
                         eachFood.status !== 'deleted' ?
 
@@ -243,7 +241,7 @@ class Foods extends React.Component {
 
                 <td>
                     <Typography component="div">
-                        <Grid component="label" container alignItems="center" spacing={1}>
+                        <Grid className={'food-status-td'} component="label" container alignItems="center" spacing={1}>
                             <Grid item>ناموجود</Grid>
                             <Grid item>
                                 <AntSwitch
@@ -276,7 +274,7 @@ class Foods extends React.Component {
                                aria-describedby="basic-addon1"/>
                     </div>
                 </td>
-                <td>
+                <td className={'discount-td'}>
                     <div className="input-group input-group-sm justify-content-center ltr">
                         <div className="input-group-prepend ">
                             <button style={{height: '31px'}} value="1" className="btn btn-outline-success" type="button"

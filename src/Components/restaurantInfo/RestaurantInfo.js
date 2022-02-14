@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {Box, ButtonBase} from "@material-ui/core";
+import {ButtonBase} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";   //true
 
 import Swal from 'sweetalert2';
@@ -12,7 +12,6 @@ import './js/css/selectedHoursStylesheet.css'
 import $ from 'jquery';
 
 import IconButton from "@material-ui/core/IconButton";
-import {AccountCircle} from "@material-ui/icons";
 
 const ReactSwal = withReactContent(Swal)
 
@@ -335,61 +334,63 @@ class RestaurantInfo extends React.Component {
                                    className='mt-2'/>
 
                         {
-                            this.state.resPhones.map((eachNumber, index) => {
-                                return (
-                                    <TextField id={'resPhonesInput-' + index} ref={this.numbersInput}
-                                               style={{marginTop: '100px', width: "150px", transition: '.3s ease'}}
-                                               defaultValue={eachNumber}
-                                               label="شماره تماس "
-                                               onBlur={this.handleChangePhone}
-                                               onChange={(e) => {
-                                                   this.state.resPhones[index] = e.currentTarget.value
-                                                   this.setState({
-                                                       resPhones: this.state.resPhones
-                                                   })
-                                               }}
-                                               className='IranSansLight mt-3'
-                                    />
-                                )
-                            })
+                            this.state.resPhones?
+                                this.state.resPhones.map((eachNumber, index) => {
+                                    return (
+                                        <TextField id={'resPhonesInput-' + index} ref={this.numbersInput}
+                                                   style={{marginTop: '100px', width: "150px", transition: '.3s ease'}}
+                                                   defaultValue={eachNumber}
+                                                   label="شماره تماس "
+                                                   onBlur={this.handleChangePhone}
+                                                   onChange={(e) => {
+                                                       this.state.resPhones[index] = e.currentTarget.value
+                                                       this.setState({
+                                                           resPhones: this.state.resPhones
+                                                       })
+                                                   }}
+                                                   className='IranSansLight mt-3'
+                                        />
+                                    )
+                                })
+                                :<div></div>
                         }
-                        {
-                            this.state.resPhones.length < 5 ?
-                                <ButtonBase className={'mt-2'}
-                                            style={{
-                                                border: '1px gray solid',
-                                                borderRadius: '10px',
-                                                width: '100%',
-                                                height: 40,
-                                                fontSize: '0.9rem'
-                                            }}
-                                            onClick={() => {
-                                                if (this.state.resPhones[this.state.resPhones.length - 1]) {
-                                                    this.state.resPhones.push('')
-                                                    this.setState({
-                                                        resPhones: this.state.resPhones
-                                                    })
-                                                } else {
-                                                    let textField = document.getElementById('resPhonesInput-' + (this.state.resPhones.length - 1)).parentElement.parentElement
-                                                    if (!textField.classList.contains('phone-error')){
-                                                        textField.classList.add("phone-error")
-                                                        setTimeout(()=>{
-                                                            textField.classList.remove("phone-error")
-                                                        },1000)
-                                                    }
+                        {/*{*/}
+                        {/*    this.state.resPhones.length < 5 ?*/}
+                        {/*        <ButtonBase className={'mt-2'}*/}
+                        {/*                    style={{*/}
+                        {/*                        border: '1px gray solid',*/}
+                        {/*                        borderRadius: '10px',*/}
+                        {/*                        width: '100%',*/}
+                        {/*                        height: 40,*/}
+                        {/*                        fontSize: '0.9rem'*/}
+                        {/*                    }}*/}
+                        {/*                    onClick={() => {*/}
+                        {/*                        if (this.state.resPhones[this.state.resPhones.length - 1]) {*/}
+                        {/*                            this.state.resPhones.push('')*/}
+                        {/*                            this.setState({*/}
+                        {/*                                resPhones: this.state.resPhones*/}
+                        {/*                            })*/}
+                        {/*                        } else {*/}
+                        {/*                            let textField = document.getElementById('resPhonesInput-' + (this.state.resPhones.length - 1)).parentElement.parentElement*/}
+                        {/*                            if (!textField.classList.contains('phone-error')){*/}
+                        {/*                                textField.classList.add("phone-error")*/}
+                        {/*                                setTimeout(()=>{*/}
+                        {/*                                    textField.classList.remove("phone-error")*/}
+                        {/*                                },1000)*/}
+                        {/*                            }*/}
 
-                                                    // document.getElementById('resPhonesInput-' + (this.state.resPhones.length - 1)).parentElement.classList.add('phone-error')
-                                                    // document.getElementById('resPhonesInput-'+(this.state.resPhones.length-1)).classList.add('phone-error')
-                                                }
-                                            }}
+                        {/*                            // document.getElementById('resPhonesInput-' + (this.state.resPhones.length - 1)).parentElement.classList.add('phone-error')*/}
+                        {/*                            // document.getElementById('resPhonesInput-'+(this.state.resPhones.length-1)).classList.add('phone-error')*/}
+                        {/*                        }*/}
+                        {/*                    }}*/}
 
-                                >
-                                    افزودن شماره تماس
-                                    <i style={{fontSize: '0.7rem'}} className={'fas fa-plus mx-2'}/>
-                                </ButtonBase>
-                                :
-                                null
-                        }
+                        {/*        >*/}
+                        {/*            افزودن شماره تماس*/}
+                        {/*            <i style={{fontSize: '0.7rem'}} className={'fas fa-plus mx-2'}/>*/}
+                        {/*        </ButtonBase>*/}
+                        {/*        :*/}
+                        {/*        null*/}
+                        {/*}*/}
 
 
                         <TextField id={'resCounterPhone'} ref={this.counterNumberInput} style={{marginTop: '100px'}}

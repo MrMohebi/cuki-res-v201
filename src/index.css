@@ -17,19 +17,20 @@
 }
 
 @media only screen and (orientation: portrait){
+    .delete-food-td{
+        display: none;
+    }
+    .discount-td{
+        display: none;
+    }
+    .food-status-td{
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+    }
 
-    .TurnPhone {
-        display: flex !important;
-    }
-    .smallBox {
-        display: none !important;
-    }
 }
-.TurnPhone {
-    display: none;
-    z-index: 9999;
-    overflow: scroll;
-}
+
 
 .IranSansLight {
     font-family: IRANSansMobile_Light !important;
@@ -52,6 +53,37 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield !important;
+}
+
+.each-food-inputs{
+    margin-top: 20px;
+    width: 25%;
+}
+
+@media only screen and (max-width: 800px) {
+    .in-queue {
+        border-left: 3px solid #27a844
+    }
+
+    .mobile-radius {
+        border-top-left-radius: 15px
+    }
+    .each-food-inputs{
+        margin-top: 20px;
+        width: 100%;
+    }
+    .nameAndDeliveryTime{
+        flex-flow: column !important;
+        max-width: 1000px;
+    }
+    .nameAndDeliveryTime input {
+        max-width: none !important;
+    }
+    .nameAndDeliveryTime .inputGroups{
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
 }
 
 

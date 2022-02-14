@@ -80,6 +80,7 @@
   flex-flow: row-reverse;
   text-align: center;
   justify-content: center;
+  align-items: center;
 }
 
 .nameAndDeliveryTime input {
@@ -101,6 +102,7 @@
 
 .biggerInputEachFood {
   width: 160px !important;
+  margin-top: 20px;
 }
 
 .uploadLable {

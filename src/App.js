@@ -13,7 +13,6 @@ import Orders from "./Components/orders/Orders";
 import NavBar from "./Components/navBar/navBar";
 import RestaurantInfo from "./Components/restaurantInfo/RestaurantInfo";
 import NewFood from "./Components/NewFood/NewFood";
-import TurnPhone from "./Components/TurnPhone/TurnPhone";
 import CustomerClub from './Components/CustomerClub/CustomerClub'
 import EachUserCustomerClub from "./Components/CustomerClub/EachUserCustomerClub";
 import Tutorials from "./Components/Tutorials/Tutorials";
@@ -40,7 +39,7 @@ function App() {
       <Router>
           <Route exact path='/' component={Signin}/>
           <Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo','/newFood']} component={NavBar}/>
-          <Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo','/newFood']} component={TurnPhone}/>
+          {/*<Route exact path={['/dashboard','/foods','/orders','/resinfo','/foodinfo','/newFood']} component={TurnPhone}/>*/}
           <Route exact path='/dashboard' component={Dashboard}/>
           <Route exact path='/foods' component={Foods}/>
           <Route path='/CustomerClub' component={CustomerClub}/>

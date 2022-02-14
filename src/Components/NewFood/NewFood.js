@@ -41,8 +41,7 @@ class NewFood extends React.Component {
             ReactSwal.fire({
                 title: 'غدا ثبت شد', icon: "success", timer: 1000, timerProgressBar: true
             }).then(() => {
-                if (this.props.location.pathname !== '/newFood')
-                    this.props.setVisible(false)
+                if (this.props.location.pathname !== '/newFood') this.props.setVisible(false)
             })
         }
     }
@@ -55,8 +54,8 @@ class NewFood extends React.Component {
 
     componentDidMount() {
 
-        window.addEventListener('keydown',(e)=>{
-            if(e.code === 'Enter'){
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Enter') {
                 this.submitHandler()
             }
         })
@@ -67,7 +66,6 @@ class NewFood extends React.Component {
             if (e) this.setState({
                 categories: e.data
             }, () => {
-                console.log(this.state.categories)
             })
         })
     }
@@ -130,7 +128,7 @@ class NewFood extends React.Component {
 
 
                     <div className='nameAndDeliveryTime mt-4'>
-                        <p className='foodPlaceHolderLabels IranSansLight'>: اسم</p>
+                        <p className='foodPlaceHolderLabels IranSansLight mt-4'>: اسم</p>
                         <div className="  inputGroups biggerInputEachFood">
                             <div className="input-group-prepend">
                             </div>
@@ -140,10 +138,10 @@ class NewFood extends React.Component {
                                    aria-describedby="basic-addon1"/>
                         </div>
 
-                        <p className='foodPlaceHolderLabels IranSansLight mr-4'> :<span style={{
+                        <p className='foodPlaceHolderLabels IranSansLight  mt-4'> :<span style={{
                             fontSize: '0.7rem', color: 'grey'
                         }}>(دقیقه)</span> زمان تحویل</p>
-                        <div className="  inputGroups">
+                        <div className="  inputGroups biggerInputEachFood">
 
                             <div className="input-group-prepend">
 
@@ -157,10 +155,10 @@ class NewFood extends React.Component {
                                 this.state.foodDeliveryTime = e.target.value
                             }}/>
                         </div>
-                        <p className='foodPlaceHolderLabels IranSansLight mr-4'>:<span style={{
+                        <p className='foodPlaceHolderLabels IranSansLight mt-4'>:<span style={{
                             fontSize: '0.7rem', color: 'grey'
                         }}>(تومان)</span> قیمت</p>
-                        <div className="  inputGroups">
+                        <div className="  inputGroups biggerInputEachFood">
 
                             <div className="input-group-prepend">
                             </div>
