@@ -108,6 +108,7 @@ class RestaurantInfo extends React.Component {
 
 
     checkInfoChanged = (res) => {
+        console.log(res)
         if (res.statusCode === 200) {
             ReactSwal.fire({
                 title: <h2>!با موفقیت انجام شد</h2>,
@@ -287,35 +288,35 @@ class RestaurantInfo extends React.Component {
         return (
             <React.Fragment>
                 <div className='navGap'/>
-                <div className='IranSansLight smallBox d-flex flex-column justify-content-center align-items-md-center'>
-                    <span>لوگو</span>
-                    <div className={'d-flex justify-content-center align-items-center flex-column'}>
-                        <div className={'mt-3'} style={{
-                            height: 100,
-                            width: 100,
-                            backgroundSize: 'cover',
-                            backgroundImage: `url(${'https://img.freepik.com/free-vector/food-logo-design_139869-254.jpg?size=626&ext=jpg'})`,
-                            backgroundPosition: 'center',
-                            borderRadius: '100%'
-                        }}/>
-                        <ButtonBase className={'mt-2'}
-                                    style={{
-                                        border: '1px gray solid',
-                                        borderRadius: '10px',
-                                        width: 80,
-                                        height: 40,
-                                        fontSize: '0.9rem'
-                                    }}
-                        >
-                            تغیر لوگو
-                        </ButtonBase>
-                    </div>
+                <div className='IranSansLight smallBox d-flex flex-column justify-content-center align-items-center'>
+                    {/*<span>لوگو</span>*/}
+                    {/*<div className={'d-flex justify-content-center align-items-center flex-column'}>*/}
+                    {/*    <div className={'mt-3'} style={{*/}
+                    {/*        height: 100,*/}
+                    {/*        width: 100,*/}
+                    {/*        backgroundSize: 'cover',*/}
+                    {/*        backgroundImage: `url(${'https://img.freepik.com/free-vector/food-logo-design_139869-254.jpg?size=626&ext=jpg'})`,*/}
+                    {/*        backgroundPosition: 'center',*/}
+                    {/*        borderRadius: '100%'*/}
+                    {/*    }}/>*/}
+                    {/*    <ButtonBase className={'mt-2'}*/}
+                    {/*                style={{*/}
+                    {/*                    border: '1px gray solid',*/}
+                    {/*                    borderRadius: '10px',*/}
+                    {/*                    width: 80,*/}
+                    {/*                    height: 40,*/}
+                    {/*                    fontSize: '0.9rem'*/}
+                    {/*                }}*/}
+                    {/*    >*/}
+                    {/*        تغیر لوگو*/}
+                    {/*    </ButtonBase>*/}
+                    {/*</div>*/}
                     <div className={'mt-4'}></div>
                     <span>اطلاعات مجموعه</span>
                     <div className={'mt-1'}></div>
 
 
-                    <div dir={'rtl'} className={'IranSansLight d-flex flex-column'}>
+                    <div  style={{alignItems:'center'}} dir={'rtl'} className={'IranSansLight d-flex flex-column align-items-center'}>
                         <TextField id={'resNameInput'} ref={this.resNameInput} style={{marginTop: '100px'}}
                                    defaultValue={'رستوران'}
                                    style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
