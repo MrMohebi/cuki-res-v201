@@ -7,7 +7,7 @@ import {Button, Grid, Switch, Typography, withStyles} from '@material-ui/core';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import * as actions from '../../Stores/reduxStore/actions'
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FastfoodRoundedIcon from '@material-ui/icons/FastfoodRounded';
@@ -53,16 +53,22 @@ class Foods extends React.Component {
     state = {
         uiRender: this.uiWaitToFetch,
         foodsList: [],
+        resCats: []
     }
 
     componentDidMount() {
         this.getFoods();
         this.removeEventListeners()
+        requests.getCategoryList((res) => {
+            this.setState({
+                resCats: res.data
+            })
+        })
 
     }
 
-    removeEventListeners(){
-        window.removeEventListener('keydown',()=>{
+    removeEventListeners() {
+        window.removeEventListener('keydown', () => {
         })
     }
 
@@ -71,7 +77,7 @@ class Foods extends React.Component {
         if (response.statusCode === 200) {
             this.setState({
                 foodsList: response.data,
-                uiRender: this.uiComponent()
+                uiRender: this.uiComponent(),
             });
 
         }
@@ -94,7 +100,7 @@ class Foods extends React.Component {
     handleFoodPrice = (foodId) => {
         let foodPriceInput = $(`#itemPrice_${foodId}`)
         let foodPrice = foodPriceInput.val()
-        if (foodPrice.length<4){
+        if (foodPrice.length < 4) {
             foodPrice = foodPrice + "000"
         }
         foodPriceInput.val(foodPrice)
@@ -114,8 +120,9 @@ class Foods extends React.Component {
     checkFoodPriceChanged = (res) => {
         if (res.statusCode === 200) {
             toast.success("با موفقیت تغیر کرد")
+        } else {
+            toast.error("خطا هنگام تغیر قیمت")
         }
-        toast.error("خطا هنگام تغیر قیمت")
     }
 
 
@@ -123,9 +130,9 @@ class Foods extends React.Component {
         return (
             <React.Fragment>
                 <ToastContainer
-                position={'bottom-center'}
-                rtl={true}
-                autoClose={2000}
+                    position={'bottom-center'}
+                    rtl={true}
+                    autoClose={2000}
                 />
                 <div style={{height: "30px", width: "100%"}}/>
                 <div style={{height: "30px", width: "100%"}}/>
@@ -208,99 +215,372 @@ class Foods extends React.Component {
         )
     }
 
+    createCats = () => {
+        let cats = [];
+        this.state.foodsList.forEach(food => {
+            if (cats.includes(food.group)) {
+
+            } else {
+                cats.push(food.group)
+            }
+        })
+        console.log(cats)
+        return cats;
+    }
+
     createFoodRows = () => {
         let rowCounter = 0;
         let howManyFoodsToShow = window.location.pathname === '/dashboard' ? 10 : this.state.foodsList.length
-        this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted'&& !eFood.relatedMainPersianName)
-        return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
+        this.state.foodsList = this.state.foodsList.filter(eFood => eFood.status !== 'deleted' && !eFood.relatedMainPersianName)
+        let lastCat = '';
+        let catIndicator = null
+        let st = {};
+        this.state.foodsList.forEach(food => {
+            if (st[food.group]) {
+                st[food.group].push(food)
+            } else {
+                st[food.group] = [food]
+            }
+        })
+        console.log(st)
+        console.log(this.state.resCats)
+        let catPersianName;
 
-            <tr key={`itemId_${eachFood.id}`} className="bg-white">
 
-                <td className={'delete-food-td'}>
+        return Object.keys(st).map(cat => {
+            this.state.resCats.forEach(resCat => {
+                if (resCat.englishName === cat) {
+                    catPersianName = resCat.persianName
+                }
+            })
+            return (
+                <>
+                    <tr className={'w-100 text-center'}>
+                        <td align={"center"} className={'py-2'} colSpan={50}>
+                            {catPersianName}
+                        </td>
+
+
+                    </tr>
+
+
                     {
-                        eachFood.status !== 'deleted' ?
+                        st[cat].map(eachFood => {
+                            return (
+                                <tr key={`itemId_${eachFood.id}`} className="bg-white">
 
-                            <Button
-                                onClick={
-                                    () => {
-                                        this.handleChangStatus(eachFood.id, 'deleted')
-                                    }
-                                }
-                                variant="contained"
-                                color="secondary"
-                                className={'deleteButton'}
-                                startIcon={<DeleteIcon/>}
-                            >
-                                حذف
-                            </Button>
+                                    <td className={'delete-food-td'}>
+                                        {
+                                            eachFood.status !== 'deleted' ?
 
-                            :
-                            <div/>
+                                                <Button
+                                                    onClick={
+                                                        () => {
+                                                            this.handleChangStatus(eachFood.id, 'deleted')
+                                                        }
+                                                    }
+                                                    variant="contained"
+                                                    color="secondary"
+                                                    className={'deleteButton'}
+                                                    startIcon={<DeleteIcon/>}
+                                                >
+                                                    حذف
+                                                </Button>
+
+                                                :
+                                                <div/>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <Typography component="div">
+                                            <Grid className={'food-status-td'} component="label" container
+                                                  alignItems="center"
+                                                  spacing={1}>
+                                                <Grid item>ناموجود</Grid>
+                                                <Grid item>
+                                                    <AntSwitch
+                                                        disabled={!(eachFood.status === "outOfStock" || eachFood.status === "inStock")}
+                                                        checked={((eachFood.status === "outOfStock" || eachFood.status === "inStock") && eachFood.status === "inStock")}
+                                                        onChange={() => {
+                                                            this.handleChangStatus(eachFood.id, ((eachFood.status === "inStock") ? ("outOfStock") : ("inStock")))
+                                                        }}/>
+                                                </Grid>
+                                                <Grid item>موجود</Grid>
+                                            </Grid>
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        <div className="input-group input-group-sm justify-content-center ltr">
+                                            <div className="input-group-prepend ">
+                                                <button style={{height: '31px'}} value="1"
+                                                        className="btn btn-outline-success"
+                                                        type="button"
+                                                        onClick={() => {
+                                                            this.handleFoodPrice(eachFood.id)
+                                                        }}>
+                                                    <FontAwesomeIcon icon={faCheck}/>
+                                                </button>
+                                            </div>
+                                            <input id={`itemPrice_${eachFood.id}`} type="text"
+                                                   placeholder={eachFood.price}
+                                                   onFocus={(e) => {
+                                                       e.currentTarget.select()
+                                                   }} onBlur={() => {
+                                                this.handleFoodPrice(eachFood.id)
+                                            }}
+                                                   defaultValue={eachFood.price} className="form-control" aria-label=""
+                                                   aria-describedby="basic-addon1"/>
+                                        </div>
+                                    </td>
+                                    <td className={'discount-td'}>
+                                        <div className="input-group input-group-sm justify-content-center ltr">
+                                            <div className="input-group-prepend ">
+                                                <button style={{height: '31px'}} value="1"
+                                                        className="btn btn-outline-success"
+                                                        type="button"
+                                                        onClick={() => {
+                                                            this.handleFoodDiscount(eachFood.id)
+                                                        }}>
+                                                    <FontAwesomeIcon icon={faCheck}/>
+                                                </button>
+                                            </div>
+                                            <input style={{maxWidth: '40px'}} id={`itemDiscount_${eachFood.id}`}
+                                                   type="text"
+                                                   placeholder={eachFood.discount}
+                                                   defaultValue={eachFood.discount} className="form-control"
+                                                   aria-label=""
+                                                   aria-describedby="basic-addon1"/>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div onClick={() => {
+                                            this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.id === ef.id))
+                                            this.props.history.push('/foodInfo')
+                                        }
+                                        }>{eachFood.persianName}</div>
+                                    </td>
+                                    <td>{rowCounter++}</td>
+                                </tr>
+                            )
+                        })
                     }
-                </td>
 
-                <td>
-                    <Typography component="div">
-                        <Grid className={'food-status-td'} component="label" container alignItems="center" spacing={1}>
-                            <Grid item>ناموجود</Grid>
-                            <Grid item>
-                                <AntSwitch
-                                    disabled={!(eachFood.status === "outOfStock" || eachFood.status === "inStock")}
-                                    checked={((eachFood.status === "outOfStock" || eachFood.status === "inStock") && eachFood.status === "inStock")}
-                                    onChange={() => {
-                                        this.handleChangStatus(eachFood.id, ((eachFood.status === "inStock") ? ("outOfStock") : ("inStock")))
-                                    }}/>
-                            </Grid>
-                            <Grid item>موجود</Grid>
-                        </Grid>
-                    </Typography>
-                </td>
-                <td>
-                    <div className="input-group input-group-sm justify-content-center ltr">
-                        <div className="input-group-prepend ">
-                            <button style={{height: '31px'}} value="1" className="btn btn-outline-success" type="button"
-                                    onClick={() => {
-                                        this.handleFoodPrice(eachFood.id)
-                                    }}>
-                                <FontAwesomeIcon icon={faCheck}/>
-                            </button>
-                        </div>
-                        <input id={`itemPrice_${eachFood.id}`} type="text" placeholder={eachFood.price} onFocus={(e)=>{
-                        e.currentTarget.select()
-                        }} onBlur={()=>{
-                        this.handleFoodPrice(eachFood.id)
-                        }}
-                               defaultValue={eachFood.price} className="form-control" aria-label=""
-                               aria-describedby="basic-addon1"/>
-                    </div>
-                </td>
-                <td className={'discount-td'}>
-                    <div className="input-group input-group-sm justify-content-center ltr">
-                        <div className="input-group-prepend ">
-                            <button style={{height: '31px'}} value="1" className="btn btn-outline-success" type="button"
-                                    onClick={() => {
-                                        this.handleFoodDiscount(eachFood.id)
-                                    }}>
-                                <FontAwesomeIcon icon={faCheck}/>
-                            </button>
-                        </div>
-                        <input style={{maxWidth: '40px'}} id={`itemDiscount_${eachFood.id}`} type="text"
-                               placeholder={eachFood.discount}
-                               defaultValue={eachFood.discount} className="form-control" aria-label=""
-                               aria-describedby="basic-addon1"/>
-                    </div>
-                </td>
 
-                <td>
-                    <div onClick={() => {
-                        this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.id === ef.id))
-                        this.props.history.push('/foodInfo')
-                    }
-                    }>{eachFood.persianName}</div>
-                </td>
-                <td>{rowCounter++}</td>
-            </tr>
-        )))
+                </>
+            )
+
+            st[cat].map(food => {
+
+            })
+        })
+
+
+        // return this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => {
+        //     console.log(eachFood)
+        //
+        //         if (lastCat === eachFood.group) {
+        //             catIndicator = null
+        //
+        //         } else {
+        //             lastCat = eachFood.group
+        //             catIndicator = <div>{lastCat}</div>
+        //         }
+        //         return (
+        //             <>
+        //                 {
+        //                     catIndicator
+        //                 }
+        //                 <tr key={`itemId_${eachFood.id}`} className="bg-white">
+        //
+        //
+        //                     <td className={'delete-food-td'}>
+        //                         {
+        //                             eachFood.status !== 'deleted' ?
+        //
+        //                                 <Button
+        //                                     onClick={
+        //                                         () => {
+        //                                             this.handleChangStatus(eachFood.id, 'deleted')
+        //                                         }
+        //                                     }
+        //                                     variant="contained"
+        //                                     color="secondary"
+        //                                     className={'deleteButton'}
+        //                                     startIcon={<DeleteIcon/>}
+        //                                 >
+        //                                     حذف
+        //                                 </Button>
+        //
+        //                                 :
+        //                                 <div/>
+        //                         }
+        //                     </td>
+        //
+        //                     <td>
+        //                         <Typography component="div">
+        //                             <Grid className={'food-status-td'} component="label" container alignItems="center"
+        //                                   spacing={1}>
+        //                                 <Grid item>ناموجود</Grid>
+        //                                 <Grid item>
+        //                                     <AntSwitch
+        //                                         disabled={!(eachFood.status === "outOfStock" || eachFood.status === "inStock")}
+        //                                         checked={((eachFood.status === "outOfStock" || eachFood.status === "inStock") && eachFood.status === "inStock")}
+        //                                         onChange={() => {
+        //                                             this.handleChangStatus(eachFood.id, ((eachFood.status === "inStock") ? ("outOfStock") : ("inStock")))
+        //                                         }}/>
+        //                                 </Grid>
+        //                                 <Grid item>موجود</Grid>
+        //                             </Grid>
+        //                         </Typography>
+        //                     </td>
+        //                     <td>
+        //                         <div className="input-group input-group-sm justify-content-center ltr">
+        //                             <div className="input-group-prepend ">
+        //                                 <button style={{height: '31px'}} value="1" className="btn btn-outline-success"
+        //                                         type="button"
+        //                                         onClick={() => {
+        //                                             this.handleFoodPrice(eachFood.id)
+        //                                         }}>
+        //                                     <FontAwesomeIcon icon={faCheck}/>
+        //                                 </button>
+        //                             </div>
+        //                             <input id={`itemPrice_${eachFood.id}`} type="text" placeholder={eachFood.price}
+        //                                    onFocus={(e) => {
+        //                                        e.currentTarget.select()
+        //                                    }} onBlur={() => {
+        //                                 this.handleFoodPrice(eachFood.id)
+        //                             }}
+        //                                    defaultValue={eachFood.price} className="form-control" aria-label=""
+        //                                    aria-describedby="basic-addon1"/>
+        //                         </div>
+        //                     </td>
+        //                     <td className={'discount-td'}>
+        //                         <div className="input-group input-group-sm justify-content-center ltr">
+        //                             <div className="input-group-prepend ">
+        //                                 <button style={{height: '31px'}} value="1" className="btn btn-outline-success"
+        //                                         type="button"
+        //                                         onClick={() => {
+        //                                             this.handleFoodDiscount(eachFood.id)
+        //                                         }}>
+        //                                     <FontAwesomeIcon icon={faCheck}/>
+        //                                 </button>
+        //                             </div>
+        //                             <input style={{maxWidth: '40px'}} id={`itemDiscount_${eachFood.id}`} type="text"
+        //                                    placeholder={eachFood.discount}
+        //                                    defaultValue={eachFood.discount} className="form-control" aria-label=""
+        //                                    aria-describedby="basic-addon1"/>
+        //                         </div>
+        //                     </td>
+        //
+        //                     <td>
+        //                         <div onClick={() => {
+        //                             this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.id === ef.id))
+        //                             this.props.history.push('/foodInfo')
+        //                         }
+        //                         }>{eachFood.persianName}</div>
+        //                     </td>
+        //                     <td>{rowCounter++}</td>
+        //                 </tr>
+        //             </>
+        //
+        //         )
+        //     }
+        // )
+
+
+        // return (this.state.foodsList.slice(0, howManyFoodsToShow).map(eachFood => (
+        //
+        //     <tr key={`itemId_${eachFood.id}`} className="bg-white">
+        //
+        //
+        //         <td className={'delete-food-td'}>
+        //             {
+        //                 eachFood.status !== 'deleted' ?
+        //
+        //                     <Button
+        //                         onClick={
+        //                             () => {
+        //                                 this.handleChangStatus(eachFood.id, 'deleted')
+        //                             }
+        //                         }
+        //                         variant="contained"
+        //                         color="secondary"
+        //                         className={'deleteButton'}
+        //                         startIcon={<DeleteIcon/>}
+        //                     >
+        //                         حذف
+        //                     </Button>
+        //
+        //                     :
+        //                     <div/>
+        //             }
+        //         </td>
+        //
+        //         <td>
+        //             <Typography component="div">
+        //                 <Grid className={'food-status-td'} component="label" container alignItems="center" spacing={1}>
+        //                     <Grid item>ناموجود</Grid>
+        //                     <Grid item>
+        //                         <AntSwitch
+        //                             disabled={!(eachFood.status === "outOfStock" || eachFood.status === "inStock")}
+        //                             checked={((eachFood.status === "outOfStock" || eachFood.status === "inStock") && eachFood.status === "inStock")}
+        //                             onChange={() => {
+        //                                 this.handleChangStatus(eachFood.id, ((eachFood.status === "inStock") ? ("outOfStock") : ("inStock")))
+        //                             }}/>
+        //                     </Grid>
+        //                     <Grid item>موجود</Grid>
+        //                 </Grid>
+        //             </Typography>
+        //         </td>
+        //         <td>
+        //             <div className="input-group input-group-sm justify-content-center ltr">
+        //                 <div className="input-group-prepend ">
+        //                     <button style={{height: '31px'}} value="1" className="btn btn-outline-success" type="button"
+        //                             onClick={() => {
+        //                                 this.handleFoodPrice(eachFood.id)
+        //                             }}>
+        //                         <FontAwesomeIcon icon={faCheck}/>
+        //                     </button>
+        //                 </div>
+        //                 <input id={`itemPrice_${eachFood.id}`} type="text" placeholder={eachFood.price}
+        //                        onFocus={(e) => {
+        //                            e.currentTarget.select()
+        //                        }} onBlur={() => {
+        //                     this.handleFoodPrice(eachFood.id)
+        //                 }}
+        //                        defaultValue={eachFood.price} className="form-control" aria-label=""
+        //                        aria-describedby="basic-addon1"/>
+        //             </div>
+        //         </td>
+        //         <td className={'discount-td'}>
+        //             <div className="input-group input-group-sm justify-content-center ltr">
+        //                 <div className="input-group-prepend ">
+        //                     <button style={{height: '31px'}} value="1" className="btn btn-outline-success" type="button"
+        //                             onClick={() => {
+        //                                 this.handleFoodDiscount(eachFood.id)
+        //                             }}>
+        //                         <FontAwesomeIcon icon={faCheck}/>
+        //                     </button>
+        //                 </div>
+        //                 <input style={{maxWidth: '40px'}} id={`itemDiscount_${eachFood.id}`} type="text"
+        //                        placeholder={eachFood.discount}
+        //                        defaultValue={eachFood.discount} className="form-control" aria-label=""
+        //                        aria-describedby="basic-addon1"/>
+        //             </div>
+        //         </td>
+        //
+        //         <td>
+        //             <div onClick={() => {
+        //                 this.props.setFoodInfoTemp(this.state.foodsList.filter(ef => eachFood.id === ef.id))
+        //                 this.props.history.push('/foodInfo')
+        //             }
+        //             }>{eachFood.persianName}</div>
+        //         </td>
+        //         <td>{rowCounter++}</td>
+        //     </tr>
+        // )))
 
 
     }

@@ -60,6 +60,7 @@ export const changeFoodStatus = (foodId, foodStatus, callbackFunction) => {
 }
 export const createNewCategory = (catPersianName, catEnglishName, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
+    console.log(token)
     $.post(BASE_URL + 'createCategory', {
         token, catPersianName, catEnglishName,rank:0
     }).then(res => {
@@ -156,6 +157,17 @@ export const changeRestaurantName = (persianName, callbackFunction) => {
     let token = store.getState().reducerRestaurantUser.token;
     $.post(BASE_URL + 'changeResInfo', {token, persianName}).then(res => {
         callbackFunction(res)
+    })
+}
+
+
+export const changeRestaurantPassword = (password, callbackFunction) => {
+    let token = store.getState().reducerRestaurantUser.token;
+    // console.log(token)
+    $.post(BASE_URL + 'changePassword', {token, password}).then(res => {
+        callbackFunction(res)
+    }).fail((res)=>{
+        callbackFunction(0)
     })
 }
 

@@ -12,6 +12,7 @@ import './js/css/selectedHoursStylesheet.css'
 import $ from 'jquery';
 
 import IconButton from "@material-ui/core/IconButton";
+import swal from "sweetalert2";
 
 const ReactSwal = withReactContent(Swal)
 
@@ -242,6 +243,29 @@ class RestaurantInfo extends React.Component {
     }
     changeRestaurantCounterPhoneCallback = () => {
     }
+    changeRestaurantPassword = (e) => {
+        requests.changeRestaurantPassword(e.currentTarget.value,(res)=>{
+            if(res){
+                if(res.statusCode === 200){
+                    swal.fire({
+                        icon:'success',
+                        title:'تغیر رمز موفق',
+                        confirmButtonText:'باشه'
+                    })
+                }
+            }
+            else{
+                swal.fire({
+                    icon:'error',
+                    title:'تغیر رمز نا موفق',
+                    titleText:'لطفا رمز را بررسی کنید، رمز عبور باید حد اقل دارای 7 کاراکتر باشد',
+                    confirmButtonText:'باشه'
+                })
+            }
+        })
+
+    }
+
     resetButtons = (day) => {
         $('.hoursSelector button').css({color: 'rgba(0, 0, 0, 0.54)'})
         let arr = this.state.nOpenTime[day]
@@ -316,7 +340,8 @@ class RestaurantInfo extends React.Component {
                     <div className={'mt-1'}></div>
 
 
-                    <div  style={{alignItems:'center'}} dir={'rtl'} className={'IranSansLight d-flex flex-column align-items-center'}>
+                    <div style={{alignItems: 'center'}} dir={'rtl'}
+                         className={'IranSansLight d-flex flex-column align-items-center'}>
                         <TextField id={'resNameInput'} ref={this.resNameInput} style={{marginTop: '100px'}}
                                    defaultValue={'رستوران'}
                                    style={{width: "150px"}} label="نام رستوران" onBlur={this.handleChangeName}
@@ -327,18 +352,19 @@ class RestaurantInfo extends React.Component {
                                    multiline
                                    className='mt-2'/>
                         <TextField id={'resInstaId'} ref={this.addressInput} defaultValue={'@'}
-                                   onChange={(e)=>{
-                                       e.currentTarget.value = '@'+e.currentTarget.value.slice(1)
+                                   onChange={(e) => {
+                                       e.currentTarget.value = '@' + e.currentTarget.value.slice(1)
                                    }}
-                                   style={{width: "150px",direction:'ltr'}} label="ایدی اینستاگرام" onBlur={()=>{}}
+                                   style={{width: "150px", direction: 'ltr'}} label="ایدی اینستاگرام" onBlur={() => {
+                        }}
                                    multiline
                                    className='mt-2'/>
 
                         {
-                            this.state.resPhones?
+                            this.state.resPhones ?
                                 this.state.resPhones.map((eachNumber, index) => {
                                     return (
-                                        <TextField id={'resPhonesInput-' + index} ref={this.numbersInput}
+                                        <TextField key={index+'phones'} id={'resPhonesInput-' + index} ref={this.numbersInput}
                                                    style={{marginTop: '100px', width: "150px", transition: '.3s ease'}}
                                                    defaultValue={eachNumber}
                                                    label="شماره تماس "
@@ -353,7 +379,7 @@ class RestaurantInfo extends React.Component {
                                         />
                                     )
                                 })
-                                :<div></div>
+                                : <div></div>
                         }
                         {/*{*/}
                         {/*    this.state.resPhones.length < 5 ?*/}
@@ -401,7 +427,6 @@ class RestaurantInfo extends React.Component {
                                    className='IranSansLight mt-3'/>
 
 
-
                         <TextField id={'resCounterPhone'} ref={this.RestaurantAccountCode} style={{marginTop: '100px'}}
                                    defaultValue={'00000000000000'}
                                    style={{width: "150px", whiteSpace: 'nowrap'}} label="شماره حساب"
@@ -421,9 +446,14 @@ class RestaurantInfo extends React.Component {
 
                         }} className='btn btn-outline-dark mt-4'>روز های باز رستوران
                         </ButtonBase>
+                        <span>تغیر رمز</span>
 
 
-
+                        <TextField id={'newPassword'}  style={{marginTop: '100px'}}
+                                   defaultValue={''}
+                                   style={{width: "150px", whiteSpace: 'nowrap'}} label="رمز جدید"
+                                   onBlur={this.changeRestaurantPassword}
+                                   className='IranSansLight mt-3'/>
                     </div>
 
 
@@ -514,7 +544,7 @@ class RestaurantInfo extends React.Component {
                                 {
                                     Array.apply(1, Array(24)).map((eachButton, index) => {
                                         return (
-                                            <IconButton id={'h' + index}
+                                            <IconButton key={index+'icons'} id={'h' + index}
                                                         onClick={this.handleButtonClickedNew} size="small"
                                                         className="m-1">{index < 10 ? '0' + index : index}</IconButton>
                                         )
